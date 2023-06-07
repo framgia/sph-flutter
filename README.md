@@ -44,3 +44,30 @@ Once done selecting, click on the upper right *play* button to start running the
 ![image](https://github.com/framgia/sph-flutter/assets/99173155/82dfc361-ec23-4b1c-ad0b-c34f45b9b44b)
 
 # Backend (Laravel)
+Laravel utilizes Composer to manage its dependencies. So, before using Laravel, make sure you have Composer installed on your machine.
+Here is the link to Composer: https://getcomposer.org/
+
+First, download the Laravel installer using Composer by running the command:
+
+**composer global require laravel/installer**
+
+*Make sure to place Composer's system-wide vendor bin directory in your $PATH so the laravel executable can be located by your system.
+
+### Running the application
+Run the command: **php artisan serve**
+
+### To know all the commands
+Run the command: **php artisan**
+
+# Creating Docker setup for database
+# Prerequisites
+- Docker and MySQL
+
+### Steps
+- install docker in your machine, refer to this link: https://docs.docker.com/desktop/install/windows-install/
+- make sure [PR02](https://github.com/framgia/sph-flutter/pull/2) is already included in your latest branch
+- run "docker-compose up" in the backend dir
+- check if Backend container was successfully created
+- then run the migration command "php artisan migrate"
+
+
