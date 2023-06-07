@@ -37,7 +37,7 @@ class PasswordResetPage extends StatelessWidget {
                     margin: const EdgeInsets.only(bottom: 14),
                     alignment: Alignment.centerLeft,
                     child: const Text(
-                      'Enter Phone Number',
+                      'Enter Email',
                       style: TextStyle(
                         fontSize: 16,
                         fontFamily: 'Nunito',
