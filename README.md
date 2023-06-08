@@ -60,8 +60,17 @@ Run the command: **php artisan serve**
 Run the command: **php artisan**
 
 # Creating Docker setup for database
-# Prerequisites
+### Prerequisites
 - Docker and MySQL
+- Update.env file
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3308
+DB_DATABASE=savings
+DB_USERNAME=root
+DB_PASSWORD=root
+```
 
 ### Steps
 - install docker in your machine, refer to this link: https://docs.docker.com/desktop/install/windows-install/
