@@ -16,7 +16,6 @@ class PasswordResetPage extends StatelessWidget {
           children: [
             const AuthHeader(),
             Container(
-              // color: Colors.red,
               width: double.maxFinite,
               margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 0),
               child: Column(
