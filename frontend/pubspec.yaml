@@ -63,7 +63,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/
+    - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -80,10 +80,10 @@ flutter:
   fonts:
     - family: Nunito
       fonts:
-        - asset: font/Nunito/static/Nunito-Regular.ttf
-        - asset: font/Nunito/static/Nunito-Bold.ttf
+        - asset: assets/fonts/Nunito/static/Nunito-Regular.ttf
+        - asset: assets/fonts/Nunito/static/Nunito-Bold.ttf
           weight: 700
-        - asset: font/Nunito/static/Nunito-Italic.ttf
+        - asset: assets/fonts/Nunito/static/Nunito-Italic.ttf
           style: italic
   #   - family: Trajan Pro
   #     fonts:

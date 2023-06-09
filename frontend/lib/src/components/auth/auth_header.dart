@@ -14,7 +14,7 @@ class AuthHeader extends StatelessWidget {
         Container(
           margin: const EdgeInsets.fromLTRB(0, 0, 100, 25),
           child: Image.asset(
-            'images/corner.png',
+            'assets/images/corner.png',
           ),
         ),
         Container(
