@@ -14,19 +14,21 @@ class CreateTransactionsTable extends Migration
     public function up()
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('account_id');
-            $table->foreign('account_id')->references('id')->on('accounts')->constrained()->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('account_id')->references('id')->on('accounts')->constrained()->onDelete('cascade');
             $table->dateTime('transaction_date');
-            $table->enum('transaction_type', [0, 1, 2, 3]);
-            $table->enum('category',[0, 1, 2, 3, 4, 5, 6]);
+            $table->enum('transaction_type', ['CREDIT', 'DEPT', 'TRANSFER']);
+            $table->enum('category',['SAVINGS', 'SALARY', 'BILLS', 'SENDER', 'RECIPIENT']);
             $table->longText('description');
-            $table->unsignedBigInteger('transfer_id');
-            $table->foreign('transfer_id')->references('id')->on('transactions')->nullable()->constrained()->onDelete('cascade');
+            $table->uuid('transaction_id')->nullable();
             $table->double('starting_balance');
             $table->double('transaction_amount');
             $table->softDeletes();
             $table->timestamps();
+        });
+
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->foreign('transaction_id')->references('id')->on('transactions')->constrained()->onDelete('cascade');
         });
     }
 
