@@ -16,6 +16,7 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('account_id')->references('id')->on('accounts')->constrained()->onDelete('cascade');
+            $table->foreignUuid('user_id')->references('id')->on('users')->constrained()->onDelete('cascade');
             $table->dateTime('transaction_date');
             $table->enum('transaction_type', ['CREDIT', 'DEPT', 'TRANSFER']);
             $table->enum('category',['SAVINGS', 'SALARY', 'BILLS', 'SENDER', 'RECIPIENT']);
