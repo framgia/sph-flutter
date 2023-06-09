@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/password_reset_page.dart';
+import 'package:frontend/src/password_reset/password_reset_page.dart';
 import 'package:get/get.dart';
 
 void main() {
@@ -32,6 +32,29 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        fontFamily: 'Nunito',
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
+          titleMedium: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          labelLarge: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.normal,
+          ),
+          labelMedium: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.normal,
+          ),
+          labelSmall: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );

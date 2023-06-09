@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/*
+  Reusable "Top" component for auth related actions
+  such as login, forgot password, create password
+*/
 class AuthHeader extends StatelessWidget {
   const AuthHeader({super.key});
 
@@ -16,13 +20,9 @@ class AuthHeader extends StatelessWidget {
         Container(
           height: 252,
           alignment: Alignment.bottomCenter,
-          child: const Text(
-            'Savings App',
-            style: TextStyle(
-              fontSize: 30,
-              fontFamily: 'Nunito',
-              fontWeight: FontWeight.bold,
-            ),
+          child: Text(
+            'SPH FLUTTER',
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
       ],

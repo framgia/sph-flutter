@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
+
+/*
+  Component for a FormBuilderTextField
+  designed with shadow, border
+*/
 class InputField extends StatelessWidget {
-  const InputField({super.key});
+  const InputField(
+      {super.key, required this.name, this.validator,});
+
+  final String name;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +28,10 @@ class InputField extends StatelessWidget {
           ),
         ],
       ),
-      child: const TextField(
-        decoration: InputDecoration(
+      child: FormBuilderTextField(
+        name: name,
+        validator: validator,
+        decoration: const InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
