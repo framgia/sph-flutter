@@ -5,17 +5,19 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 /*
   Component for a FormBuilderTextField
   designed with shadow, border
+
+  PARAMETER name: similar to html name attribute, provides the form widget the key to assign its value
+  ex InputField(name: "last_name") , then printing the formKey values provides { last_name: "abc" }
+
+  PARAMETER validator: adds validation to the Text Field, it also provides the widget an error message
+  as we are using another package for validators, please read https://pub.dev/packages/form_builder_validators
+  ex FormBuilderValidators.email() 
 */
 class InputField extends StatelessWidget {
   const InputField(
       {super.key, required this.name, this.validator,});
 
-  // PARAMETER name: similar to html name attribute, provides the form widget the key to assign its value
-  // ex InputField(name: "last_name") , then printing the formKey values provides { last_name: "abc" }
   final String name;
-  // PARAMETER validator: adds validation to the Text Field, it also provides the widget an error message
-  // as we are using another package for validators, please read https://pub.dev/packages/form_builder_validators
-  // ex FormBuilderValidators.email() 
   final String? Function(String?)? validator;
 
   @override
