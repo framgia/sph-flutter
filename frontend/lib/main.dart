@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:frontend/src/features/admin_user_list/admin_user_list_page.dart';
 
 import 'package:frontend/src/features/login/login_page.dart';
 import 'package:frontend/src/navigators/settings_screen_navigator.dart';
@@ -140,8 +141,15 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             child: const Text('Go to Password SearchField Page'),
           ),
+          ElevatedButton(
+            onPressed: () {
+              Get.to(() => const AdminUserListPage());
+            },
+            child: const Text('Go to Admin User List Page'),
+          )
         ],
       ),
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
