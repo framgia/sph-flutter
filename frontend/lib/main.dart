@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/password_reset/password_reset_page.dart';
+import 'package:frontend/src/features/password_reset/password_reset_page.dart';
 import 'package:get/get.dart';
 
 void main() {
