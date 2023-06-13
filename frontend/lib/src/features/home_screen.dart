@@ -1,8 +1,11 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:frontend/main.dart';
 import 'package:frontend/src/components/templates/header_image.dart';
+import 'package:frontend/src/controllers/home_screen_controller.dart';
 import 'package:frontend/src/features/dashboard/dashboard.dart';
+import 'package:get/get.dart';
 
 /*
   Home screen that houses the following:
@@ -14,6 +17,13 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeScreenController homeScreenController = Get.put(HomeScreenController());
+
+    final pages = [
+      Dashboard(),
+      const MyHomePage(title: 'temporary'),
+    ];
+
     return SafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -32,11 +42,15 @@ class HomeScreen extends StatelessWidget {
           ],
           onTap: (index) {
             /* We can change the displayed screen here*/
+            // TODO (stephen): temporary navigation to previous homescreen
+            homeScreenController.setCurrentPage = index;
           },
         ),
         /* TODO: All screens now inherit the HeaderImage template */
-        body: HeaderImage(
-          child: Dashboard(),
+        body: Obx(
+          () => HeaderImage(
+            child: pages[homeScreenController.currentPage],
+          ),
         ),
       ),
     );
