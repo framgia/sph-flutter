@@ -64,8 +64,18 @@ class AdminUserListPage extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 20),
             height: 47,
             width: double.infinity,
-            color: Colors.red,
-            child: Container(),
+            child: const TextField(
+              decoration: InputDecoration(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(3),
+                  ),
+                ),
+                hintText: "Search...",
+              ),
+            ),
           ),
           Container(
             height: 10,
@@ -73,6 +83,7 @@ class AdminUserListPage extends StatelessWidget {
           Expanded(
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
+              color: Colors.white,
               child: MediaQuery.removePadding(
                 removeTop: true,
                 context: context,
