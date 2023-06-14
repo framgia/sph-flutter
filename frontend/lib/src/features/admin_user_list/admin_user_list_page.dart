@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/components/input/input_field.dart';
+import 'package:frontend/src/components/auth/auth_header.dart';
 import 'package:frontend/src/features/admin_user_list/components/user_list_card.dart';
 import 'package:get/get.dart';
 
@@ -13,48 +13,10 @@ class AdminUserListPage extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            color: const Color.fromRGBO(218, 234, 238, 1),
-            child: Stack(
-              children: [
-                Container(
-                  margin: const EdgeInsets.fromLTRB(0, 0, 180, 0),
-                  child: Image.asset(
-                    'assets/images/corner.png',
-                    fit: BoxFit.scaleDown,
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 70),
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      SizedBox(
-                        width: 103,
-                        height: 62,
-                        child: Image.asset(
-                          'assets/images/logo.png',
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'JOASH C. CANETE',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.blueGrey[400],
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Nunito',
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+              color: const Color.fromRGBO(218, 234, 238, 1),
+              child: new AuthHeader(
+                hasAuthToken: true,
+              )),
           Container(
             color: const Color.fromRGBO(218, 234, 238, 1),
             width: double.infinity,
@@ -94,10 +56,11 @@ class AdminUserListPage extends StatelessWidget {
             height: 20,
           ),
           Container(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            color: const Color.fromRGBO(218, 234, 238, 1),
-            child: const InputField(name: 'Search...'),
-          ),
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              color: const Color.fromRGBO(218, 234, 238, 1),
+              child: Text('')
+              // const InputField(name: 'Search...'),
+              ),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(8),
