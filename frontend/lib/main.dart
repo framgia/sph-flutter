@@ -143,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           ElevatedButton(
             onPressed: () {
-              Get.to(() => const AdminUserListPage());
+              Get.to(() => AdminUserListPage());
             },
             child: const Text('Go to Admin User List Page'),
           )

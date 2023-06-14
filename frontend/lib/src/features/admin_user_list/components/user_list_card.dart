@@ -9,7 +9,6 @@ class UserListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      tileColor: Colors.white,
       title: Container(
         height: 50,
         alignment: Alignment.centerLeft,
