@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/features/dashboard/components/account_card.dart';
 import 'package:frontend/src/models/account.dart';
 
-// This widget displays the dashboard of the application (mainly the account list)
+/*
+  This widget displays the dashboard of the application 
+  User should see:
+   - App logo (top-left)
+   - User name (top-right)
+   - Account list
+*/
 class Dashboard extends StatelessWidget {
   Dashboard({
     super.key,
   });
 
   /* This is the list of accounts pulled from BE */
-  /* NOTE: This is currently using mock data */
+  /* TODO: This is mock data. Change to actual data in the backend soon */
   final List<Account> accountData = [
     Account(
       userId: 0,

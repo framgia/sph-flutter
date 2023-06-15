@@ -5,7 +5,9 @@ import 'package:frontend/src/components/templates/header_image.dart';
 import 'package:frontend/src/features/dashboard/dashboard.dart';
 
 /*
-  Main screen containing the NavBar
+  Home screen that houses the following:
+  - Navigation Bar
+  - Floating Action Button
 */
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -32,7 +34,7 @@ class HomeScreen extends StatelessWidget {
             /* We can change the displayed screen here*/
           },
         ),
-        /* NOTE: All screens will now inherit the header image since it is used in all of them */
+        /* TODO: All screens now inherit the HeaderImage template */
         body: HeaderImage(
           child: Dashboard(),
         ),
