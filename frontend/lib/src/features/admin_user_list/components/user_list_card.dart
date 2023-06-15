@@ -27,7 +27,7 @@ class UserListCard extends StatelessWidget {
             builder: (BuildContext context) => const UserDeleteDialog(),
           );
         },
-        icon: const Icon(Icons.delete),
+        icon: Image.asset('assets/images/trash-icon.png'),
         style: ButtonStyle(
           iconColor: MaterialStateProperty.resolveWith(
             (states) {
