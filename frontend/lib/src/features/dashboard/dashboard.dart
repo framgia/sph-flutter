@@ -49,7 +49,10 @@ class Dashboard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset('assets/images/sph-flutter-logo.png'),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.35,
+                  child: Image.asset('assets/images/sph-flutter-logo.png'),
+                ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.4,
                   child: FittedBox(
