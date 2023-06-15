@@ -65,6 +65,7 @@ class AdminUserListPage extends StatelessWidget {
             height: 47,
             width: double.infinity,
             child: const TextField(
+              // TODO (ian): replace temporary widget with search widget
               decoration: InputDecoration(
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -106,6 +107,8 @@ class AdminUserListPage extends StatelessWidget {
           )
         ],
       ),
+
+      // TODO (ian): replace temporary widget with Navbar Widget
       bottomNavigationBar: Container(
         color: const Color.fromRGBO(93, 138, 153, 1),
         height: 45,
