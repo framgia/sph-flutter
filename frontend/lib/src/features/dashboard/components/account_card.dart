@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/features/dashboard/components/account_card_button.dart';
 import 'package:frontend/src/models/account.dart';
 
+/*
+  Card widget for the account in the account list found in the Dashboard
+*/
 class AccountCard extends StatelessWidget {
   const AccountCard({Key? key, required this.account}) : super(key: key);
 

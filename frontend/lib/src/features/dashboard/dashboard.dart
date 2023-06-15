@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/features/dashboard/components/account_card.dart';
 import 'package:frontend/src/models/account.dart';
 
+// This widget displays the dashboard of the application (mainly the account list)
 class Dashboard extends StatelessWidget {
   Dashboard({
     super.key,
@@ -78,12 +79,17 @@ class Dashboard extends StatelessWidget {
             style: Theme.of(context).textTheme.labelMedium,
           ),
           /* ListView that handles the displaying of all accounts */
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.45,
+          Expanded(
             child: ListView.builder(
-              itemCount: accountData.length,
-              itemBuilder: (context, index) =>
-                  AccountCard(account: accountData[index]),
+              itemCount: accountData.length + 1,
+              itemBuilder: (context, index) {
+                if (index == accountData.length) {
+                  return const SizedBox(
+                    height: 70.0,
+                  );
+                }
+                return AccountCard(account: accountData[index]);
+              },
             ),
           ),
         ],

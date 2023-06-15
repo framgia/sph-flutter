@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-/* HeaderImage is used as a design template for the image at the top left of all screens*/
+/*
+  HeaderImage is used as a design template for the image at the top left of all screens
+*/
 class HeaderImage extends StatelessWidget {
   const HeaderImage({
     Key? key,

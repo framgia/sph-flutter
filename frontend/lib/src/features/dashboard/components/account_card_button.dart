@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/*
+  Button widget used in the AccountCard widget 
+*/
 class AccountCardButton extends StatelessWidget {
   const AccountCardButton({
     Key? key,

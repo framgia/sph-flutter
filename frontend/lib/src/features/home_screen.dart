@@ -4,6 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/src/components/templates/header_image.dart';
 import 'package:frontend/src/features/dashboard/dashboard.dart';
 
+/*
+  Main screen containing the NavBar
+*/
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 

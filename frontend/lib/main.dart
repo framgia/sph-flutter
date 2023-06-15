@@ -54,30 +54,27 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFDAEAEE),
         textTheme: const TextTheme(
           titleLarge: TextStyle(
-            color: Color(0xFF6D7881),
             fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
           titleMedium: TextStyle(
-            color: Color(0xFF6D7881),
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
           labelLarge: TextStyle(
-            color: Color(0xFF6D7881),
             fontSize: 16,
             fontWeight: FontWeight.normal,
           ),
           labelMedium: TextStyle(
-            color: Color(0xFF6D7881),
             fontSize: 14,
             fontWeight: FontWeight.normal,
           ),
           labelSmall: TextStyle(
-            color: Color(0xFF6D7881),
             fontSize: 12,
             fontWeight: FontWeight.bold,
           ),
+        ).apply(
+          bodyColor: Color(0xFF6D7881),
         ),
       ),
       home: const HomeScreen(),
