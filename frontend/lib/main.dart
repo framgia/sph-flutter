@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/password_reset/password_reset_page.dart';
 import 'package:get/get.dart';
+import 'package:frontend/src/features/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,33 +31,56 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
+        primaryColor: Colors.blue,
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Color(0xFF00CCFF),
+          shape: CircleBorder(),
+          iconSize: 40.0,
+        ),
+        buttonTheme: const ButtonThemeData(
+          buttonColor: Color(0xFF00CCFF),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(15.0),
+            ),
+          ),
+        ),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
         useMaterial3: true,
         fontFamily: 'Nunito',
+        scaffoldBackgroundColor: const Color(0xFFDAEAEE),
         textTheme: const TextTheme(
           titleLarge: TextStyle(
+            color: Color(0xFF6D7881),
             fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
           titleMedium: TextStyle(
+            color: Color(0xFF6D7881),
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
           labelLarge: TextStyle(
+            color: Color(0xFF6D7881),
             fontSize: 16,
             fontWeight: FontWeight.normal,
           ),
           labelMedium: TextStyle(
+            color: Color(0xFF6D7881),
             fontSize: 14,
             fontWeight: FontWeight.normal,
           ),
           labelSmall: TextStyle(
+            color: Color(0xFF6D7881),
             fontSize: 12,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const HomeScreen(),
     );
   }
 }
