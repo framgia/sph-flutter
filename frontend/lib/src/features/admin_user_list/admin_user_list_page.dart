@@ -91,7 +91,7 @@ class AdminUserListPage extends StatelessWidget {
                 ),
               ),
               Container(
-                height: 10,
+                height: 25,
               ),
               Expanded(
                 child: Container(
