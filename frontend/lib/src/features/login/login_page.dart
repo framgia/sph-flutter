@@ -5,7 +5,6 @@ import 'package:frontend/src/features/home_screen.dart';
 import 'package:frontend/src/features/password_reset/password_reset_page.dart';
 import 'package:get/get.dart';
 
-import 'package:frontend/src/components/auth/auth_header.dart';
 import 'package:frontend/src/components/button/button.dart';
 import 'package:frontend/src/components/input/input_field.dart';
 
@@ -33,8 +32,7 @@ class _LoginPage extends State<LoginPage> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Invalid Input'),
-          content:
-              const Text('Please make sure to enter valid Email and Password.'),
+          content: const Text('Please make sure to enter valid Email and Password.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -63,14 +61,14 @@ class _LoginPage extends State<LoginPage> {
 
     return Scaffold(
       body: SingleChildScrollView(
-        child: FormBuilder(
-          key: formKey,
-          autovalidateMode: AutovalidateMode.always,
-          onChanged: () {
-            formKey.currentState!.save();
-          },
-          child: AuthHeader(
-            title: 'Log In',
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(25, 21, 25, 150),
+          child: FormBuilder(
+            key: formKey,
+            autovalidateMode: AutovalidateMode.always,
+            onChanged: () {
+              formKey.currentState!.save();
+            },
             child: Column(
               children: [
                 InputField(
@@ -131,9 +129,6 @@ class _LoginPage extends State<LoginPage> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 50,
-                )
               ],
             ),
           ),

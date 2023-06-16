@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/features/indiviual_components/search_field_page.dart';
-import 'package:frontend/src/features/login/login_page.dart';
 import 'package:get/get.dart';
+
+import 'package:frontend/src/features/home_screen.dart';
+import 'package:frontend/src/navigators/settings_screen_navigator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -53,6 +54,10 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Nunito',
         scaffoldBackgroundColor: const Color(0xFFDAEAEE),
         textTheme: const TextTheme(
+          titleSmall: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
           titleLarge: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
@@ -77,7 +82,7 @@ class MyApp extends StatelessWidget {
           bodyColor: const Color(0xFF6D7881),
         ),
       ),
-      home: const LoginPage(),
+      home: const HomeScreen(),
     );
   }
 }
@@ -130,7 +135,22 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           ElevatedButton(
             onPressed: () {
-              Get.to(() => const SearchFieldPage());
+              // TODO: implement using Getx
+              settingsAppNav.currentState?.pushNamed('/login');
+            },
+            child: const Text('Go to Login Page'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // TODO: implement using Getx
+              settingsAppNav.currentState?.pushNamed('/passwordresetpage');
+            },
+            child: const Text('Go to Password Reset Page'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // TODO: implement using Getx
+              settingsAppNav.currentState?.pushNamed('/searchfieldpage');
             },
             child: const Text('Go to Password SearchField Page'),
           ),
