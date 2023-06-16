@@ -6,9 +6,14 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
   Similar to InputField, but this component adds the icon and the hint text.
 */
 class SearchField extends StatelessWidget {
-  const SearchField({super.key, required this.name, this.validator});
-
+  const SearchField({
+    super.key,
+    required this.name,
+    this.validator,
+    this.yPadding = 0,
+  });
   final String name;
+  final double yPadding;
   final String? Function(String?)? validator;
 
   @override
@@ -29,11 +34,12 @@ class SearchField extends StatelessWidget {
       child: FormBuilderTextField(
         name: name,
         validator: validator,
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: yPadding),
+          border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
-          prefixIcon: Icon(Icons.search),
+          prefixIcon: const Icon(Icons.search),
           prefixIconColor: Colors.black,
           hintText: "Search ...",
         ),

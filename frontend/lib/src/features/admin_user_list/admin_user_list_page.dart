@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/components/auth/auth_header.dart';
+import 'package:frontend/src/components/input/search_field.dart';
+import 'package:frontend/src/components/templates/header_image.dart';
 import 'package:frontend/src/features/admin_user_list/components/user_list_card.dart';
 import 'package:get/get.dart';
 
@@ -26,7 +27,35 @@ class AdminUserListPage extends StatelessWidget {
       backgroundColor: const Color.fromRGBO(218, 234, 238, 1),
       body: Column(
         children: [
-          const AuthHeader(hasAuthToken: true),
+          //TODO: Replace with selected Header Component
+          HeaderImage(
+            child: Container(
+              margin: const EdgeInsets.only(top: 70),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              height: MediaQuery.of(context).size.height * 0.2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.35,
+                    child: Image.asset('assets/images/sph-flutter-logo.png'),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    child: FittedBox(
+                      child: Text(
+                        'REDEMPTO D. LEGASPI III',
+                        style:
+                            Theme.of(context).textTheme.labelMedium!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           Container(
             color: const Color.fromRGBO(218, 234, 238, 1),
             width: double.infinity,
@@ -62,20 +91,10 @@ class AdminUserListPage extends StatelessWidget {
           ),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 20),
-            height: 47,
             width: double.infinity,
-            child: const TextField(
-              // TODO (ian): replace temporary widget with search widget
-              decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(3),
-                  ),
-                ),
-                hintText: "Search...",
-              ),
+            alignment: Alignment.center,
+            child: const SearchField(
+              name: "name",
             ),
           ),
           Container(
