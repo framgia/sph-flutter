@@ -9,6 +9,10 @@ class Account extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'id' => 'string',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
