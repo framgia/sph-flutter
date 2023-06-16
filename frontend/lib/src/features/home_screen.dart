@@ -24,33 +24,31 @@ class HomeScreen extends StatelessWidget {
       const MyHomePage(title: 'temporary'),
     ];
 
-    return SafeArea(
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          onPressed: () {},
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
         ),
-        bottomNavigationBar: CurvedNavigationBar(
-          backgroundColor: const Color(0xFFDAEAEE),
-          color: const Color(0xFF5D8A99),
-          items: <Widget>[
-            SvgPicture.asset('assets/svg/home.svg'),
-            SvgPicture.asset('assets/svg/profile_settings.svg'),
-          ],
-          onTap: (index) {
-            /* We can change the displayed screen here*/
-            // TODO (stephen): temporary navigation to previous homescreen
-            homeScreenController.setCurrentPage = index;
-          },
-        ),
-        /* TODO: All screens now inherit the HeaderImage template */
-        body: Obx(
-          () => HeaderImage(
-            child: pages[homeScreenController.currentPage],
-          ),
+        onPressed: () {},
+      ),
+      bottomNavigationBar: CurvedNavigationBar(
+        backgroundColor: const Color(0xFFDAEAEE),
+        color: const Color(0xFF5D8A99),
+        items: <Widget>[
+          SvgPicture.asset('assets/svg/home.svg'),
+          SvgPicture.asset('assets/svg/profile_settings.svg'),
+        ],
+        onTap: (index) {
+          /* We can change the displayed screen here*/
+          // TODO (stephen): temporary navigation to previous homescreen
+          homeScreenController.setCurrentPage = index;
+        },
+      ),
+      /* TODO: All screens now inherit the HeaderImage template */
+      body: Obx(
+        () => HeaderImage(
+          child: pages[homeScreenController.currentPage],
         ),
       ),
     );

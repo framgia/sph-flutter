@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/dashboard/components/account_card.dart';
+import 'package:frontend/src/features/login/login_page.dart';
 import 'package:frontend/src/models/account.dart';
+import 'package:get/get.dart';
 
 /*
   This widget displays the dashboard of the application 
@@ -51,27 +53,24 @@ class Dashboard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.2,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.35,
-                  child: Image.asset('assets/images/sph-flutter-logo.png'),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  child: FittedBox(
-                    child: Text(
-                      'REDEMPTO D. LEGASPI III',
-                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
+          Container(
+            alignment: Alignment.centerRight,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.45,
+              height: MediaQuery.of(context).size.height * 0.2,
+              child: FittedBox(
+                child: TextButton(
+                  onPressed: () {
+                    Get.to(() => const LoginPage());
+                  },
+                  child: Text(
+                    'REDEMPTO D. LEGASPI III',
+                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                 ),
-              ],
+              ),
             ),
           ),
           Center(

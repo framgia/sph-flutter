@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/indiviual_components/search_field_page.dart';
-import 'package:frontend/src/features/password_reset/password_reset_page.dart';
+import 'package:frontend/src/features/login/login_page.dart';
 import 'package:get/get.dart';
-import 'package:frontend/src/features/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -75,10 +74,10 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ).apply(
-          bodyColor: Color(0xFF6D7881),
+          bodyColor: const Color(0xFF6D7881),
         ),
       ),
-      home: const HomeScreen(),
+      home: const LoginPage(),
     );
   }
 }
@@ -129,12 +128,6 @@ class _MyHomePageState extends State<MyHomePage> {
         // wireframe for each widget.
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          ElevatedButton(
-            onPressed: () {
-              Get.to(() => const PasswordResetPage());
-            },
-            child: const Text('Go to Password Reset Page'),
-          ),
           ElevatedButton(
             onPressed: () {
               Get.to(() => const SearchFieldPage());

@@ -20,6 +20,13 @@ class HeaderImage extends StatelessWidget {
             'assets/images/corner.png',
           ),
         ),
+        Container(
+          margin: const EdgeInsets.only(top: 66, left: 20),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.35,
+            child: Image.asset('assets/images/sph-flutter-logo.png'),
+          ),
+        ),
         child,
       ],
     );
