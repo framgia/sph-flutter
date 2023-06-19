@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class UserDeleteDialog extends StatelessWidget {
   const UserDeleteDialog({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -23,8 +25,9 @@ class UserDeleteDialog extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.close),
+                  color: const Color.fromRGBO(109, 120, 129, 1),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Get.back();
                   },
                 ),
               ],
@@ -36,7 +39,6 @@ class UserDeleteDialog extends StatelessWidget {
                 'ARE YOU SURE YOU WANT TO DELETE THE USER?',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                      fontFamily: 'Nunito',
                       fontWeight: FontWeight.w600,
                       color: Colors.red,
                     ),
@@ -54,7 +56,7 @@ class UserDeleteDialog extends StatelessWidget {
                     backgroundColor: const Color.fromRGBO(0, 204, 255, 1),
                   ),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Get.back();
                   },
                   child: Text(
                     'No',
@@ -71,7 +73,7 @@ class UserDeleteDialog extends StatelessWidget {
                     shadowColor: Colors.black,
                   ),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Get.back();
                   },
                   child: Text(
                     'Yes',

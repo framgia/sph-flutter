@@ -1,12 +1,13 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:frontend/src/components/input/search_field.dart';
 import 'package:frontend/src/components/templates/header_image.dart';
 import 'package:frontend/src/features/admin_user_list/components/user_list_card.dart';
 import 'package:get/get.dart';
 
 class AdminUserListPage extends StatelessWidget {
+  AdminUserListPage({super.key});
+
+  //TODO:Replace Temporary UserList variable with state
   final List<String> userList = [
     'User 1',
     'User 2',
@@ -20,8 +21,6 @@ class AdminUserListPage extends StatelessWidget {
     'User 10',
     'User 11'
   ];
-
-  AdminUserListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +75,6 @@ class AdminUserListPage extends StatelessWidget {
                           fontSize: 20,
                           color: Color.fromRGBO(120, 144, 156, 1),
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Nunito',
                         ),
                       ),
                     ),
@@ -119,16 +117,6 @@ class AdminUserListPage extends StatelessWidget {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: const Color(0xFFDAEAEE),
-        color: const Color(0xFF5D8A99),
-        items: <Widget>[
-          SvgPicture.asset('assets/svg/list.svg'),
-          SvgPicture.asset('assets/svg/home.svg'),
-          SvgPicture.asset('assets/svg/profile_settings.svg'),
-        ],
-        onTap: (index) {},
       ),
     );
   }

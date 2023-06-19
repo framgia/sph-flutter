@@ -142,12 +142,6 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             child: const Text('Go to Password SearchField Page'),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Get.to(() => AdminUserListPage());
-            },
-            child: const Text('Go to Admin User List Page'),
-          )
         ],
       ),
     );
