@@ -38,11 +38,27 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $casts = [
-        'id' => 'string',
-    ];
+    /**
+     * The data type of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
 
-    // mutates the `password` attribute when a user object is being created
+    /**
+     * Indicates if the model's ID is auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * Set the user's password to its encrypted version.
+     * see https://laravel.com/docs/8.x/eloquent-mutators#defining-a-mutator
+     *
+     * @param  string  $value
+     * @return void
+     */
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
