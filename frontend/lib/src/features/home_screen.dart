@@ -49,36 +49,39 @@ class HomeScreen extends StatelessWidget {
     return WillPopScope(
       onWillPop: onWillPop,
       child: SafeArea(
-        child: Scaffold(
-          floatingActionButton: FloatingActionButton(
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
+        child: Obx(
+          () => Scaffold(
+            floatingActionButton: Visibility(
+              visible: homeScreenController.currentPage == 1,
+              child: FloatingActionButton(
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+                onPressed: () {},
+              ),
             ),
-            onPressed: () {},
-          ),
-          bottomNavigationBar: CurvedNavigationBar(
-            backgroundColor: const Color(0xFFDAEAEE),
-            color: const Color(0xFF5D8A99),
-            items: <Widget>[
-              SvgPicture.asset('assets/svg/list.svg'),
-              SvgPicture.asset('assets/svg/home.svg'),
-              SvgPicture.asset('assets/svg/profile_settings.svg'),
-            ],
-            onTap: (index) {
-              homeScreenController.setCurrentPage = index;
+            bottomNavigationBar: CurvedNavigationBar(
+              backgroundColor: const Color(0xFFDAEAEE),
+              color: const Color(0xFF5D8A99),
+              items: <Widget>[
+                SvgPicture.asset('assets/svg/list.svg'),
+                SvgPicture.asset('assets/svg/home.svg'),
+                SvgPicture.asset('assets/svg/profile_settings.svg'),
+              ],
+              onTap: (index) {
+                homeScreenController.setCurrentPage = index;
 
-              if (index == homeScreenController.currentPage) {
-                navigatorKeys[homeScreenController.currentPage]
-                    .currentState
-                    ?.popUntil((route) {
-                  return route.isFirst;
-                });
-              }
-            },
-          ),
-          body: Obx(
-            () => IndexedStack(
+                if (index == homeScreenController.currentPage) {
+                  navigatorKeys[homeScreenController.currentPage]
+                      .currentState
+                      ?.popUntil((route) {
+                    return route.isFirst;
+                  });
+                }
+              },
+            ),
+            body: IndexedStack(
               index: homeScreenController.currentPage,
               children: pages,
             ),
