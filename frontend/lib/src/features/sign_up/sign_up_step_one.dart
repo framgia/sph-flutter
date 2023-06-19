@@ -24,102 +24,101 @@ class SignUpStepOne extends StatelessWidget {
         child: Column(
           children: [
             AuthHeader(
-              title: 'Sing Up',
-              showTitle: false,
               child: Column(
                 children: [
                   const Breadcrumb(
                     text: 'Sign Up',
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  FormBuilder(
-                    key: formKey,
-                    autovalidateMode: AutovalidateMode.always,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const InputField(
-                          label: 'First Name',
-                          name: 'first_name',
-                          inputType: TextInputType.text,
-                        ),
-                        const SizedBox(height: 26),
-                        const InputField(
-                          label: 'Middle Name',
-                          name: 'middle_name',
-                          inputType: TextInputType.text,
-                        ),
-                        const SizedBox(height: 26),
-                        const InputField(
-                          label: 'Last Name',
-                          name: 'last_name',
-                          inputType: TextInputType.text,
-                        ),
-                        const SizedBox(height: 26),
-                        const InputField(
-                          label: 'Address',
-                          name: 'address',
-                          inputType: TextInputType.text,
-                        ),
-                        const SizedBox(height: 26),
-                        const DatePickerField(
-                          name: 'birthday',
-                          labelText: 'Birthday',
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 50, bottom: 25),
-                          child: Row(
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(25, 30, 25, 150),
+                    child: FormBuilder(
+                      key: formKey,
+                      autovalidateMode: AutovalidateMode.always,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const InputField(
+                            label: 'First Name',
+                            name: 'first_name',
+                            inputType: TextInputType.text,
+                          ),
+                          const SizedBox(height: 26),
+                          const InputField(
+                            label: 'Middle Name',
+                            name: 'middle_name',
+                            inputType: TextInputType.text,
+                          ),
+                          const SizedBox(height: 26),
+                          const InputField(
+                            label: 'Last Name',
+                            name: 'last_name',
+                            inputType: TextInputType.text,
+                          ),
+                          const SizedBox(height: 26),
+                          const InputField(
+                            label: 'Address',
+                            name: 'address',
+                            inputType: TextInputType.text,
+                          ),
+                          const SizedBox(height: 26),
+                          const DatePickerField(
+                            name: 'birthday',
+                            labelText: 'Birthday',
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 50, bottom: 25),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Button(
+                                  text: 'Next',
+                                  onPressed: () {
+                                    context.flow<User>().update(
+                                          (info) => info.copyWith(page: 2),
+                                        );
+                                  },
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 99,
+                                    vertical: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Button(
-                                text: 'Next',
-                                onClick: () {
-                                  context.flow<User>().update(
-                                        (info) => info.copyWith(page: 2),
-                                      );
+                              Text(
+                                'Already have an account? ',
+                                style: Theme.of(context).textTheme.labelSmall,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.to(() => const LoginPage());
                                 },
+                                child: Text(
+                                  'Log in',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall!
+                                      .copyWith(
+                                        color: const Color.fromARGB(
+                                          255,
+                                          0,
+                                          163,
+                                          255,
+                                        ),
+                                      ),
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Already have an account? ',
-                              style: Theme.of(context).textTheme.labelSmall,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Get.to(() => const LoginPage());
-                              },
-                              child: Text(
-                                'Log in',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelSmall!
-                                    .copyWith(
-                                      color: const Color.fromARGB(
-                                        255,
-                                        0,
-                                        163,
-                                        255,
-                                      ),
-                                    ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(
-              height: 95,
             ),
           ],
         ),

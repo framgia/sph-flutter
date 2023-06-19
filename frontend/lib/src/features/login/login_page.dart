@@ -8,6 +8,7 @@ import 'package:frontend/src/features/home_screen.dart';
 import 'package:frontend/src/components/auth/auth_header.dart';
 import 'package:frontend/src/components/button.dart';
 import 'package:frontend/src/components/input/input_field.dart';
+import 'package:frontend/src/features/sign_up/sign_up_flow.dart';
 
 /*
   Page for the Log in
@@ -135,11 +136,22 @@ class _LoginPage extends State<LoginPage> {
                         'Don’t have an account? ',
                         style: Theme.of(context).textTheme.labelSmall,
                       ),
-                      Text(
-                        'Sign Up',
-                        style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                              color: const Color.fromARGB(255, 0, 163, 255),
-                            ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(() => const SignUpFlow());
+                        },
+                        child: Text(
+                          'Sign Up',
+                          style:
+                              Theme.of(context).textTheme.labelSmall!.copyWith(
+                                    color: const Color.fromARGB(
+                                      255,
+                                      0,
+                                      163,
+                                      255,
+                                    ),
+                                  ),
+                        ),
                       ),
                     ],
                   ),
