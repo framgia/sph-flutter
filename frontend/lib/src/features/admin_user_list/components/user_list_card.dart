@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/src/features/admin_user_list/components/user_delete_dialog.dart';
 
 class UserListCard extends StatelessWidget {
@@ -27,7 +28,7 @@ class UserListCard extends StatelessWidget {
             builder: (BuildContext context) => const UserDeleteDialog(),
           );
         },
-        icon: Image.asset('assets/images/trash-icon.png'),
+        icon: SvgPicture.asset('assets/svg/trash.svg'),
         style: ButtonStyle(
           iconColor: MaterialStateProperty.resolveWith(
             (states) {
