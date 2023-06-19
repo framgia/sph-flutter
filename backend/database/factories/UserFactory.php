@@ -18,7 +18,6 @@ class UserFactory extends Factory
             'id' => $this->faker->unique()->uuid(),
             'user_name' => $this->faker->userName(),
             // password attribute is mutated when being created, see backend\app\Models\User.php
-            // 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password <-- this is default from app creation
             'password' => 'password',
             'is_admin' => $this->faker->boolean(),
             'first_name' => $this->faker->firstName(),
@@ -27,7 +26,6 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'address' => $this->faker->unique()->address(),
             'birthday' => $this->faker->dateTime(),
-            // 'remember_token' => Str::random(10),
         ];
     }
 
