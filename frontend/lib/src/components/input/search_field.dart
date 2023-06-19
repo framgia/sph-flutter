@@ -4,12 +4,29 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 /*
   Input Component for a search field.
   Similar to InputField, but this component adds the icon and the hint text.
+
+
+  @param name: similar to html name attribute, provides the form widget the key to assign its value
+  ex InputField(name: "last_name") , then printing the formKey values provides { last_name: "abc" }
+
+  @param validator: adds validation to the Text Field, it also provides the widget an error message
+  as we are using another package for validators, please read https://pub.dev/packages/form_builder_validators
+  ex FormBuilderValidators.email()
+
+  @param yPadding: adds padding to the TextField using EdgeInsets.symmetric(vertical: yPadding)
 */
+
 class SearchField extends StatelessWidget {
-  const SearchField({super.key, required this.name, this.validator});
+  const SearchField({
+    super.key,
+    required this.name,
+    this.validator,
+    this.yPadding = 0,
+  });
 
   final String name;
   final String? Function(String?)? validator;
+  final double yPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +46,12 @@ class SearchField extends StatelessWidget {
       child: FormBuilderTextField(
         name: name,
         validator: validator,
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: yPadding),
+          border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
-          prefixIcon: Icon(Icons.search),
+          prefixIcon: const Icon(Icons.search),
           prefixIconColor: Colors.black,
           hintText: "Search ...",
         ),

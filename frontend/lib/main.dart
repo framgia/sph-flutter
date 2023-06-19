@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 import 'package:frontend/src/features/login/login_page.dart';
 import 'package:frontend/src/navigators/settings_screen_navigator.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const MyApp());
