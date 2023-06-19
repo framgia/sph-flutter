@@ -124,6 +124,7 @@ class AdminUserListPage extends StatelessWidget {
         backgroundColor: const Color(0xFFDAEAEE),
         color: const Color(0xFF5D8A99),
         items: <Widget>[
+          SvgPicture.asset('assets/svg/list.svg'),
           SvgPicture.asset('assets/svg/home.svg'),
           SvgPicture.asset('assets/svg/profile_settings.svg'),
         ],
