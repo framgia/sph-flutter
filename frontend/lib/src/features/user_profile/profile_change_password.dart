@@ -18,68 +18,68 @@ class ProfileChangePassword extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Breadcrumb(
-              text: 'Change Password',
-              onTap: () {
-                return profileAppNav.currentState?.popUntil((route) {
-                  return route.isFirst;
-                });
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(25, 21, 25, 150),
-              child: FormBuilder(
-                key: formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const InputField(
-                      name: 'old_password',
-                      label: 'Old Password',
-                      obscureText: true,
+      child: Column(
+        children: [
+          Breadcrumb(
+            text: 'Change Password',
+            onTap: () {
+              return profileAppNav.currentState?.popUntil((route) {
+                return route.isFirst;
+              });
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(25, 21, 25, 150),
+            child: FormBuilder(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const InputField(
+                    name: 'old_password',
+                    label: 'Old Password',
+                    obscureText: true,
+                  ),
+                  const SizedBox(
+                    height: 26,
+                  ),
+                  const InputField(
+                    name: 'new_password',
+                    label: 'New Password',
+                    obscureText: true,
+                  ),
+                  const SizedBox(
+                    height: 26,
+                  ),
+                  // TODO: checkout password confirmation mechanics of laravel, they are using some naming conventions
+                  const InputField(
+                    name: 'confirm_new_password',
+                    label: 'Confrim New Password',
+                    obscureText: true,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 33),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Button(
+                          text: 'Save',
+                          padding:
+                              const EdgeInsets.symmetric(vertical: 16, horizontal: 50),
+                          onPressed: () {
+                            if (formKey.currentState?.saveAndValidate() ?? false) {
+                              debugPrint(formKey.currentState?.value.toString());
+                            }
+                          },
+                        )
+                      ],
                     ),
-                    const SizedBox(
-                      height: 26,
-                    ),
-                    const InputField(
-                      name: 'new_password',
-                      label: 'New Password',
-                      obscureText: true,
-                    ),
-                    const SizedBox(
-                      height: 26,
-                    ),
-                    // TODO: checkout password confirmation mechanics of laravel, they are using some naming conventions
-                    const InputField(
-                      name: 'confirm_new_password',
-                      label: 'Confrim New Password',
-                      obscureText: true,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 33),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Button(
-                            text: 'Save',
-                            onPressed: () {
-                              if (formKey.currentState?.saveAndValidate() ?? false) {
-                                debugPrint(formKey.currentState?.value.toString());
-                              }
-                            },
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

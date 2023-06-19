@@ -55,32 +55,20 @@ class Dashboard extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Accounts",
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                const SizedBox(height: 12),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: accountData.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index == accountData.length) {
-                        return const SizedBox(
-                          height: 70.0,
-                        );
-                      }
-                      return AccountCard(account: accountData[index]);
-                    },
-                  ),
-                ),
-              ],
-            ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 150),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Accounts",
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              const SizedBox(height: 12),
+              ...accountData.map((data) {
+                return AccountCard(account: data);
+              })
+            ],
           ),
         ),
       ],

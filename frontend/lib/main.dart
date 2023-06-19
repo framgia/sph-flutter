@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:frontend/src/features/home_screen.dart';
+import 'package:frontend/src/features/login/login_page.dart';
 import 'package:frontend/src/navigators/settings_screen_navigator.dart';
 
 void main() {
@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
           bodyColor: const Color(0xFF6D7881),
         ),
       ),
-      home: const HomeScreen(),
+      home: const LoginPage(),
     );
   }
 }
@@ -135,21 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           ElevatedButton(
             onPressed: () {
-              // TODO: implement using Getx
-              settingsAppNav.currentState?.pushNamed('/login');
-            },
-            child: const Text('Go to Login Page'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // TODO: implement using Getx
-              settingsAppNav.currentState?.pushNamed('/passwordresetpage');
-            },
-            child: const Text('Go to Password Reset Page'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // TODO: implement using Getx
+              // TODO: Implement using Getx
               settingsAppNav.currentState?.pushNamed('/searchfieldpage');
             },
             child: const Text('Go to Password SearchField Page'),

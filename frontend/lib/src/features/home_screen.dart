@@ -8,7 +8,6 @@ import 'package:frontend/src/controllers/home_screen_controller.dart';
 import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
 import 'package:frontend/src/navigators/settings_screen_navigator.dart';
 import 'package:frontend/src/navigators/profile_screen_navigator.dart';
-import 'package:frontend/src/components/auth/auth_header.dart';
 
 /*
   Home screen that houses the following:
@@ -28,7 +27,7 @@ class HomeScreen extends StatelessWidget {
       const ProfileScreenNavigator(),
     ];
 
-    // TODO: implement using Getx
+    // TODO: Implement using Getx
     List<GlobalKey<NavigatorState>> navigatorKeys = [
       settingsAppNav,
       dashboardAppNav,
@@ -69,27 +68,19 @@ class HomeScreen extends StatelessWidget {
             onTap: (index) {
               homeScreenController.setCurrentPage = index;
 
-              if (index == 0) {
-                settingsAppNav.currentState?.popUntil((route) {
-                  return route.isFirst;
-                });
-              }
-
-              if (index == 2) {
-                profileAppNav.currentState?.popUntil((route) {
+              if (index == homeScreenController.currentPage) {
+                navigatorKeys[homeScreenController.currentPage]
+                    .currentState
+                    ?.popUntil((route) {
                   return route.isFirst;
                 });
               }
             },
           ),
           body: Obx(
-            () => AuthHeader(
-              // TODO: Get the auth token form BE
-              hasAuthToken: homeScreenController.currentPage != 0,
-              child: IndexedStack(
-                index: homeScreenController.currentPage,
-                children: pages,
-              ),
+            () => IndexedStack(
+              index: homeScreenController.currentPage,
+              children: pages,
             ),
           ),
         ),

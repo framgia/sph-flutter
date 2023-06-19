@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:frontend/src/components/auth/auth_header.dart';
 import 'package:frontend/src/features/user_profile/profile_info.dart';
 import 'package:frontend/src/features/user_profile/profile_change_password.dart';
 import 'package:frontend/src/navigators/custom_page_route.dart';
@@ -30,7 +31,11 @@ class ProfileScreenNavigator extends StatelessWidget {
 
         return CustomPageRoute(
           builder: (context) {
-            return page;
+            // TODO: Get the auth token form BE
+            return AuthHeader(
+              hasAuthToken: true,
+              child: page,
+            );
           },
           settings: settings,
         );

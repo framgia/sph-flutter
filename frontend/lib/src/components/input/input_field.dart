@@ -66,6 +66,7 @@ class InputField extends StatelessWidget {
           child: FormBuilderTextField(
             name: name,
             validator: validator,
+            controller: controller,
             obscureText: obscureText,
             keyboardType: inputType,
             decoration: const InputDecoration(
