@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/features/admin_user_list/admin_user_list_page.dart';
 import 'package:frontend/src/features/indiviual_components/search_field_page.dart';
 import 'package:frontend/src/features/login/login_page.dart';
 import 'package:get/get.dart';
