@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/components/breadcrumb.dart';
 import 'package:frontend/src/components/input/search_field.dart';
-import 'package:frontend/src/features/admin_user_list/components/user_list_card.dart';
+import 'package:frontend/src/features/admin_user_list/components/user_list_tile.dart';
 
 /*
   The page where admins can see all the users.
 */
+
 class AdminUserListPage extends StatelessWidget {
   AdminUserListPage({super.key});
 
@@ -58,7 +59,7 @@ class AdminUserListPage extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         String name = userList[index];
-                        return UserListCard(name: name);
+                        return UserListTile(name: name);
                       },
                       separatorBuilder: (BuildContext context, int index) {
                         return const Divider(

@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/src/features/admin_user_list/components/user_delete_dialog.dart';
 
-class UserListCard extends StatelessWidget {
-  const UserListCard({super.key, required this.name});
+/*
+  ListTile that is used for Admin User List Page
+*/
+
+class UserListTile extends StatelessWidget {
+  const UserListTile({super.key, required this.name});
 
   final String name;
 

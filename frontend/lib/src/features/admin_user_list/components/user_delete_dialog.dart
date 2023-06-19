@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+/*
+  Dialog popup when clicking Trash icon in User List Tile
+  Warning for user deletion
+*/
+
 class UserDeleteDialog extends StatelessWidget {
   const UserDeleteDialog({super.key});
 
