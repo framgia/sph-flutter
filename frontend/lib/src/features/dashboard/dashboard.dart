@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:frontend/src/features/dashboard/components/account_card.dart';
-import 'package:frontend/src/features/login/login_page.dart';
 import 'package:frontend/src/models/account.dart';
-import 'package:get/get.dart';
 
 /*
   This widget displays the dashboard of the application 
@@ -48,57 +47,31 @@ class Dashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            alignment: Alignment.centerRight,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.45,
-              height: MediaQuery.of(context).size.height * 0.2,
-              child: FittedBox(
-                child: TextButton(
-                  onPressed: () {
-                    Get.to(() => const LoginPage());
-                  },
-                  child: Text(
-                    'REDEMPTO D. LEGASPI III',
-                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ),
+    return Column(
+      children: [
+        Center(
+          child: Text(
+            "Dashboard",
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 150),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Accounts",
+                style: Theme.of(context).textTheme.labelMedium,
               ),
-            ),
+              const SizedBox(height: 12),
+              ...accountData.map((data) {
+                return AccountCard(account: data);
+              })
+            ],
           ),
-          Center(
-            child: Text(
-              "Dashboard",
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ),
-          Text(
-            "Accounts",
-            style: Theme.of(context).textTheme.labelMedium,
-          ),
-          /* ListView that handles the displaying of all accounts */
-          Expanded(
-            child: ListView.builder(
-              itemCount: accountData.length + 1,
-              itemBuilder: (context, index) {
-                if (index == accountData.length) {
-                  return const SizedBox(
-                    height: 70.0,
-                  );
-                }
-                return AccountCard(account: accountData[index]);
-              },
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
