@@ -40,10 +40,10 @@ class InputField extends StatelessWidget {
 
   final String name;
   final String label;
-  final String? Function(String?)? validator;
   final TextInputType? inputType;
-  final bool obscureText;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
+  final bool obscureText;
 
   @override
   Widget build(BuildContext context) {
