@@ -79,4 +79,12 @@ DB_PASSWORD=root
 - check if Backend container was successfully created
 - then run the migration command "php artisan migrate"
 
+## Database Seeders
+[Laravel Documentation](https://laravel.com/docs/8.x/seeding#introduction)
+### Running a seeder class
+`php artisan db:seed --class=UserSeeder`
 
+### Running a database wipe and seeding at the same time
+`php artisan migrate:fresh --seed`  
+or  
+`php artisan migrate:fresh --seeder=UserSeeder`

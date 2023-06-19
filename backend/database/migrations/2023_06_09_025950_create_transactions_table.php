@@ -19,7 +19,7 @@ class CreateTransactionsTable extends Migration
             $table->foreignUuid('user_id')->references('id')->on('users')->constrained()->onDelete('cascade');
             $table->dateTime('transaction_date');
             $table->enum('transaction_type', ['CREDIT', 'DEPT', 'TRANSFER']);
-            $table->enum('category',['SAVINGS', 'SALARY', 'BILLS', 'SENDER', 'RECIPIENT']);
+            $table->enum('category', ['SAVINGS', 'SALARY', 'BILLS', 'SENDER', 'RECIPIENT']);
             $table->longText('description');
             $table->uuid('transaction_id')->nullable();
             $table->double('starting_balance');
