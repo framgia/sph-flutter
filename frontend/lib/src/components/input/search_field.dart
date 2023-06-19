@@ -6,14 +6,14 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
   Similar to InputField, but this component adds the icon and the hint text.
 
 
-  PARAMETER name: similar to html name attribute, provides the form widget the key to assign its value
+  @param name: similar to html name attribute, provides the form widget the key to assign its value
   ex InputField(name: "last_name") , then printing the formKey values provides { last_name: "abc" }
 
-  PARAMETER validator: adds validation to the Text Field, it also provides the widget an error message
+  @param validator: adds validation to the Text Field, it also provides the widget an error message
   as we are using another package for validators, please read https://pub.dev/packages/form_builder_validators
   ex FormBuilderValidators.email()
 
-  PARAMETER yPadding: adds padding to the TextField using EdgeInsets.symmetric(vertical: yPadding)
+  @param yPadding: adds padding to the TextField using EdgeInsets.symmetric(vertical: yPadding)
 */
 
 class SearchField extends StatelessWidget {
@@ -25,8 +25,8 @@ class SearchField extends StatelessWidget {
   });
 
   final String name;
-  final double yPadding;
   final String? Function(String?)? validator;
+  final double yPadding;
 
   @override
   Widget build(BuildContext context) {

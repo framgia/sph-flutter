@@ -3,6 +3,9 @@ import 'package:frontend/src/components/breadcrumb.dart';
 import 'package:frontend/src/components/input/search_field.dart';
 import 'package:frontend/src/features/admin_user_list/components/user_list_card.dart';
 
+/*
+  The page where admins can see all the users.
+*/
 class AdminUserListPage extends StatelessWidget {
   AdminUserListPage({super.key});
 
@@ -42,7 +45,7 @@ class AdminUserListPage extends StatelessWidget {
                     name: "name",
                   ),
                 ),
-                Container(
+                const SizedBox(
                   height: 25,
                 ),
                 Container(

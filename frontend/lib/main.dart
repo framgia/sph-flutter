@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/features/login/login_page.dart';
 import 'package:frontend/src/navigators/settings_screen_navigator.dart';
 import 'package:get/get.dart';
-import 'package:frontend/src/navigators/profile_screen_navigator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -135,6 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           ElevatedButton(
             onPressed: () {
+              // TODO: Implement using Getx
               settingsAppNav.currentState?.pushNamed('/searchfieldpage');
             },
             child: const Text('Go to Password SearchField Page'),
