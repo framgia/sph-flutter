@@ -45,23 +45,26 @@ class AdminUserListPage extends StatelessWidget {
                 Container(
                   height: 25,
                 ),
-                MediaQuery.removePadding(
-                  removeTop: true,
-                  context: context,
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
-                      String name = userList[index];
-                      return UserListCard(name: name);
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const Divider(
-                        height: 1,
-                        color: Color.fromRGBO(109, 120, 129, 1),
-                      );
-                    },
-                    itemCount: userList.length,
+                Container(
+                  color: Colors.white,
+                  child: MediaQuery.removePadding(
+                    removeTop: true,
+                    context: context,
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        String name = userList[index];
+                        return UserListCard(name: name);
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const Divider(
+                          height: 1,
+                          color: Color.fromRGBO(109, 120, 129, 1),
+                        );
+                      },
+                      itemCount: userList.length,
+                    ),
                   ),
                 ),
               ],
