@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
   such as login, forgot password, create password
 
   @param hasAuthToken, bool value to tell if user is authenticated or not.
+
+  @child, widgets to be passed on the child.
 */
 class AuthHeader extends StatelessWidget {
   const AuthHeader({
