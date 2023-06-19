@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 /*
   Label text for any form field.
-
   @param text, describes the field.
 */
 class Label extends StatelessWidget {
