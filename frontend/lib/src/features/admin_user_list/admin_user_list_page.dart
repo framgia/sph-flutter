@@ -30,9 +30,9 @@ class AdminUserListPage extends StatelessWidget {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Column(
         children: [
-          Breadcrumb(
+          const Breadcrumb(
             text: "List of Users",
-            onTap: () {},
+            withBackIcon: false,
           ),
           Padding(
             padding: const EdgeInsets.all(20.0),
