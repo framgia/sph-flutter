@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'package:frontend/src/components/transaction_component/transaction_component.dart';
 import 'package:frontend/src/features/dashboard/components/account_card_button.dart';
 import 'package:frontend/src/models/account.dart';
 
@@ -43,28 +46,53 @@ class AccountCard extends StatelessWidget {
                         ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 15.0),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       AccountCardButton(
                         text: 'Deposit',
-                        backgroundColor: Color(0xFFF66868),
+                        backgroundColor: const Color(0xFFF66868),
+                        onClick: () {
+                          Get.bottomSheet(
+                            const TransactionComponent(
+                              label: 'Deposit Cash',
+                            ),
+                            backgroundColor: Colors.white,
+                          );
+                        },
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 15.0,
                       ),
                       AccountCardButton(
                         text: 'Withdraw',
-                        backgroundColor: Color(0xFF44AE00),
+                        backgroundColor: const Color(0xFF44AE00),
+                        onClick: () {
+                          Get.bottomSheet(
+                            const TransactionComponent(
+                              label: 'Witdraw Cash',
+                            ),
+                            backgroundColor: Colors.white,
+                          );
+                        },
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 15.0,
                       ),
                       AccountCardButton(
                         text: 'Transfer',
-                        backgroundColor: Color(0xFFC106C5),
+                        backgroundColor: const Color(0xFFC106C5),
+                        onClick: () {
+                          Get.bottomSheet(
+                            const TransactionComponent(
+                              label: 'Transfer Cash',
+                              type: 'TRANSFER',
+                            ),
+                            backgroundColor: Colors.white,
+                          );
+                        },
                       ),
                     ],
                   ),
