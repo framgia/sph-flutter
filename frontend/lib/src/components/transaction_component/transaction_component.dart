@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import 'package:frontend/src/components/button.dart';
 import 'package:frontend/src/components/input/input_field.dart';
+import 'package:frontend/src/helper/dialog/show_alert_dialog.dart';
 
 /*
   Reusable transaction component for deposit, withdraw, and transfer cash
@@ -35,27 +36,16 @@ class TransactionComponent extends StatelessWidget {
         final emailValue = formKey.currentState?.fields['email']?.value;
         final amountValue = formKey.currentState?.fields['amount']?.value;
 
+        // if field is null, do not execute Get.back();
         if ((type == 'TRANSFER' &&
                 (emailValue == null || amountValue == null)) ||
             (type == 'DEPOSIT' && amountValue == null)) {
-          showDialog(
-            context: context,
-            builder: (ctx) => AlertDialog(
-              title: const Text('Invalid Input'),
-              content: const Text(
-                'Please make sure to fill out the field',
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  child: const Text('Okay'),
-                ),
-              ],
-            ),
+          showAlertDialog(
+            title: 'Invalid Input',
+            content: 'Please make sure to fill out the field',
           );
-          return; // if field is null, do not execute Get.back();
+
+          return;
         }
 
         Get.back();
