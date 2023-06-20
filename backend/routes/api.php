@@ -23,4 +23,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return UserResource::make($request->user());
     });
     Route::apiResource('users', UserController::class)->only(['index']);
+
+    //Users custom routes
+    Route::prefix('users')->group(function () {
+        Route::put('info', [UserController::class, 'updateInfo']);
+        Route::put('password', [UserController::class, 'updatePassword']);
+    });
 });

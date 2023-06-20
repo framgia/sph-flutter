@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserUpdateInfoRequest;
+use App\Http\Requests\UserUpdatePasswordRequest;
 use App\Http\Resources\LoginResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -35,5 +37,23 @@ class UserController extends Controller
         $token = $user->createToken('login')->plainTextToken;
 
         return LoginResource::make(array_merge($user->toArray(), ['token' => $token]));
+    }
+
+    public function updateInfo(UserUpdateInfoRequest $request)
+    {
+        $userInfo = $request->validated();
+
+        User::find(auth()->user()->id)->update($userInfo);
+
+        return UserResource::make(array_merge(['message' => 'Profile info updated successfully.'], $userInfo));
+    }
+
+    public function updatePassword(UserUpdatePasswordRequest $request)
+    {
+        $userPassword = $request->validated();
+
+        User::find(auth()->user()->id)->update(['password' => $userPassword['new_password']]);
+
+        return UserResource::make(['message' => 'Password updated successfully.']);
     }
 }
