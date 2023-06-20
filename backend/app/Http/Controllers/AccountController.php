@@ -7,7 +7,6 @@ use App\Models\Account;
 
 class AccountController extends Controller
 {
-    //
     public function index()
     {
         return AccountResource::collection(Account::all());
