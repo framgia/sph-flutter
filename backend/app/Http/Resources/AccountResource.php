@@ -14,8 +14,10 @@ class AccountResource extends JsonResource
      */
     public function toArray($request)
     {
+
         $data = parent::toArray($request);
 
+        $data['amount'] = $this->getBalanceAttribute();
         $data['links'] = [
             'self' => route('accounts.show', ['account' => $this->id]),
         ];

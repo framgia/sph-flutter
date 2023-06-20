@@ -15,11 +15,8 @@ class AccountFactory extends Factory
     public function definition()
     {
 
-        $userId = DB::table('users')->pluck('id')->random();
-
         return [
             'id' => $this->faker->unique()->uuid(),
-            'user_id' => $userId,
             'account_type' => 1,
         ];
     }

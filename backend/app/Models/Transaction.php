@@ -9,6 +9,10 @@ class Transaction extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'id' => 'string',
+    ];
+
     public function account()
     {
         return $this->belongsTo(Account::class);
