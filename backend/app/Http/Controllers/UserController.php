@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\SignupRequest;
 use App\Http\Resources\LoginResource;
+use App\Http\Resources\SignupResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -16,26 +19,6 @@ class UserController extends Controller
     public function index()
     {
         return UserResource::collection(User::all());
-    }
-
-    public function login(Request $request)
-    {
-        $credentials = $this->validate($request, [
-            'email' => ['required', Rule::exists('users', 'email')],
-            'password' => ['required'],
-        ]);
-
-        if (! Auth::attempt($credentials)) {
-            throw ValidationException::withMessages([
-                'email' => 'Your provided credentials could not be verified.',
-            ]);
-        }
-
-        $user = User::where('email', $credentials['email'])->first();
-        $user->tokens()->delete();
-        $token = $user->createToken('login')->plainTextToken;
-
-        return LoginResource::make(array_merge($user->toArray(), ['token' => $token]));
     }
 
     public function update(ProfileRequest $request, User $user)
