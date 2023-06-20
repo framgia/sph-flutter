@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:frontend/src/features/dashboard/components/account_card.dart';
+import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
+import 'package:frontend/src/controllers/home_screen_controller.dart';
 import 'package:frontend/src/models/account.dart';
 
 /*
@@ -11,9 +14,9 @@ import 'package:frontend/src/models/account.dart';
    - Account list
 */
 class Dashboard extends StatelessWidget {
-  Dashboard({
-    super.key,
-  });
+  Dashboard({super.key});
+
+  final homeScreenController = Get.put(HomeScreenController());
 
   /* This is the list of accounts pulled from BE */
   /* TODO: This is mock data. Change to actual data in the backend soon */
@@ -65,9 +68,23 @@ class Dashboard extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelMedium,
               ),
               const SizedBox(height: 12),
-              ...accountData.map((data) {
-                return AccountCard(account: data);
-              })
+              ListView.builder(
+                itemCount: accountData.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return AccountCard(account: accountData[index]);
+                },
+              ),
+              // Temporary button, since account details page is not merge yet
+              ElevatedButton(
+                onPressed: () {
+                  homeScreenController.setCurrentDashboardSettingsName =
+                      '/transactionHistory';
+                  dashboardAppNav.currentState?.pushNamed('/transactionHistory');
+                },
+                child: const Text('Go to Transaction History Page'),
+              ),
             ],
           ),
         ),

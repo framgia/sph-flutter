@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:frontend/src/components/label.dart';
 
@@ -11,6 +12,10 @@ import 'package:frontend/src/components/label.dart';
   @param labelText, the label which describes the field.
 
   @param validator, optional function to add validation for the field.
+
+  @param onChanged, called when the user selects a date.
+
+  @param initialValue, initial value for the date time picker. 
 */
 class DatePickerField extends StatelessWidget {
   const DatePickerField({
@@ -18,11 +23,15 @@ class DatePickerField extends StatelessWidget {
     required this.name,
     required this.labelText,
     this.validator,
+    this.onChanged,
+    this.initialValue,
   });
 
   final String name;
   final String labelText;
   final String? Function(DateTime?)? validator;
+  final void Function(DateTime?)? onChanged;
+  final DateTime? initialValue;
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +77,11 @@ class DatePickerField extends StatelessWidget {
               name: name,
               validator: validator,
               initialEntryMode: DatePickerEntryMode.calendar,
-              initialValue: DateTime.now(),
+              initialValue: initialValue,
               inputType: InputType.date,
+              onChanged: onChanged,
               decoration: const InputDecoration(
-                suffixIcon: Icon(Icons.calendar_month_sharp),
+                suffixIcon: Icon(FontAwesomeIcons.calendarDays, size: 20),
               ),
             ),
           ),
