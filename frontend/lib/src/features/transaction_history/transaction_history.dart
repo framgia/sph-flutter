@@ -9,7 +9,7 @@ import 'package:frontend/src/controllers/home_screen_controller.dart';
 import 'package:frontend/src/controllers/transaction_controller.dart';
 import 'package:frontend/src/components/input/date_picker_field.dart';
 import 'package:frontend/src/components/breadcrumb.dart';
-import 'package:frontend/src/components/dropdown.dart';
+import 'package:frontend/src/components/input/dropdown.dart';
 
 /*
   The page where user can see their transaction history per account.
@@ -59,14 +59,23 @@ class TransactionHistory extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 35),
-                ListView.builder(
-                  itemCount: transactionData.length,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return TransactionCard(transaction: transactionData[index]);
-                  },
-                ),
+                if (transactionData.isEmpty)
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    child: Text(
+                      'No Transaction Record',
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                  )
+                else
+                  ListView.builder(
+                    itemCount: transactionData.length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return TransactionCard(transaction: transactionData[index]);
+                    },
+                  ),
               ],
             ),
           ),

@@ -78,6 +78,7 @@ class DatePickerField extends StatelessWidget {
               validator: validator,
               initialEntryMode: DatePickerEntryMode.calendar,
               initialValue: initialValue,
+              lastDate: DateTime.now(),
               inputType: InputType.date,
               onChanged: onChanged,
               decoration: const InputDecoration(
