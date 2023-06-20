@@ -52,6 +52,7 @@ class TransactionHistory extends StatelessWidget {
                   labelText: 'Filter transaction by date',
                   name: 'filter_by_date',
                   initialValue: transactionController.selectedTransactionDate,
+                  lastDate: DateTime.now(),
                   onChanged: (value) {
                     transactionController.setSelectedTransactionDate = value!;
                     final formattedDate = DateFormat.yMd().format(value);
