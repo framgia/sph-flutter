@@ -9,6 +9,7 @@ import 'package:frontend/src/components/indicator.dart';
   variable focusIndex idendicates which portion of the graph is highlighted by expanding it.
 */
 
+//TODO: change to Stateless and manage states using getxcontroller
 class Graph extends StatefulWidget {
   const Graph({super.key});
 
