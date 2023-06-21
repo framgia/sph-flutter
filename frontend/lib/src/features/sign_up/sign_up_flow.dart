@@ -5,11 +5,10 @@ import 'package:frontend/src/features/sign_up/sign_up_step_one.dart';
 import 'package:frontend/src/features/sign_up/sign_up_step_two.dart';
 
 /*
-  The page where user can see their profile informations.
+  The class for the sign up form data used in FlowBuilder state
 */
-
-class User {
-  const User({
+class UserFormData {
+  const UserFormData({
     this.firstName,
     this.middleName,
     this.lastName,
@@ -33,7 +32,7 @@ class User {
   final String? passwordConfirmation;
   final int? page;
 
-  User copyWith({
+  UserFormData copyWith({
     String? firstName,
     String? middleName,
     String? lastName,
@@ -45,7 +44,7 @@ class User {
     String? passwordConfirmation,
     int? page,
   }) {
-    return User(
+    return UserFormData(
       firstName: firstName ?? this.firstName,
       middleName: middleName ?? this.middleName,
       lastName: lastName ?? this.lastName,
@@ -60,26 +59,29 @@ class User {
   }
 }
 
+/*
+  The class that controls the flow of sign up pages.
+*/
 class SignUpFlow extends StatelessWidget {
   const SignUpFlow({Key? key}) : super(key: key);
 
-  static Route<User> route() {
+  static Route<UserFormData> route() {
     return MaterialPageRoute(builder: (_) => const SignUpFlow());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FlowBuilder<User>(
-        state: const User(),
-        onGeneratePages: (user, pages) {
+      body: FlowBuilder<UserFormData>(
+        state: const UserFormData(),
+        onGeneratePages: (userFormData, pages) {
           return [
-            if (user.page == null || user.page == 1) ...[
+            if (userFormData.page == null || userFormData.page == 1) ...[
               const MaterialPage(
                 child: SignUpStepOne(),
               ),
             ],
-            if (user.page == 2) ...[
+            if (userFormData.page == 2) ...[
               const MaterialPage(
                 child: SignUpStepTwo(),
               ),

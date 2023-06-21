@@ -27,8 +27,8 @@ class Breadcrumb extends StatelessWidget {
               alignment: AlignmentDirectional.centerStart,
               child: GestureDetector(
                 onTap: () {
-                  context.flow<User>().update(
-                        (info) => info.copyWith(page: page),
+                  context.flow<UserFormData>().update(
+                        (data) => data.copyWith(page: page),
                       );
                 },
                 child: const Icon(

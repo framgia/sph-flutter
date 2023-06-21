@@ -11,6 +11,9 @@ import 'package:frontend/src/components/button.dart';
 import 'package:frontend/src/features/login/login_page.dart';
 import 'package:frontend/src/components/input/date_picker_field.dart';
 
+/*
+  The page where user can fill the first page of sign up.
+*/
 class SignUpStepOne extends StatelessWidget {
   const SignUpStepOne({super.key});
 
@@ -73,8 +76,8 @@ class SignUpStepOne extends StatelessWidget {
                                 Button(
                                   text: 'Next',
                                   onPressed: () {
-                                    context.flow<User>().update(
-                                          (info) => info.copyWith(page: 2),
+                                    context.flow<UserFormData>().update(
+                                          (data) => data.copyWith(page: 2),
                                         );
                                   },
                                   padding: const EdgeInsets.symmetric(

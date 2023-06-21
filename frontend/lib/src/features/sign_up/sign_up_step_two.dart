@@ -9,6 +9,9 @@ import 'package:frontend/src/components/input/input_field.dart';
 import 'package:frontend/src/components/button.dart';
 import 'package:frontend/src/features/login/login_page.dart';
 
+/*
+  The page where user can fill the second page of sign up.
+*/
 class SignUpStepTwo extends StatelessWidget {
   const SignUpStepTwo({super.key});
 
