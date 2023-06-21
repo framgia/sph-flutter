@@ -33,7 +33,8 @@ class _LoginPage extends State<LoginPage> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Invalid Input'),
-          content: const Text('Please make sure to enter valid Email and Password.'),
+          content:
+              const Text('Please make sure to enter valid Email and Password.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -119,7 +120,10 @@ class _LoginPage extends State<LoginPage> {
                   Button(
                     onPressed: onSubmit,
                     text: 'Log In',
-                    padding: const EdgeInsets.symmetric(horizontal: 99, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 99,
+                      vertical: 16,
+                    ),
                   ),
                   const SizedBox(
                     height: 25,

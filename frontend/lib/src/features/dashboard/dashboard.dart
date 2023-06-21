@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:frontend/src/features/dashboard/components/account_card.dart';
-import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
 import 'package:frontend/src/controllers/home_screen_controller.dart';
 import 'package:frontend/src/models/account.dart';
 
@@ -22,26 +21,31 @@ class Dashboard extends StatelessWidget {
   /* TODO: This is mock data. Change to actual data in the backend soon */
   final List<Account> accountData = [
     Account(
+      id: 1,
       userId: 0,
       accountType: 0,
       name: 'Account #1',
     ),
     Account(
+      id: 2,
       userId: 0,
       accountType: 0,
       name: 'Account #2',
     ),
     Account(
+      id: 3,
       userId: 0,
       accountType: 0,
       name: 'Account #3',
     ),
     Account(
+      id: 4,
       userId: 0,
       accountType: 0,
       name: 'Account #4',
     ),
     Account(
+      id: 5,
       userId: 0,
       accountType: 0,
       name: 'Account #5',
@@ -75,15 +79,6 @@ class Dashboard extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return AccountCard(account: accountData[index]);
                 },
-              ),
-              // Temporary button, since account details page is not merge yet
-              ElevatedButton(
-                onPressed: () {
-                  homeScreenController.setCurrentDashboardSettingsName =
-                      '/transactionHistory';
-                  dashboardAppNav.currentState?.pushNamed('/transactionHistory');
-                },
-                child: const Text('Go to Transaction History Page'),
               ),
             ],
           ),
