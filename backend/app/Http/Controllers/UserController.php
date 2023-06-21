@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProfileRequest;
 use App\Http\Resources\LoginResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -35,5 +36,14 @@ class UserController extends Controller
         $token = $user->createToken('login')->plainTextToken;
 
         return LoginResource::make(array_merge($user->toArray(), ['token' => $token]));
+    }
+
+    public function update(ProfileRequest $request, User $user)
+    {
+        $profileInfo = $request->validated();
+
+        $user->update($profileInfo);
+
+        return UserResource::make(array_merge(['message' => 'Profile info updated successfully.'], $profileInfo));
     }
 }

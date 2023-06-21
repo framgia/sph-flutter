@@ -15,9 +15,7 @@ class ProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        $user = User::findOrFail($this->route('user_id'));
-
-        if ($user->id === Auth::id() || Auth::user()->is_admin) {
+        if ($this->route('user')->id === Auth::id() || Auth::user()->is_admin) {
             return true;
         }
 
