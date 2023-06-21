@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:frontend/src/components/auth/auth_header.dart';
 import 'package:get/get.dart';
 
 import 'package:frontend/src/features/sign_up/components/breadcrumb.dart';
 import 'package:frontend/src/components/input/input_field.dart';
 import 'package:frontend/src/components/button.dart';
 import 'package:frontend/src/features/login/login_page.dart';
+import 'package:frontend/src/components/auth/auth_header.dart';
 
 /*
   The page where user can fill the second page of sign up.

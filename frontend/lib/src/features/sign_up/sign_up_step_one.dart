@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/components/auth/auth_header.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
@@ -10,6 +9,7 @@ import 'package:frontend/src/components/input/input_field.dart';
 import 'package:frontend/src/components/button.dart';
 import 'package:frontend/src/features/login/login_page.dart';
 import 'package:frontend/src/components/input/date_picker_field.dart';
+import 'package:frontend/src/components/auth/auth_header.dart';
 
 /*
   The page where user can fill the first page of sign up.

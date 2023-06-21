@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/features/sign_up/sign_up_flow.dart';
 import 'package:flow_builder/flow_builder.dart';
+
+import 'package:frontend/src/features/sign_up/sign_up_flow.dart';
 
 /*
   A navigation widget where user can go back to the previous page.
