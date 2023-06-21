@@ -25,7 +25,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('user', function (Request $request) {
         return UserResource::make($request->user());
     });
-    Route::apiResource('users', UserController::class)->only(['index', 'update']);
+    Route::apiResource('users', UserController::class)->only(['index', 'update', 'show']);
     Route::apiResource('auth', AuthController::class)->only('update')->parameters(['auth' => 'user']);
     Route::apiResource('users.accounts', AccountController::class)->shallow()->only(['index']);
     Route::apiResource('accounts', AccountController::class)->only(['index', 'show']);
