@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
@@ -23,10 +25,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return UserResource::make($request->user());
     });
     Route::apiResource('users', UserController::class)->only(['index']);
-
-    //Users custom routes
-    Route::prefix('users')->group(function () {
-        Route::put('info', [UserController::class, 'updateInfo']);
-        Route::put('password', [UserController::class, 'updatePassword']);
-    });
+    Route::apiResource('profile', ProfileController::class)->only('update')->parameters(['profile' => 'user_id']);
+    Route::apiResource('auth', AuthController::class)->only('update')->parameters(['auth' => 'user_id']);
 });

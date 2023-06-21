@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class UserUpdatePasswordRequest extends FormRequest
+class UpdatePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +14,11 @@ class UserUpdatePasswordRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        if ($this->route('user_id') === Auth::id()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

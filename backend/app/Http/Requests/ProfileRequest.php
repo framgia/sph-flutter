@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class UserUpdateInfoRequest extends FormRequest
+class ProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +15,13 @@ class UserUpdateInfoRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $user = User::findOrFail($this->route('user_id'));
+
+        if ($user->id === Auth::id() || Auth::user()->is_admin) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
