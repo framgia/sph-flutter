@@ -27,7 +27,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
     Route::apiResource('users', UserController::class)->only(['index', 'update']);
     Route::apiResource('auth', AuthController::class)->only('update')->parameters(['auth' => 'user']);
-    Route::resource('users.accounts',UserController::class)->shallow();
+    Route::apiResource('users.accounts', AccountController::class)->shallow()->only(['index']);
     Route::apiResource('accounts', AccountController::class)->only(['index', 'show']);
 });
 

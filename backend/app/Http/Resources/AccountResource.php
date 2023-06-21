@@ -21,12 +21,12 @@ class AccountResource extends JsonResource
         $transactions = $this->accountTransactions;
         unset($data['account_transactions']);
 
-        if(count($transactions) === 0) {
+        if (count($transactions) === 0) {
             $data['balance'] = 0;
             return $data;
         };
 
-        $sortedTransactions = Arr::sort( $transactions, function($value) {
+        $sortedTransactions = Arr::sort($transactions, function ($value) {
             return $value['transaction_date'];
         });
         $latestTransaction = $sortedTransactions[0];
