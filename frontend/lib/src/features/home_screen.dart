@@ -52,7 +52,8 @@ class HomeScreen extends StatelessWidget {
         child: Obx(
           () => Scaffold(
             floatingActionButton: Visibility(
-              visible: homeScreenController.currentPage == 1,
+              visible: homeScreenController.currentPage == 1 &&
+                  homeScreenController.currentDashboardSettingsName == '/dashboard',
               child: FloatingActionButton(
                 child: const Icon(
                   Icons.add,
@@ -78,6 +79,10 @@ class HomeScreen extends StatelessWidget {
                       ?.popUntil((route) {
                     return route.isFirst;
                   });
+                }
+
+                if (index == 1) {
+                  homeScreenController.setCurrentDashboardSettingsName = '/dashboard';
                 }
               },
             ),
