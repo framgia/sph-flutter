@@ -9,11 +9,11 @@ class AccountController extends Controller
 {
     public function index()
     {
-        return AccountResource::collection(Account::all());
+        return AccountResource::collection(Account::with(['accountTransactions'])->get());
     }
 
     public function show(Account $account)
     {
-        return AccountResource::make(($account));
+        return AccountResource::make($account);
     }
 }

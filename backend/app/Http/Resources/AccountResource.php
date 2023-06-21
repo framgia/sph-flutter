@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Transaction;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Arr;
 
 class AccountResource extends JsonResource
 {
@@ -16,11 +18,20 @@ class AccountResource extends JsonResource
     {
 
         $data = parent::toArray($request);
+        $transactions = $this->accountTransactions;
+        unset($data['account_transactions']);
 
-        $data['amount'] = $this->getBalanceAttribute();
-        $data['links'] = [
-            'self' => route('accounts.show', ['account' => $this->id]),
-        ];
+        if(count($transactions) === 0) {
+            $data['balance'] = 0;
+            return $data;
+        };
+
+        $sortedTransactions = Arr::sort( $transactions, function($value) {
+            return $value['transaction_date'];
+        });
+        $latestTransaction = $sortedTransactions[0];
+
+        $data['balance'] = $latestTransaction['starting_balance'] + $latestTransaction['transaction_amount'];
 
         return $data;
     }

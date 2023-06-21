@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
+use App\Models\Account;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +27,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
     Route::apiResource('users', UserController::class)->only(['index', 'update']);
     Route::apiResource('auth', AuthController::class)->only('update')->parameters(['auth' => 'user']);
-    Route::get('/users/{user_id}/accounts', [UserController::class, 'myAccounts']);
+    Route::resource('users.accounts',UserController::class)->shallow();
     Route::apiResource('accounts', AccountController::class)->only(['index', 'show']);
 });
 
