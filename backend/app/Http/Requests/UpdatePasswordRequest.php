@@ -14,7 +14,7 @@ class UpdatePasswordRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->route('user_id') === Auth::id()) {
+        if ($this->route('user')->id === Auth::id()) {
             return true;
         }
 

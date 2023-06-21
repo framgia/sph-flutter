@@ -10,11 +10,11 @@ class AuthController extends Controller
 {
     //TODO: add login, signup, reset_password to the controller
 
-    public function update(UpdatePasswordRequest $request, $user_id)
+    public function update(UpdatePasswordRequest $request, User $user)
     {
         $userPassword = $request->validated();
 
-        User::find($user_id)->update(['password' => $userPassword['new_password']]);
+        $user->update(['password' => $userPassword['new_password']]);
 
         return UserResource::make(['message' => 'Password updated successfully.']);
     }

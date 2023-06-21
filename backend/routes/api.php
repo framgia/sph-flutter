@@ -24,5 +24,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return UserResource::make($request->user());
     });
     Route::apiResource('users', UserController::class)->only(['index', 'update']);
-    Route::apiResource('auth', AuthController::class)->only('update')->parameters(['auth' => 'user_id']);
+    Route::apiResource('auth', AuthController::class)->only('update')->parameters(['auth' => 'user']);
 });
