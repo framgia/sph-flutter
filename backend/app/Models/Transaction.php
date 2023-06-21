@@ -24,7 +24,7 @@ class Transaction extends Model
         'category',
         'transaction_id',
         'starting_balance',
-        'transaction_amount'
+        'transaction_amount',
     ];
 
     /**

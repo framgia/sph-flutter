@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Transaction;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
 
@@ -23,8 +22,9 @@ class AccountResource extends JsonResource
 
         if (count($transactions) === 0) {
             $data['balance'] = 0;
+
             return $data;
-        };
+        }
 
         $sortedTransactions = Arr::sort($transactions, function ($value) {
             return $value['transaction_date'];

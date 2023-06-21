@@ -20,7 +20,7 @@ class TransactionFactory extends Factory
         $starting_balance = rand(1000, 20000);
         $transaction_amount = rand(1000, 20000);
 
-        $transaction_template =  [
+        $transaction_template = [
             'id' => $this->faker->unique()->uuid(),
             'account_id' => $account->id,
             'user_id' => $account->user_id,
@@ -29,8 +29,8 @@ class TransactionFactory extends Factory
             'category' => 'SAVINGS', //TODO:replace if a more complex seeder is needed
             'description' => $this->faker->paragraph($nbSentences = 3, $variableNbSentences = true),
             'transaction_id' => null,
-            'starting_balance'=> $starting_balance,
-            'transaction_amount' => $transaction_amount
+            'starting_balance' => $starting_balance,
+            'transaction_amount' => $transaction_amount,
         ];
 
         return $transaction_template;

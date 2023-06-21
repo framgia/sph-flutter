@@ -17,6 +17,7 @@ class AccountController extends Controller
             // see https://laravel.com/docs/10.x/controllers#shallow-nesting
 
             $user = User::where('id', $user_id)->with(['userAccounts'])->first();
+
             return AccountResource::collection($user->userAccounts);
         }
 

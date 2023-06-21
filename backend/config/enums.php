@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'transaction_type' => ['CREDIT', 'DEPT' , 'TRANSFER'],
-    'transaction_category' => ['SAVINGS', 'SALARY', 'BILLS', 'SENDER', 'RECIPIENT']
+    'transaction_type' => ['CREDIT', 'DEPT', 'TRANSFER'],
+    'transaction_category' => ['SAVINGS', 'SALARY', 'BILLS', 'SENDER', 'RECIPIENT'],
 ];
