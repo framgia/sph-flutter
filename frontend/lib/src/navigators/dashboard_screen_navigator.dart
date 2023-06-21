@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/features/transaction_history/transaction_history.dart';
 import 'package:frontend/src/components/auth/auth_header.dart';
 import 'package:frontend/src/features/dashboard/dashboard.dart';
+import 'package:frontend/src/features/account_details/account_details_page.dart';
 import 'package:frontend/src/navigators/custom_page_route.dart';
 
 GlobalKey<NavigatorState> dashboardAppNav = GlobalKey();
@@ -20,6 +21,9 @@ class DashboardScreenNavigator extends StatelessWidget {
         switch (settings.name) {
           case '/dashboard':
             page = Dashboard();
+            break;
+          case '/accountDetails':
+            page = const AccountDetailsPage();
             break;
           case '/transactionHistory':
             page = const TransactionHistory();

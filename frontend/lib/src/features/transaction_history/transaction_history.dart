@@ -5,11 +5,11 @@ import 'package:intl/intl.dart';
 import 'package:frontend/src/features/transaction_history/components/transaction_card.dart';
 import 'package:frontend/src/features/transaction_history/data/data.dart';
 import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
-import 'package:frontend/src/controllers/home_screen_controller.dart';
 import 'package:frontend/src/controllers/transaction_controller.dart';
 import 'package:frontend/src/components/input/date_picker_field.dart';
 import 'package:frontend/src/components/breadcrumb.dart';
 import 'package:frontend/src/components/input/dropdown.dart';
+import 'package:frontend/src/features/dashboard/components/account_card.dart';
 
 /*
   The page where user can see their transaction history per account.
@@ -20,17 +20,21 @@ class TransactionHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final transactionController = Get.put(TransactionController());
-    final homeScreenController = Get.put(HomeScreenController());
+    final arguments =
+        ModalRoute.of(context)!.settings.arguments as ScreenArguments;
+
+    // this is temporary, this is to verify that the argument was pass successfully
+    print(arguments.accountId);
 
     return Column(
       children: [
         Breadcrumb(
           text: 'Transaction History',
           onTap: () {
-            homeScreenController.setCurrentDashboardSettingsName = '/dashboard';
-            dashboardAppNav.currentState?.popUntil((route) {
-              return route.isFirst;
-            });
+            dashboardAppNav.currentState?.pushNamed(
+              '/accountDetails',
+              arguments: ScreenArguments(arguments.accountId),
+            );
           },
         ),
         Padding(
@@ -43,7 +47,8 @@ class TransactionHistory extends StatelessWidget {
                   items: transactionTypes,
                   selectedValue: transactionController.selectedTransactionType,
                   onChanged: (value) {
-                    transactionController.setSelectedTransactionType = value.toString();
+                    transactionController.setSelectedTransactionType =
+                        value.toString();
                     debugPrint(transactionController.selectedTransactionType);
                   },
                 ),
@@ -74,7 +79,8 @@ class TransactionHistory extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
-                      return TransactionCard(transaction: transactionData[index]);
+                      return TransactionCard(
+                          transaction: transactionData[index]);
                     },
                   ),
               ],

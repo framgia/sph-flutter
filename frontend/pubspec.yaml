@@ -42,6 +42,7 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   dropdown_button2: ^2.1.3
   intl: ^0.18.0
+  fl_chart: ^0.63.0
 
 dev_dependencies:
   flutter_test:

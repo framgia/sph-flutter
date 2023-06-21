@@ -4,11 +4,13 @@ import 'package:get/get.dart';
 import 'package:frontend/src/components/transaction_component/transaction_component.dart';
 import 'package:frontend/src/features/dashboard/components/account_card_button.dart';
 import 'package:frontend/src/models/account.dart';
+import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
 
 /*
   Card widget used in dashboard.dart
   Data from an Account class is passed here then is displayed
 */
+
 class AccountCard extends StatelessWidget {
   const AccountCard({Key? key, required this.account}) : super(key: key);
 
@@ -23,7 +25,12 @@ class AccountCard extends StatelessWidget {
         elevation: 3,
         child: InkWell(
           borderRadius: BorderRadius.circular(10.0),
-          onTap: () {},
+          onTap: () {
+            dashboardAppNav.currentState?.pushNamed(
+              '/accountDetails',
+              arguments: ScreenArguments(account.accountId),
+            );
+          },
           child: Padding(
             padding:
                 const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
@@ -104,4 +111,10 @@ class AccountCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class ScreenArguments {
+  final int accountId;
+
+  ScreenArguments(this.accountId);
 }
