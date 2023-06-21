@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
@@ -22,5 +23,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('user', function (Request $request) {
         return UserResource::make($request->user());
     });
-    Route::apiResource('users', UserController::class)->only(['index']);
+    Route::apiResource('users', UserController::class)->only(['index', 'update']);
+    Route::apiResource('auth', AuthController::class)->only('update')->parameters(['auth' => 'user']);
 });
