@@ -8,6 +8,14 @@ import 'package:flutter/material.dart';
   @param onPressed, optional function and this is called when user pressed the widget.
 
   @param padding, the padding to be added around the text.
+
+  @param buttonColor, can change button color
+
+  @param withShadow, optional if button needs box shadow or not
+
+  @param radius, to optionally change the radius of the button
+
+  @param size, to optionally set a fixed size of the button
 */
 class Button extends StatelessWidget {
   const Button({

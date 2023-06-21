@@ -28,7 +28,7 @@ class AccountCard extends StatelessWidget {
           onTap: () {
             dashboardAppNav.currentState?.pushNamed(
               '/accountDetails',
-              arguments: ScreenArguments(account.accountId),
+              arguments: ScreenArguments(account.id),
             );
           },
           child: Padding(

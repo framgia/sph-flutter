@@ -21,7 +21,7 @@ class AccountDetailsPage extends StatelessWidget {
     final arguments =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
 
-    // this is temporary, this is to verify that the argument was pass successfully
+    // TODO: this is temporary, this is to verify that the argument was passed successfully
     print(arguments.accountId);
 
     return GestureDetector(

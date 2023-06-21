@@ -3,6 +3,12 @@ import 'package:fl_chart/fl_chart.dart';
 
 import 'package:frontend/src/components/indicator.dart';
 
+/*
+  A Graph widget where transaction data can be displayed graphically
+
+  variable focusIndex idendicates which portion of the graph is highlighted by expanding it.
+*/
+
 class Graph extends StatefulWidget {
   const Graph({super.key});
 
@@ -11,7 +17,7 @@ class Graph extends StatefulWidget {
 }
 
 class GraphState extends State {
-  int touchedIndex = -1;
+  int focusIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +55,10 @@ class GraphState extends State {
                           if (!event.isInterestedForInteractions ||
                               pieTouchResponse == null ||
                               pieTouchResponse.touchedSection == null) {
-                            touchedIndex = -1;
+                            focusIndex = -1;
                             return;
                           }
-                          touchedIndex = pieTouchResponse
+                          focusIndex = pieTouchResponse
                               .touchedSection!.touchedSectionIndex;
                         });
                       },
@@ -113,7 +119,7 @@ class GraphState extends State {
 
   List<PieChartSectionData> showingSections() {
     return List.generate(4, (i) {
-      final isTouched = i == touchedIndex;
+      final isTouched = i == focusIndex;
       final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 60.0 : 50.0;
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];

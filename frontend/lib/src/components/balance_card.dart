@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+/*
+  A Balance Card widget where you can display account balance with static design of the card.
+
+  @param content, a widget type of content that will be displayed inside the card.
+*/
+
 class BalanceCard extends StatelessWidget {
   const BalanceCard({super.key, required this.content});
 

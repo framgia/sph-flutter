@@ -21,31 +21,31 @@ class Dashboard extends StatelessWidget {
   /* TODO: This is mock data. Change to actual data in the backend soon */
   final List<Account> accountData = [
     Account(
-      accountId: 1,
+      id: 1,
       userId: 0,
       accountType: 0,
       name: 'Account #1',
     ),
     Account(
-      accountId: 2,
+      id: 2,
       userId: 0,
       accountType: 0,
       name: 'Account #2',
     ),
     Account(
-      accountId: 3,
+      id: 3,
       userId: 0,
       accountType: 0,
       name: 'Account #3',
     ),
     Account(
-      accountId: 4,
+      id: 4,
       userId: 0,
       accountType: 0,
       name: 'Account #4',
     ),
     Account(
-      accountId: 5,
+      id: 5,
       userId: 0,
       accountType: 0,
       name: 'Account #5',

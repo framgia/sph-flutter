@@ -1,5 +1,19 @@
 import 'package:flutter/material.dart';
 
+/*
+  A Indicator widget displays graph labels
+
+  @param color, defines the color of the indicator
+
+  @param text, the indicator text
+
+  @param isSquare, defines if the label icon is circle or square
+
+  @param size, label icon size
+
+  @param textColor, color of the text indicator
+*/
+
 class Indicator extends StatelessWidget {
   const Indicator({
     super.key,
@@ -9,6 +23,7 @@ class Indicator extends StatelessWidget {
     this.size = 16,
     this.textColor,
   });
+
   final Color color;
   final String text;
   final bool isSquare;
@@ -32,11 +47,10 @@ class Indicator extends StatelessWidget {
         ),
         Text(
           text,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: textColor,
-          ),
+          style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                color: textColor,
+                fontWeight: FontWeight.bold,
+              ),
         )
       ],
     );
