@@ -53,8 +53,11 @@ First, download the Laravel installer using Composer by running the command:
 
 *Make sure to place Composer's system-wide vendor bin directory in your $PATH so the laravel executable can be located by your system.
 
-### Running the application
-Run the command: **php artisan serve**
+## Running the application
+1. First, get your computer's ip address
+2. Run the command: **php artisan serve --host \<ip> --port 80**
+3. example **php artisan serve --host 192.168.1.4 --port 80**
+4. update frontend's .env "BACKEND_URL" to http://\<ip>:\<port>, example **BACKEND_URL=http://192.168.1.4:80**
 
 ### To know all the commands
 Run the command: **php artisan**

@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('health', function () {
+    return "healthy";
+});
 Route::post('login', [AuthController::class, 'login']);
 Route::apiResource('auth', AuthController::class)->only('store');
 
