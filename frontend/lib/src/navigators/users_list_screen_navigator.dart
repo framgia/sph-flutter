@@ -6,8 +6,8 @@ import 'package:frontend/src/navigators/custom_page_route.dart';
 
 GlobalKey<NavigatorState> settingsAppNav = GlobalKey();
 
-class SettingsScreenNavigator extends StatelessWidget {
-  const SettingsScreenNavigator({super.key});
+class UserListScreenNavigator extends StatelessWidget {
+  const UserListScreenNavigator({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +18,10 @@ class SettingsScreenNavigator extends StatelessWidget {
 
         switch (settings.name) {
           case '/adminuserlistpage':
-            page = AdminUserListPage();
+            page = const AdminUserListPage();
             break;
           default:
-            page = AdminUserListPage();
+            page = const AdminUserListPage();
             break;
         }
 

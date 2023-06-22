@@ -23,9 +23,6 @@ class TransactionHistory extends StatelessWidget {
     final arguments =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
 
-    // TODO: this is temporary, this is to verify that the argument was passed successfully
-    print(arguments.accountId);
-
     return Column(
       children: [
         Breadcrumb(
@@ -80,7 +77,8 @@ class TransactionHistory extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
                       return TransactionCard(
-                          transaction: transactionData[index]);
+                        transaction: transactionData[index],
+                      );
                     },
                   ),
               ],
