@@ -22,6 +22,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::apiResource('auth', AuthController::class)->only('store');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('logout', [AuthController::class, 'logout']);
     Route::get('user', function (Request $request) {
         return UserResource::make($request->user());
     });
