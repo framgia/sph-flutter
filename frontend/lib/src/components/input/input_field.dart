@@ -22,7 +22,7 @@ import 'package:frontend/src/components/label.dart';
 
   @param validator, adds validation to the Text Field, it also provides the widget an error message
   as we are using another package for validators, please read https://pub.dev/packages/form_builder_validators
-  ex FormBuilderValidators.email() 
+  ex FormBuilderValidators.email()
 
   @param obscureText: boolean type to hide the text, usualy used in password field
   ex InputField(obscureText: true)
