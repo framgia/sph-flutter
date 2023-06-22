@@ -44,6 +44,12 @@ dependencies:
   intl: ^0.18.0
   fl_chart: ^0.63.0
   flow_builder: ^0.0.9
+  dio: ^5.2.1+1
+  flutter_secure_storage: ^8.0.0
+  dio_cookie_manager: ^3.1.0
+  path_provider: ^2.0.15
+  cookie_jar: ^4.0.5
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +76,7 @@ flutter:
   assets:
     - assets/images/
     - assets/svg/
+    - .env
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

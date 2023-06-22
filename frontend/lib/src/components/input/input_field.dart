@@ -12,6 +12,8 @@ import 'package:frontend/src/components/label.dart';
   @param label, add label to the Text Field, 
   ex InputField(label: "Enter Email")
 
+  @param initialValue, provide the text field its initial value 
+
   @param inputType, to add a inputType in the field like email field, text field, password field and ect., 
   ex InputField(inputType: TextInputType.emailAddress)
 
@@ -32,6 +34,7 @@ class InputField extends StatelessWidget {
     super.key,
     required this.name,
     required this.label,
+    this.initialValue,
     this.inputType,
     this.controller,
     this.validator,
@@ -40,6 +43,7 @@ class InputField extends StatelessWidget {
 
   final String name;
   final String label;
+  final String? initialValue;
   final TextInputType? inputType;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
@@ -65,10 +69,12 @@ class InputField extends StatelessWidget {
           ),
           child: FormBuilderTextField(
             name: name,
+            initialValue: initialValue,
             validator: validator,
             controller: controller,
             obscureText: obscureText,
             keyboardType: inputType,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             decoration: const InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
