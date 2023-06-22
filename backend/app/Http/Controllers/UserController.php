@@ -2,18 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileRequest;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\SignupRequest;
-use App\Http\Resources\LoginResource;
-use App\Http\Resources\SignupResource;
-use App\Http\Resources\LogoutResource;
-use App\Http\Resources\UserResource;
+use Exception;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\ProfileRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\UnauthorizedException;
 
 class UserController extends Controller
 {
@@ -34,5 +28,22 @@ class UserController extends Controller
     public function show(User $user)
     {
         return UserResource::make($user);
+    }
+
+    public function destroy(User $user)
+    {
+        if(Auth::user()->is_admin) {
+            if ($user->id == Auth::id()) {
+                throw new Exception('You cannot delete your own account.', 403);
+            } else if ($user->is_admin){
+                throw new Exception('You cannot delete an admin user.', 403);
+            } else {
+                $user->delete();
+
+                return UserResource::make(array_merge(['message' => 'User has been successfully deleted.']));
+            }
+        } else {
+            throw new UnauthorizedException('This action is unauthorized.', 401);
+        }
     }
 }
