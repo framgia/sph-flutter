@@ -1,4 +1,13 @@
+import 'dart:io';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import 'package:frontend/src/features/login/login_page.dart';
+import 'package:frontend/src/helper/dialog/show_alert_dialog.dart';
+import 'package:frontend/src/helper/dio.dart';
+import 'package:frontend/src/helper/snackbar/show_snackbar.dart';
+import 'package:frontend/src/helper/storage.dart';
 
 /*
   Reusable "Top" component for auth related actions
@@ -20,6 +29,38 @@ class AuthHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const storage = FlutterSecureStorage();
+    final networkConfig = NetworkConfig();
+
+    void dropdownCallback(selectedValue) async {
+      if (selectedValue == 'logout') {
+        final client = networkConfig.client;
+
+        final logoutResponse = await client.post(
+          logoutUrl,
+        );
+
+        if (logoutResponse.statusCode == HttpStatus.ok) {
+          final message = logoutResponse.data['data']['message'];
+
+          // delete the stored login key
+          await storage.delete(key: loginTokenKey);
+
+          Get.offAll(() => const LoginPage());
+
+          showSnackbar(
+            title: 'Success',
+            content: message,
+          );
+        } else if (logoutResponse.statusCode == HttpStatus.badRequest) {
+          showAlertDialog(
+            title: 'ERROR',
+            content: 'An error occurred while logging out.',
+          );
+        }
+      }
+    }
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -43,9 +84,53 @@ class AuthHeader extends StatelessWidget {
                     ),
                     Visibility(
                       visible: hasAuthToken,
-                      child: Text(
-                        'JOASH C. CANETE',
-                        style: Theme.of(context).textTheme.titleSmall,
+                      child: SizedBox(
+                        height: 25,
+                        child: DropdownButton(
+                          value: 'user',
+                          onChanged: dropdownCallback,
+                          items: [
+                            const DropdownMenuItem(
+                              value: 'user',
+                              child: Text(
+                                'JOASH C. CAÑETE',
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: 'logout',
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 12),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color.fromRGBO(0, 0, 0, 0.25),
+                                      blurRadius: 1,
+                                      spreadRadius: 1,
+                                      offset: Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+
+                                alignment: Alignment
+                                    .center, // Center the text vertically and horizontally
+                                child: Text(
+                                  'Log out',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall, // Customize the text color
+                                ),
+                              ),
+                            ),
+                          ],
+                          style: Theme.of(context).textTheme.titleSmall,
+                          underline: Container(), // Remove the underline
+                          iconSize: 0, // Add a custom dropdown icon
+                          dropdownColor: Colors.transparent,
+                          elevation: 0,
+                        ),
                       ),
                     ),
                   ],
