@@ -14,6 +14,7 @@ const sanctumCsrfCookieUrl = '/sanctum/csrf-cookie';
 const apiUrl = '/api';
 const healthUrl = '$apiUrl/health';
 const loginUrl = '$apiUrl/login';
+const logoutUrl = '$apiUrl/logout';
 
 const storage = FlutterSecureStorage();
 
@@ -53,7 +54,10 @@ class NetworkConfig {
         },
         onError: (e, handler) {
           return handler.resolve(
-            Response(requestOptions: e.requestOptions, data: e.response, statusCode: e.response?.statusCode),
+            Response(
+                requestOptions: e.requestOptions,
+                data: e.response,
+                statusCode: e.response?.statusCode),
           );
         },
       ),
