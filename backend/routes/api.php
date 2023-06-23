@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
@@ -33,4 +34,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('auth', AuthController::class)->only('update')->parameters(['auth' => 'user']);
     Route::apiResource('users.accounts', AccountController::class)->shallow()->only(['index']);
     Route::apiResource('accounts', AccountController::class)->only(['index', 'show']);
+    Route::apiResource('accounts.transactions', TransactionController::class)->shallow()->only(['index']);
+    Route::apiResource('transactions', TransactionController::class)->only(['index', 'show']);
 });
