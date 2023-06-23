@@ -34,9 +34,6 @@ class AuthHeader extends StatelessWidget {
 
     void dropdownCallback(selectedValue) async {
       if (selectedValue == 'logout') {
-        // note: csrf is for web, web implementation not thoroughly tested
-        await networkConfig.getCsrftoken();
-
         final client = networkConfig.client;
 
         final logoutResponse = await client.post(
@@ -48,7 +45,9 @@ class AuthHeader extends StatelessWidget {
 
           // delete the stored login key
           await storage.delete(key: loginTokenKey);
-          Get.to(() => const LoginPage());
+
+          Get.offAll(() => const LoginPage());
+
           showSnackbar(
             title: 'Success',
             content: message,

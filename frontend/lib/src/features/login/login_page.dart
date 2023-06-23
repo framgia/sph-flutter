@@ -62,7 +62,7 @@ class LoginPage extends StatelessWidget {
         // the error response is in Response<dynamic>, toString + jsonDecode to easily access data
         final error = jsonDecode(loginResponse.data.toString());
         // just use the first validation error (if many)
-        final message = error['error']['message']['email'][0]; 
+        final message = error['error']['message']['email'][0];
         formKey.currentState?.fields['email']?.invalidate(message);
       }
     }
@@ -81,7 +81,8 @@ class LoginPage extends StatelessWidget {
 
                   // when email is invalidated on the onSubmit,
                   // revalidate the email field when typing again
-                  formKey.currentState?.fields['email']?.validate(focusOnInvalid: false);
+                  formKey.currentState?.fields['email']
+                      ?.validate(focusOnInvalid: false);
 
                   // set button enabled state
                   loginController.setLoginButtonEnabled =

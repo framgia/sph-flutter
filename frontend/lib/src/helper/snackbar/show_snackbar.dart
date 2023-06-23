@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 /*
-  Reusable snackbar dialog
+  Reusable snackbar
 
-  @param title: String value to display the title of the alert dialog
+  @param title: String value to display the title of the snackbar
 
-  @param content: String value to display the content of the alert dialog
+  @param content: String value to display the content of the snackbar
 */
 
 void showSnackbar({
