@@ -10,17 +10,16 @@ class TransactionController extends Controller
 {
     public function index($account_id = null)
     {
-
-        //For /accounts/{account_id}/transactions
+        // For /accounts/{account_id}/transactions
         if ($account_id) {
-            //For shallow nesting
-            // see https://laravel.com/docs/10.x/controllers#shallow-nesting
+            // For shallow nesting
+            // See https://laravel.com/docs/8.x/controllers#shallow-nesting
             $account = Account::where('id', $account_id)->with(['accountTransactions'])->first();
 
             return TransactionResource::collection($account->accountTransactions);
         }
 
-        //For /transactions
+        // For /transactions
         return TransactionResource::collection(Transaction::all());
     }
 
