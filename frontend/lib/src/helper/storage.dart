@@ -1,2 +1,1 @@
-const loginTokenKey = 'loginToken';
-const csrfTokenKey = 'csrfToken';
+enum StorageKeys { loginToken, csrfToken, isAdmin, userId }

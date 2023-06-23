@@ -40,7 +40,8 @@ class LoginPage extends StatelessWidget {
       final client = networkConfig.client;
       // delete the current stored login key, otherwise
       // frontend\lib\src\helper\dio.dart adds this to the request headers
-      await storage.delete(key: loginTokenKey);
+      await storage.delete(key: StorageKeys.loginToken.name);
+      await storage.delete(key: StorageKeys.userId.name);
 
       final email = formKey.currentState!.fields['email']!.value;
       final password = formKey.currentState!.fields['password']!.value;
@@ -55,8 +56,10 @@ class LoginPage extends StatelessWidget {
 
       if (loginResponse.statusCode == HttpStatus.ok) {
         final loginToken = loginResponse.data['data']['token'];
+        final userId = loginResponse.data['data']['id'];
 
-        storage.write(key: loginTokenKey, value: loginToken);
+        storage.write(key: StorageKeys.loginToken.name, value: loginToken);
+        storage.write(key: StorageKeys.userId.name, value: userId);
         Get.to(() => const HomeScreen());
       } else if (loginResponse.statusCode == HttpStatus.badRequest) {
         // the error response is in Response<dynamic>, toString + jsonDecode to easily access data

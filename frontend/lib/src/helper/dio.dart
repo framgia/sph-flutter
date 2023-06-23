@@ -14,54 +14,64 @@ const sanctumCsrfCookieUrl = '/sanctum/csrf-cookie';
 const apiUrl = '/api';
 const healthUrl = '$apiUrl/health';
 const loginUrl = '$apiUrl/login';
+const usersUrl = '$apiUrl/users';
+const authUrl = '$apiUrl/auth';
 const logoutUrl = '$apiUrl/logout';
 
 const storage = FlutterSecureStorage();
 
 class NetworkConfig {
-  final _client = Dio()
-    ..options = BaseOptions(
-      baseUrl: baseUrl,
-      connectTimeout: const Duration(seconds: 1),
-      receiveTimeout: const Duration(seconds: 2),
-      contentType: 'application/json',
-      responseType: ResponseType.json,
-      headers: {
-        HttpHeaders.userAgentHeader: "dio",
-        "Connection": "keep-alive",
-        "Accept": 'application/json',
-      },
-    )
-    ..interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) async {
-          // when getCsrftoken() is called, the function puts to storage the csrf token
-          // for any and all subsequent requests, it will contain X-XSRF-TOKEN header
-          final csrfToken = await storage.read(key: csrfTokenKey);
-          if (csrfToken != null) {
-            options.headers['X-XSRF-TOKEN'] = csrfToken;
-          }
+  static final NetworkConfig _singleton = NetworkConfig._internal();
+  late Dio _client;
 
-          // pre-requisite is to login at frontend\lib\src\features\login\login_page.dart
-          // for any and all subsequent requests, the login token will be added to
-          // the headers of the requests
-          final loginToken = await storage.read(key: loginTokenKey);
-          if (loginToken != null) {
-            options.headers['Authorization'] = 'Bearer $loginToken';
-          }
+  factory NetworkConfig() => _singleton;
 
-          return handler.next(options);
+  NetworkConfig._internal() {
+    _client = Dio()
+      ..options = BaseOptions(
+        baseUrl: baseUrl,
+        connectTimeout: const Duration(seconds: 1),
+        receiveTimeout: const Duration(seconds: 2),
+        contentType: 'application/json',
+        responseType: ResponseType.json,
+        headers: {
+          HttpHeaders.userAgentHeader: "dio",
+          "Connection": "keep-alive",
+          "Accept": 'application/json',
         },
-        onError: (e, handler) {
-          return handler.resolve(
-            Response(
+      )
+      ..interceptors.add(
+        InterceptorsWrapper(
+          onRequest: (options, handler) async {
+            // when getCsrftoken() is called, the function puts to storage the csrf token
+            // for any and all subsequent requests, it will contain X-XSRF-TOKEN header
+            final csrfToken = await storage.read(key: StorageKeys.csrfToken.name);
+            if (csrfToken != null) {
+              options.headers['X-XSRF-TOKEN'] = csrfToken;
+            }
+
+            // pre-requisite is to login at frontend\lib\src\features\login\login_page.dart
+            // for any and all subsequent requests, the login token will be added to
+            // the headers of the requests
+            final loginToken = await storage.read(key: StorageKeys.loginToken.name);
+            if (loginToken != null) {
+              options.headers['Authorization'] = 'Bearer $loginToken';
+            }
+
+            return handler.next(options);
+          },
+          onError: (e, handler) {
+            return handler.resolve(
+              Response(
                 requestOptions: e.requestOptions,
                 data: e.response,
-                statusCode: e.response?.statusCode),
-          );
-        },
-      ),
-    );
+                statusCode: e.response?.statusCode,
+              ),
+            );
+          },
+        ),
+      );
+  }
 
   PersistCookieJar? _jar;
   String? csrfTokenValue;
@@ -116,7 +126,7 @@ class NetworkConfig {
       );
 
       await _client.get(sanctumCsrfCookieUrl);
-      await storage.write(key: csrfTokenKey, value: csrfTokenValue);
+      await storage.write(key: StorageKeys.csrfToken.name, value: csrfTokenValue);
 
       return csrfTokenValue;
     } catch (error, stacktrace) {

@@ -30,11 +30,10 @@ class AuthHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const storage = FlutterSecureStorage();
-    final networkConfig = NetworkConfig();
 
     void dropdownCallback(selectedValue) async {
       if (selectedValue == 'logout') {
-        final client = networkConfig.client;
+        final client = NetworkConfig().client;
 
         final logoutResponse = await client.post(
           logoutUrl,
@@ -43,8 +42,8 @@ class AuthHeader extends StatelessWidget {
         if (logoutResponse.statusCode == HttpStatus.ok) {
           final message = logoutResponse.data['data']['message'];
 
-          // delete the stored login key
-          await storage.delete(key: loginTokenKey);
+          // delete the stored login token
+          await storage.delete(key: StorageKeys.loginToken.name);
 
           Get.offAll(() => const LoginPage());
 
