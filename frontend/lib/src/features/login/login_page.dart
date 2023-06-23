@@ -29,15 +29,14 @@ class LoginPage extends StatelessWidget {
     final LoginController loginController = Get.put(LoginController());
     final formKey = GlobalKey<FormBuilderState>();
     const storage = FlutterSecureStorage();
-    final networkConfig = NetworkConfig();
 
     void onSubmit() async {
       // disable the button to prevent multiple requests being sent
       loginController.setLoginButtonEnabled = false;
 
       // note: csrf is for web, web implementation not thoroughly tested
-      await networkConfig.getCsrftoken();
-      final client = networkConfig.client;
+      await NetworkConfig().getCsrftoken();
+      final client = NetworkConfig().client;
       // delete the current stored login key, otherwise
       // frontend\lib\src\helper\dio.dart adds this to the request headers
       await storage.delete(key: StorageKeys.loginToken.name);

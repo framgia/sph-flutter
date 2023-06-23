@@ -102,4 +102,9 @@ class User extends Authenticatable
             })
             ->get();
     }
+
+    public static function usersList()
+    {
+        return User::where(['is_admin' => false])->get();
+    }
 }
