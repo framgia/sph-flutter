@@ -16,16 +16,6 @@ class TransactionSeeder extends Seeder
     public function run()
     {
 
-        function getLatestTransaction($transactionId)
-        {
-            return Transaction::where('account_id', $transactionId)->latest('created_at')->first();
-        }
-
-        function getStartingBalance($latestTransaction)
-        {
-            return $latestTransaction ? $latestTransaction['starting_balance'] + $latestTransaction['transaction_amount'] : 0;
-        }
-
         function processAccounts($accounts)
         {
 
