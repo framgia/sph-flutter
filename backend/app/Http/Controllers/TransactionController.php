@@ -8,14 +8,12 @@ use App\Models\Transaction;
 
 class TransactionController extends Controller
 {
-    public function index($account_id = null)
+    public function index(Account $account = null)
     {
         // For /accounts/{account_id}/transactions
-        if ($account_id) {
+        if ($account) {
             // For shallow nesting
             // See https://laravel.com/docs/8.x/controllers#shallow-nesting
-            $account = Account::where('id', $account_id)->with(['accountTransactions'])->first();
-
             return TransactionResource::collection($account->accountTransactions);
         }
 
