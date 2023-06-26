@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
   @param text, describes the button.
 
+  @param enabled, boolean to enable or disable the button's onPressed callback
+
   @param onPressed, optional function and this is called when user pressed the widget.
 
   @param padding, the padding to be added around the text.
@@ -21,6 +23,7 @@ class Button extends StatelessWidget {
   const Button({
     super.key,
     required this.text,
+    this.enabled = true,
     this.onPressed,
     this.padding,
     this.buttonColor = const Color(0xFF00CCFF),
@@ -30,6 +33,7 @@ class Button extends StatelessWidget {
   });
 
   final String text;
+  final bool enabled;
   final void Function()? onPressed;
   final EdgeInsetsGeometry? padding;
   final Color buttonColor;
@@ -55,10 +59,10 @@ class Button extends StatelessWidget {
             : [],
       ),
       child: TextButton(
-        onPressed: onPressed,
+        onPressed: enabled ? onPressed : null,
         style: TextButton.styleFrom(
           padding: padding,
-          backgroundColor: buttonColor,
+          backgroundColor: enabled ? buttonColor : Colors.grey,
           fixedSize: size,
         ),
         child: Text(

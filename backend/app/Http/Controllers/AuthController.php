@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignupRequest;
 use App\Http\Requests\UpdatePasswordRequest;
-use App\Http\Resources\LogoutResource;
 use App\Http\Resources\LoginResource;
+use App\Http\Resources\LogoutResource;
 use App\Http\Resources\SignupResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -33,7 +32,7 @@ class AuthController extends Controller
     {
         $credentials = $request->validated();
 
-        if (!Auth::attempt($credentials)) {
+        if (! Auth::attempt($credentials)) {
             throw ValidationException::withMessages([
                 'email' => 'Your provided credentials could not be verified.',
             ]);
