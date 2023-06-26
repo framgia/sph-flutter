@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:frontend/src/controllers/change_password_controller.dart';
 import 'package:frontend/src/helper/dio.dart';
+import 'package:frontend/src/helper/snackbar/show_snackbar.dart';
 import 'package:frontend/src/helper/storage.dart';
 
 import 'package:frontend/src/navigators/profile_screen_navigator.dart';
@@ -50,6 +51,11 @@ class ProfileChangePassword extends StatelessWidget {
           profileAppNav.currentState?.popUntil((route) {
             return route.isFirst;
           });
+
+          showSnackbar(
+            title: "Success",
+            content: "Changed password successfully.",
+          );
         } else if (changePasswordResponse.statusCode == HttpStatus.badRequest) {
           // the error response is in Response<dynamic>, toString + jsonDecode to easily access data
           final error = jsonDecode(changePasswordResponse.data.toString());
