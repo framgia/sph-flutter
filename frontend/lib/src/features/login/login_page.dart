@@ -26,8 +26,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormBuilderState> formKey = GlobalKey<FormBuilderState>();
     final LoginController loginController = Get.put(LoginController());
-    final formKey = GlobalKey<FormBuilderState>();
     const storage = FlutterSecureStorage();
 
     void onSubmit() async {
@@ -94,103 +94,116 @@ class LoginPage extends StatelessWidget {
                       formKey.currentState!.fields['email']!.isValid &&
                           formKey.currentState!.fields['password']!.isValid;
                 },
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      margin: const EdgeInsets.only(bottom: 25),
-                      child: Text(
-                        'Log In',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
-                    InputField(
-                      name: 'email',
-                      label: 'Email',
-                      inputType: TextInputType.emailAddress,
-                      obscureText: false,
-                      validator: FormBuilderValidators.compose(
-                        [
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.email(),
+                child: (loginController.checkingLoginToken)
+                    ? SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : Column(
+                        children: [
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.only(bottom: 25),
+                            child: Text(
+                              'Log In',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
+                          InputField(
+                            name: 'email',
+                            label: 'Email',
+                            inputType: TextInputType.emailAddress,
+                            obscureText: false,
+                            validator: FormBuilderValidators.compose(
+                              [
+                                FormBuilderValidators.required(),
+                                FormBuilderValidators.email(),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 36,
+                          ),
+                          InputField(
+                            name: 'password',
+                            label: 'Password',
+                            inputType: TextInputType.visiblePassword,
+                            obscureText: true,
+                            validator: FormBuilderValidators.required(),
+                          ),
+                          Container(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: () {
+                                Get.to(() => const PasswordResetPage());
+                              },
+                              child: Text(
+                                'Forgot Password?',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelSmall!
+                                    .copyWith(
+                                      color: const Color.fromARGB(
+                                        255,
+                                        0,
+                                        163,
+                                        255,
+                                      ),
+                                    ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 50,
+                          ),
+                          Button(
+                            onPressed: loginController.loginButtonEnabled
+                                ? onSubmit
+                                : null,
+                            buttonColor: loginController.loginButtonEnabled
+                                ? const Color(0xFF00CCFF)
+                                : Colors.grey,
+                            text: 'Log In',
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 99,
+                              vertical: 16,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 25,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Don’t have an account? ',
+                                style: Theme.of(context).textTheme.labelSmall,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.to(() => const SignUpFlow());
+                                },
+                                child: Text(
+                                  'Sign Up',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall!
+                                      .copyWith(
+                                        color: const Color.fromARGB(
+                                          255,
+                                          0,
+                                          163,
+                                          255,
+                                        ),
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
-                    ),
-                    const SizedBox(
-                      height: 36,
-                    ),
-                    InputField(
-                      name: 'password',
-                      label: 'Password',
-                      inputType: TextInputType.visiblePassword,
-                      obscureText: true,
-                      validator: FormBuilderValidators.required(),
-                    ),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          Get.to(() => const PasswordResetPage());
-                        },
-                        child: Text(
-                          'Forgot Password?',
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall!
-                              .copyWith(
-                                color: const Color.fromARGB(255, 0, 163, 255),
-                              ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    Button(
-                      onPressed:
-                          loginController.loginButtonEnabled ? onSubmit : null,
-                      buttonColor: loginController.loginButtonEnabled
-                          ? const Color(0xFF00CCFF)
-                          : Colors.grey,
-                      text: 'Log In',
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 99,
-                        vertical: 16,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Don’t have an account? ',
-                          style: Theme.of(context).textTheme.labelSmall,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.to(() => const SignUpFlow());
-                          },
-                          child: Text(
-                            'Sign Up',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelSmall!
-                                .copyWith(
-                                  color: const Color.fromARGB(
-                                    255,
-                                    0,
-                                    163,
-                                    255,
-                                  ),
-                                ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
               ),
             ),
           ),

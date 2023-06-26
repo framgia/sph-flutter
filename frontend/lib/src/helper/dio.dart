@@ -15,6 +15,7 @@ const apiUrl = '/api';
 const healthUrl = '$apiUrl/health';
 const loginUrl = '$apiUrl/login';
 const usersUrl = '$apiUrl/users';
+const userUrl = '$apiUrl/user';
 const authUrl = '$apiUrl/auth';
 const logoutUrl = '$apiUrl/logout';
 
