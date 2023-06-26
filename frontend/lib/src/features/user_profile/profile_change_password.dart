@@ -36,41 +36,46 @@ class ProfileChangePassword extends StatelessWidget {
       // get userId from storage
       final userId = await storage.read(key: StorageKeys.userId.name);
 
-      final changePasswordResponse = await client.put(
-        '$authUrl/$userId',
-        data: {
-          'old_password': controller.oldPassword,
-          'new_password': controller.newPassword,
-          'new_password_confirmation': controller.newPasswordConfirmation,
-        },
-      );
+      try {
+        final changePasswordResponse = await client.put(
+          '$authUrl/$userId',
+          data: {
+            'old_password': controller.oldPassword,
+            'new_password': controller.newPassword,
+            'new_password_confirmation': controller.newPasswordConfirmation,
+          },
+        );
 
-      if (changePasswordResponse.statusCode == HttpStatus.ok) {
-        profileAppNav.currentState?.popUntil((route) {
-          return route.isFirst;
-        });
-      } else if (changePasswordResponse.statusCode == HttpStatus.badRequest) {
-        // the error response is in Response<dynamic>, toString + jsonDecode to easily access data
-        final error = jsonDecode(changePasswordResponse.data.toString());
+        if (changePasswordResponse.statusCode == HttpStatus.ok) {
+          profileAppNav.currentState?.popUntil((route) {
+            return route.isFirst;
+          });
+        } else if (changePasswordResponse.statusCode == HttpStatus.badRequest) {
+          // the error response is in Response<dynamic>, toString + jsonDecode to easily access data
+          final error = jsonDecode(changePasswordResponse.data.toString());
 
-        final message = error['error']['message'];
-        final oldPasswordError = message['old_password'];
-        final newPasswordError = message['new_password'];
-        final newPasswordConfirmationError =
-            message['new_password_confirmation'];
+          final message = error['error']['message'];
+          final oldPasswordError = message['old_password'];
+          final newPasswordError = message['new_password'];
+          final newPasswordConfirmationError =
+              message['new_password_confirmation'];
 
-        if (oldPasswordError.length > 0) {
-          formKey.currentState?.fields['old_password']
-              ?.invalidate(oldPasswordError[0]);
+          if (oldPasswordError.length > 0) {
+            formKey.currentState?.fields['old_password']
+                ?.invalidate(oldPasswordError[0]);
+          }
+          if (newPasswordError.length > 0) {
+            formKey.currentState?.fields['new_password']
+                ?.invalidate(newPasswordError[0]);
+          }
+          if (newPasswordConfirmationError.length > 0) {
+            formKey.currentState?.fields['new_password_confirmation']
+                ?.invalidate(newPasswordConfirmationError[0]);
+          }
         }
-        if (newPasswordError.length > 0) {
-          formKey.currentState?.fields['new_password']
-              ?.invalidate(newPasswordError[0]);
-        }
-        if (newPasswordConfirmationError.length > 0) {
-          formKey.currentState?.fields['new_password_confirmation']
-              ?.invalidate(newPasswordConfirmationError[0]);
-        }
+      } catch (e) {
+        debugPrint("error catched");
+        debugPrint(e.toString());
       }
     }
 

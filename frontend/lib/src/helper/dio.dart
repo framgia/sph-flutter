@@ -34,7 +34,9 @@ class NetworkConfig {
         receiveTimeout: const Duration(seconds: 2),
         contentType: 'application/json',
         responseType: ResponseType.json,
-        headers: {
+        headers: (kIsWeb) ? {
+          "Accept": 'application/json',
+        } : {
           HttpHeaders.userAgentHeader: "dio",
           "Connection": "keep-alive",
           "Accept": 'application/json',

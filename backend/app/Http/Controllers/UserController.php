@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
-use App\Models\User;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\UnauthorizedException;
 
@@ -32,10 +32,10 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        if(Auth::user()->is_admin) {
+        if (Auth::user()->is_admin) {
             if ($user->id == Auth::id()) {
                 throw new Exception('You cannot delete your own account.', 403);
-            } else if ($user->is_admin){
+            } elseif ($user->is_admin) {
                 throw new Exception('You cannot delete an admin user.', 403);
             } else {
                 $user->delete();
