@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('health', function () {
-    return "healthy";
+    return 'healthy';
 });
 Route::post('login', [AuthController::class, 'login']);
 Route::apiResource('auth', AuthController::class)->only('store');
@@ -34,6 +34,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('auth', AuthController::class)->only('update')->parameters(['auth' => 'user']);
     Route::apiResource('users.accounts', AccountController::class)->shallow()->only(['index']);
     Route::apiResource('accounts', AccountController::class)->only(['index', 'show']);
-    Route::apiResource('accounts.transactions', TransactionController::class)->shallow()->only(['index']);
-    Route::apiResource('transactions', TransactionController::class)->only(['index', 'show', 'store']);
+    Route::apiResource('accounts.transactions', TransactionController::class)->shallow()->only(['index', 'store'])->parameters(['accounts' => 'myAccount']);
+    Route::apiResource('transactions', TransactionController::class)->only(['index', 'show']);
 });

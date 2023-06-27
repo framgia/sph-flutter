@@ -16,15 +16,12 @@ class TransactionPostRequest extends FormRequest
      */
     public function authorize()
     {
-        // Check if account_id is bound to user
-        $accountId = $this->input('account_id');
-        $validAccounts = Account::where('user_id', Auth::id())
-            ->where('id', $accountId)->get();
-        if (count($validAccounts) === 0) {
-            return false;
+        // Check if account is bound to user
+        if ($this->myAccount->user_id === Auth::id()) {
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -35,7 +32,6 @@ class TransactionPostRequest extends FormRequest
     public function rules()
     {
         return [
-            'account_id' => 'required|uuid',
             'description' => 'required|string',
             'transaction_type' => ['required', Rule::in(config('enums.transaction_type'))],
             'category' => ['required', Rule::in(config('enums.transaction_category'))],

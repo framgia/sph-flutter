@@ -27,48 +27,16 @@ class TransactionController extends Controller
         return TransactionResource::make($transaction);
     }
 
-    public function store(TransactionPostRequest $request)
+    public function store(Account $myAccount, TransactionPostRequest $request)
     {
-        function processAccounts($payload)
-        {
-
-            $myAccount = Account::findOrFail($payload['account_id']);
-            $myLatestTransaction = getLatestTransaction($myAccount->id);
-
-            if ($payload['transaction_type'] !== 'TRANSFER') {
-
-                return [
-                    [
-                        'account_id' => $myAccount->id,
-                        'user_id' => $myAccount->user_id,
-                        'starting_balance' => getStartingBalance($myLatestTransaction),
-                    ],
-                ];
-            }
-
-            $recAccount = Account::findOrFail($payload['receiver_id']);
-            $recLatestTransaction = getLatestTransaction($recAccount->id);
-
-            return [
-                [
-                    'account_id' => $myAccount->id,
-                    'user_id' => $myAccount->user_id,
-                    'starting_balance' => getStartingBalance($myLatestTransaction),
-                ],
-                [
-                    'account_id' => $recAccount->id,
-                    'user_id' => $recAccount->user_id,
-                    'starting_balance' => getStartingBalance($recLatestTransaction),
-                ],
-            ];
-
-        }
-
         //START
+        // die('here');
+        $payload = $request->validated();
+        $transaction_date = now();
 
-        $payload = $request->collect();
-
-        $accounts = processAccounts($payload);
+        // if ($this->isInvalidTransaction($myAccount, $payload)) {
+        //     return abort(403, 'Not enough credit. Please try again.');
+        // }
 
         if ($payload['transaction_type'] === 'CREDIT') {
             //TODO: Insert Credit Code
@@ -78,36 +46,50 @@ class TransactionController extends Controller
             //TODO: Insert Deposit Code
         }
 
+        $receiverAccount = Account::find($payload['receiver_id']);
+
+        if (! $receiverAccount) {
+            return abort(403, 'Receiver does not exist. Please try again.');
+        }
+
         if ($payload['transaction_type'] === 'TRANSFER') {
-            $transaction_date = now();
             $senderData = [
-                'account_id' => $accounts[0]['account_id'],
-                'user_id' => $accounts[0]['user_id'],
+                'account_id' => $myAccount->id,
+                'user_id' => $myAccount->user_id,
                 'transaction_type' => $payload['transaction_type'],
                 'category' => 'SENDER',
                 'description' => $payload['description'],
-                'starting_balance' => $accounts[0]['starting_balance'],
+                'starting_balance' => $myAccount->getBalance(),
                 'transaction_amount' => $payload['amount'] * -1,
                 'transaction_date' => $transaction_date,
             ];
             $receiverData = [
-                'account_id' => $accounts[1]['account_id'],
-                'user_id' => $accounts[1]['user_id'],
+                'account_id' => $receiverAccount->id,
+                'user_id' => $receiverAccount->user_id,
                 'transaction_type' => $payload['transaction_type'],
                 'category' => 'RECIPIENT',
                 'description' => $payload['description'],
-                'starting_balance' => $accounts[1]['starting_balance'],
+                'starting_balance' => $receiverAccount->getBalance(),
                 'transaction_amount' => $payload['amount'],
                 'transaction_date' => $transaction_date,
             ];
 
             $sendRow = Transaction::create($senderData);
-            $receiverData['transaction_id'] = $sendRow->id;
-            Transaction::create($receiverData);
 
-            return response()->json([
-                'message' => sprintf('Successfully Transferred %s to %s', $payload['amount'], $accounts[1]['account_id']),
-            ], 200);
+            if (! $sendRow->created_at) {
+                abort(403, 'Transaction Failed. Please try again');
+            }
+
+            $receiverData['transaction_id'] = $sendRow->id;
+
+            $receiverRow = Transaction::create($receiverData);
+
+            if (! $receiverRow->created_at) {
+                abort(403, 'Transaction Failed. Please try again');
+                $sendRow->delete();
+            }
+
+            return ( new TransactionResource($senderData))->response()->setStatusCode(200);
         }
     }
 }
