@@ -63,10 +63,11 @@ class TransactionController extends Controller
 
     public function index(Request $request, Account $account = null)
     {
-        //Get transactions by all or through accounts
+        // Get transactions by all or through accounts
+        // For shallow nesting see https://laravel.com/docs/8.x/controllers#shallow-nesting
         $transactions = $account ? $account->accountTransactions : Transaction::all();
 
-        //Filter transactions by transaction type
+        // Filter transactions by transaction type
         if (in_array($request->type, config('enums.transaction_type'))) {
             $transactions = $transactions->where('transaction_type', $request->type);
         }
