@@ -47,6 +47,11 @@ class Account extends Model
 
     public function getBalance()
     {
+
+        // ($transaction->type === DEPT) balance++
+        // ($transaction->type === TRANSFER) balance--
+        // ($transaction->type === CREDIT) balance--
+
         $transaction = $this->accountTransactions()->latest()->first();
         if ($transaction) {
             return $transaction['starting_balance'] + $transaction['transaction_amount'];
