@@ -84,7 +84,7 @@ class TransactionController extends Controller
                 $sendRow->delete();
             }
 
-            return ( new TransactionResource($senderData))->response()->setStatusCode(200);
+            return ( TransactionResource::make($senderData))->response()->setStatusCode(200);
         }
     }
 }
