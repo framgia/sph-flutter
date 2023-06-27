@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Account;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -17,11 +16,7 @@ class TransactionPostRequest extends FormRequest
     public function authorize()
     {
         // Check if account is bound to user
-        if ($this->myAccount->user_id === Auth::id()) {
-            return true;
-        }
-
-        return false;
+        return $this->account->user_id === Auth::id();
     }
 
     /**
@@ -36,7 +31,7 @@ class TransactionPostRequest extends FormRequest
             'transaction_type' => ['required', Rule::in(config('enums.transaction_type'))],
             'category' => ['required', Rule::in(config('enums.transaction_category'))],
             'amount' => 'required|numeric|gt:0',
-            'receiver_id' => 'required_if:transaction_type,TRANSFER|nullable|uuid',
+            'receiver_id' => 'required_if:transaction_type,TRANSFER|nullable|uuid|exists:accounts,id',
         ];
     }
 }
