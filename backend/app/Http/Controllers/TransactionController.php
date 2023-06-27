@@ -74,7 +74,7 @@ class TransactionController extends Controller
         }
 
         // Filter transactions by date
-        if ($request->from && $request->to) {
+        if (strtotime($request->from) && strtotime($request->to)) {
             $transactions = $transactions->whereBetween('created_at', [$request->from, Carbon::make($request->to)->addDays(1)]);
         }
 
