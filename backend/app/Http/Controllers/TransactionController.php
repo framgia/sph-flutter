@@ -7,6 +7,7 @@ use App\Http\Resources\TransactionResource;
 use App\Models\Account;
 use App\Models\Transaction;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
@@ -60,17 +61,18 @@ class TransactionController extends Controller
         return $sendRow;
     }
 
-    public function index(Account $account = null)
+    public function index(Request $request, Account $account = null)
     {
-        // For /accounts/{account_id}/transactions
-        if ($account) {
-            // For shallow nesting
-            // See https://laravel.com/docs/8.x/controllers#shallow-nesting
-            return TransactionResource::collection($account->accountTransactions);
+        // Get transactions by all or through accounts
+        // For shallow nesting see https://laravel.com/docs/8.x/controllers#shallow-nesting
+        $transactions = $account ? $account->accountTransactions : Transaction::all();
+
+        // Filter transactions by transaction type
+        if (in_array($request->type, config('enums.transaction_type'))) {
+            $transactions = $transactions->where('transaction_type', $request->type);
         }
 
-        // For /transactions
-        return TransactionResource::collection(Transaction::all());
+        return TransactionResource::collection($transactions);
     }
 
     public function show(Transaction $transaction)
