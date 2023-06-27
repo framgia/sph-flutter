@@ -6,6 +6,7 @@ use App\Http\Requests\TransactionPostRequest;
 use App\Http\Resources\TransactionResource;
 use App\Models\Account;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -70,6 +71,11 @@ class TransactionController extends Controller
         // Filter transactions by transaction type
         if (in_array($request->type, config('enums.transaction_type'))) {
             $transactions = $transactions->where('transaction_type', $request->type);
+        }
+
+        // Filter transactions by date
+        if ($request->from && $request->to) {
+            $transactions = $transactions->whereBetween('created_at', [$request->from, Carbon::make($request->to)->addDays(1)]);
         }
 
         return TransactionResource::collection($transactions);
