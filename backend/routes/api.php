@@ -25,6 +25,9 @@ Route::get('health', function () {
 Route::post('login', [AuthController::class, 'login']);
 Route::apiResource('auth', AuthController::class)->only('store');
 
+Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('reset-password', [AuthController::class, 'resetPassword']);
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('user', function (Request $request) {
