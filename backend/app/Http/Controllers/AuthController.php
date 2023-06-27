@@ -79,10 +79,10 @@ class AuthController extends Controller
 
     public function forgotPassword(ForgotPasswordRequest $request)
     {
-        $validatedEmail = $request->validated();
+        $validated = $request->validated();
 
         $status = Password::sendResetLink(
-            ['email' => $validatedEmail['email']]
+            ['email' => $validated['email']]
         );
 
         if ($status === Password::RESET_LINK_SENT) {
@@ -91,8 +91,8 @@ class AuthController extends Controller
             ]);
         } else {
             throw ValidationException::withMessages([
-                'message' => ['Unable to send the reset link again, please double check your email'],
-            ], 400);
+                'message' => 'Unable to send the reset link again, please double check your email',
+            ]);
         }
     }
 
