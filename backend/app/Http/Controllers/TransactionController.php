@@ -14,6 +14,38 @@ use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
+    public static function creditTransaction(Account $account, $payload)
+    {
+        $transaction_date = now();
+        $senderData = [
+            'account_id' => $account->id,
+            'user_id' => $account->user_id,
+            'transaction_type' => $payload['transaction_type'],
+            'category' => 'SENDER',
+            'description' => $payload['description'],
+            'starting_balance' => $account->getBalance(),
+            'transaction_amount' => $payload['amount'] * -1,
+            'transaction_date' => $transaction_date,
+        ];
+
+        DB::beginTransaction();
+        try {
+
+            $sendRow = Transaction::create($senderData);
+
+            if (! $sendRow->created_at) {
+                throw new Exception('Transaction Failed. Please try again');
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+
+        return $sendRow;
+    }
+
     public static function transferTransaction(Account $account, Account $receiverAccount, $payload)
     {
         $transaction_date = now();
@@ -95,27 +127,30 @@ class TransactionController extends Controller
         //START
         $payload = $request->validated();
 
-        // - to account
-        if ($payload['transaction_type'] === 'CREDIT') {
-            //TODO: Insert Credit Code
-        }
+        try {
+            // - to account
+            if ($payload['transaction_type'] === 'CREDIT') {
+                $sendRow = $this->creditTransaction($account, $payload);
 
-        // + to $account
-        if ($payload['transaction_type'] === 'DEPT') {
-            //TODO: Insert Deposit Code
-        }
+                return TransactionResource::make($sendRow);
+            }
 
-        // - to $account , + to $receiverAccount
-        $receiverAccount = Account::find($payload['receiver_id']);
+            // + to $account
+            if ($payload['transaction_type'] === 'DEPT') {
+                abort(404, 'Transaction type not found'); //TODO: Insert Deposit Code
+            }
 
-        if ($payload['transaction_type'] === 'TRANSFER') {
-            try {
+            // - to $account , + to $receiverAccount
+            $receiverAccount = Account::find($payload['receiver_id']);
+
+            if ($payload['transaction_type'] === 'TRANSFER') {
                 $sendRow = $this->transferTransaction($account, $receiverAccount, $payload);
 
                 return TransactionResource::make($sendRow);
-            } catch (\Exception $e) {
-                abort(403, $e->getMessage());
             }
+
+        } catch (\Exception $e) {
+            abort(403, $e->getMessage());
         }
     }
 }
