@@ -30,13 +30,8 @@ class TransactionController extends Controller
     public function store(Account $myAccount, TransactionPostRequest $request)
     {
         //START
-        // die('here');
         $payload = $request->validated();
         $transaction_date = now();
-
-        // if ($this->isInvalidTransaction($myAccount, $payload)) {
-        //     return abort(403, 'Not enough credit. Please try again.');
-        // }
 
         if ($payload['transaction_type'] === 'CREDIT') {
             //TODO: Insert Credit Code
