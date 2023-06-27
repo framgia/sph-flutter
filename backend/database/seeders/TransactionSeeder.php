@@ -16,32 +16,19 @@ class TransactionSeeder extends Seeder
     public function run()
     {
 
-        function getLatestTransaction($transactionId)
-        {
-            return Transaction::where('account_id', $transactionId)->latest('created_at')->first();
-        }
-
-        function getStartingBalance($latestTransaction)
-        {
-            return $latestTransaction ? $latestTransaction['starting_balance'] + $latestTransaction['transaction_amount'] : 0;
-        }
-
         function processAccounts($accounts)
         {
-
-            $latestTransaction1 = getLatestTransaction($accounts[0]->id);
-            $latestTransaction2 = getLatestTransaction($accounts[1]->id);
 
             $accounts[0] = [
                 'id' => $accounts[0]->id,
                 'user_id' => $accounts[0]->user_id,
-                'starting_balance' => getStartingBalance($latestTransaction1),
+                'starting_balance' => $accounts[0]->getBalance(),
             ];
 
             $accounts[1] = [
                 'id' => $accounts[1]->id,
                 'user_id' => $accounts[1]->user_id,
-                'starting_balance' => getStartingBalance($latestTransaction2),
+                'starting_balance' => $accounts[1]->getBalance(),
             ];
 
             return $accounts;
@@ -50,7 +37,7 @@ class TransactionSeeder extends Seeder
         $type_enums = config('enums.transaction_type');
         $category_enums = config('enums.transaction_category');
 
-        for ($i = 0; $i <= 20; $i++) {
+        for ($transactionNumber = 0; $transactionNumber <= 100; $transactionNumber++) {
             $accounts = Account::inRandomOrder()->take(2)->get();
             $accounts = processAccounts($accounts);
             $transaction_type = $type_enums[rand(0, 2)];
@@ -60,11 +47,10 @@ class TransactionSeeder extends Seeder
             if ($transaction_type === 'CREDIT') {
                 $transaction_amount = $transaction_amount * -1;
                 // Turn Credit to Deposit when Credit transaction results in less than 0
-                // Remove comments if negative values are not allowed
-                // if ($transaction_amount + $accounts[0]['starting_balance'] < 0) {
-                //     $transaction_type = 'DEPT';
-                //     $transaction_amount = $transaction_amount * -1;
-                // }
+                if ($transaction_amount + $accounts[0]['starting_balance'] < 0) {
+                    $transaction_type = 'DEPT';
+                    $transaction_amount = $transaction_amount * -1;
+                }
             }
 
             if ($transaction_type === 'DEPT') {
@@ -72,8 +58,6 @@ class TransactionSeeder extends Seeder
             }
 
             if ($transaction_type === 'TRANSFER') {
-                //Question: Should i cap transfer amount to starting balance to prevent negative values?
-
                 $sender = Transaction::factory()->create([
                     'account_id' => $accounts[0]['id'],
                     'user_id' => $accounts[0]['user_id'],
@@ -82,6 +66,11 @@ class TransactionSeeder extends Seeder
                     'starting_balance' => $accounts[0]['starting_balance'],
                     'transaction_amount' => $transaction_amount * -1,
                 ]);
+
+                if (! $sender->created_at) {
+                    return;
+                }
+
                 Transaction::factory()->create([
                     'account_id' => $accounts[1]['id'],
                     'user_id' => $accounts[1]['user_id'],

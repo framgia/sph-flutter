@@ -22,6 +22,7 @@ class Transaction extends Model
         'transaction_date',
         'transaction_type',
         'category',
+        'description',
         'transaction_id',
         'starting_balance',
         'transaction_amount',
