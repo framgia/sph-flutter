@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -81,5 +82,24 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    /**
+     * Get the list of searched users base on the keyword.
+     *
+     * @param string|null $keyword
+     * @return object
+     */
+    public static function searchUsers(String | null $keyword)
+    {
+        return User::where('is_admin', false)
+            ->where(function ($query) use ($keyword) {
+                $query->where('first_name', 'LIKE', "%{$keyword}%")
+                    ->orWhere('middle_name', 'LIKE', "%{$keyword}%")
+                    ->orWhere('last_name', 'LIKE', "%{$keyword}%")
+                    ->orWhere(DB::raw('CONCAT(first_name," ",last_name)'), 'LIKE', "%{$keyword}%")
+                    ->orWhere(DB::raw('CONCAT(first_name," ",middle_name," ",last_name)'), 'LIKE', "%{$keyword}%");
+            })
+            ->get();
     }
 }
