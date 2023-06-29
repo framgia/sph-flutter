@@ -17,6 +17,8 @@ const loginUrl = '$apiUrl/login';
 const usersUrl = '$apiUrl/users';
 const authUrl = '$apiUrl/auth';
 const logoutUrl = '$apiUrl/logout';
+const forgotPasswordtUrl = '$apiUrl/forgot-password';
+const resetPasswordtUrl = '$apiUrl/reset-password';
 
 const storage = FlutterSecureStorage();
 
@@ -34,20 +36,23 @@ class NetworkConfig {
         receiveTimeout: const Duration(seconds: 2),
         contentType: 'application/json',
         responseType: ResponseType.json,
-        headers: (kIsWeb) ? {
-          "Accept": 'application/json',
-        } : {
-          HttpHeaders.userAgentHeader: "dio",
-          "Connection": "keep-alive",
-          "Accept": 'application/json',
-        },
+        headers: (kIsWeb)
+            ? {
+                "Accept": 'application/json',
+              }
+            : {
+                HttpHeaders.userAgentHeader: "dio",
+                "Connection": "keep-alive",
+                "Accept": 'application/json',
+              },
       )
       ..interceptors.add(
         InterceptorsWrapper(
           onRequest: (options, handler) async {
             // when getCsrftoken() is called, the function puts to storage the csrf token
             // for any and all subsequent requests, it will contain X-XSRF-TOKEN header
-            final csrfToken = await storage.read(key: StorageKeys.csrfToken.name);
+            final csrfToken =
+                await storage.read(key: StorageKeys.csrfToken.name);
             if (csrfToken != null) {
               options.headers['X-XSRF-TOKEN'] = csrfToken;
             }
@@ -55,7 +60,8 @@ class NetworkConfig {
             // pre-requisite is to login at frontend\lib\src\features\login\login_page.dart
             // for any and all subsequent requests, the login token will be added to
             // the headers of the requests
-            final loginToken = await storage.read(key: StorageKeys.loginToken.name);
+            final loginToken =
+                await storage.read(key: StorageKeys.loginToken.name);
             if (loginToken != null) {
               options.headers['Authorization'] = 'Bearer $loginToken';
             }
@@ -128,7 +134,8 @@ class NetworkConfig {
       );
 
       await _client.get(sanctumCsrfCookieUrl);
-      await storage.write(key: StorageKeys.csrfToken.name, value: csrfTokenValue);
+      await storage.write(
+          key: StorageKeys.csrfToken.name, value: csrfTokenValue);
 
       return csrfTokenValue;
     } catch (error, stacktrace) {

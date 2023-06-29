@@ -91,7 +91,7 @@ class AuthController extends Controller
             ]);
         } else {
             throw ValidationException::withMessages([
-                'message' => 'Unable to send the reset link again, please double check your email',
+                'email' => ['Unable to send the reset link again, please double check your email'],
             ]);
         }
     }
@@ -105,7 +105,7 @@ class AuthController extends Controller
 
         if (! $user || Hash::check($validated['password'], $user->password)) {
             throw ValidationException::withMessages([
-                'message' => 'password should not be an old password',
+                'password' => 'password should not be an old password',
             ]);
         }
 
@@ -135,7 +135,7 @@ class AuthController extends Controller
             ]);
         } else {
             throw ValidationException::withMessages([
-                'message' => 'Your provided credentials could not be verified.',
+                'password' => 'Your provided token could not be verified.',
             ]);
         }
     }
