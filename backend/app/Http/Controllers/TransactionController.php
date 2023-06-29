@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FilterTransactionRequest;
 use App\Http\Requests\TransactionPostRequest;
 use App\Http\Resources\TransactionResource;
 use App\Models\Account;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Exception;
-use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
@@ -61,15 +63,23 @@ class TransactionController extends Controller
         return $sendRow;
     }
 
-    public function index(Request $request, Account $account = null)
+    public function index(FilterTransactionRequest $request, Account $account = null)
     {
+        $filters = $request->validated();
+
         // Get transactions by all or through accounts
         // For shallow nesting see https://laravel.com/docs/8.x/controllers#shallow-nesting
         $transactions = $account ? $account->accountTransactions : Transaction::all();
 
         // Filter transactions by transaction type
+        // TODO: add validation filter by transaction type
         if (in_array($request->type, config('enums.transaction_type'))) {
             $transactions = $transactions->where('transaction_type', $request->type);
+        }
+
+        // Filter transactions by date
+        if (Arr::has($filters, ['from', 'to'])) {
+            $transactions = $transactions->whereBetween('created_at', [$filters['from'], Carbon::make($filters['to'])->addDays(1)]);
         }
 
         return TransactionResource::collection($transactions);
