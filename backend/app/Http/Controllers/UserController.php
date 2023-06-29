@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
+use App\Http\Requests\SearchUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Exception;
@@ -45,5 +46,14 @@ class UserController extends Controller
         } else {
             throw new UnauthorizedException('This action is unauthorized.', 401);
         }
+    }
+
+    public function search(SearchUserRequest $request)
+    {
+        $validated = $request->validated();
+
+        $users = User::searchUsers($validated['keyword']);
+
+        return UserResource::make($users);
     }
 }
