@@ -18,6 +18,7 @@ class User {
     String email;
     String address;
     DateTime birthday;
+    String? token;
 
     User({
         required this.id,
@@ -29,6 +30,7 @@ class User {
         required this.email,
         required this.address,
         required this.birthday,
+        this.token,
     });
 
     factory User.fromJson(Map<String, dynamic> json) => User(
@@ -41,6 +43,7 @@ class User {
         email: json["email"],
         address: json["address"],
         birthday: DateTime.parse(json["birthday"]),
+        token: json["token"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -53,5 +56,6 @@ class User {
         "email": email,
         "address": address,
         "birthday": birthday.toIso8601String(),
+        "token": token,
     };
 }
