@@ -2,15 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\ForgotPasswordRequest;
+use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignupRequest;
 use App\Http\Requests\UpdatePasswordRequest;
+use App\Http\Resources\ForgotPasswordResource;
 use App\Http\Resources\LoginResource;
 use App\Http\Resources\LogoutResource;
+use App\Http\Resources\ResetPasswordResource;
 use App\Http\Resources\SignupResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -67,5 +75,68 @@ class AuthController extends Controller
         $user->update(['password' => $userPassword['new_password']]);
 
         return UserResource::make(['message' => 'Password updated successfully.']);
+    }
+
+    public function forgotPassword(ForgotPasswordRequest $request)
+    {
+        $validated = $request->validated();
+
+        $status = Password::sendResetLink(
+            ['email' => $validated['email']]
+        );
+
+        if ($status === Password::RESET_LINK_SENT) {
+            return ForgotPasswordResource::make([
+                'message' => 'The link was sent, please check your email',
+            ]);
+        } else {
+            throw ValidationException::withMessages([
+                'message' => 'Unable to send the reset link again, please double check your email',
+            ]);
+        }
+    }
+
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        // Reset the user's password
+        $validated = $request->validated();
+
+        $user = User::where('email', $validated['email'])->first();
+
+        if (! $user || Hash::check($validated['password'], $user->password)) {
+            throw ValidationException::withMessages([
+                'message' => 'password should not be an old password',
+            ]);
+        }
+
+        $status = Password::reset(
+            [
+                'email' => $validated['email'],
+                'password' => $validated['password'],
+                'token' => $validated['token'],
+            ],
+            function ($user) use ($validated) {
+                $user->forceFill([
+                    'password' => $validated['password'],
+                    'remember_token' => Str::random(60),
+                ])->save();
+
+                // Delete all existing tokens associated with the user
+                $user->tokens()->delete();
+
+                // Trigger the PasswordReset event
+                event(new PasswordReset($user));
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+            return ResetPasswordResource::make([
+                ['message' => 'Password was reset successfully'],
+            ]);
+        } else {
+            throw ValidationException::withMessages([
+                'message' => 'Your provided credentials could not be verified.',
+            ]);
+        }
     }
 }
