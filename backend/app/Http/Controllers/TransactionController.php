@@ -14,107 +14,17 @@ use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
-    public static function creditTransaction(Account $account, $payload)
+    public function index(Account $account = null)
     {
-        $transaction_date = now();
-        $senderData = [
-            'account_id' => $account->id,
-            'user_id' => $account->user_id,
-            'transaction_type' => $payload['transaction_type'],
-            'category' => 'SENDER',
-            'description' => $payload['description'],
-            'starting_balance' => $account->getBalance(),
-            'transaction_amount' => $payload['amount'] * -1,
-            'transaction_date' => $transaction_date,
-        ];
-
-        DB::beginTransaction();
-        try {
-
-            $sendRow = Transaction::create($senderData);
-
-            if (! $sendRow->created_at) {
-                throw new Exception('Transaction Failed. Please try again');
-            }
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-            throw $e;
+        // For /accounts/{account_id}/transactions
+        if ($account) {
+            // For shallow nesting
+            // See https://laravel.com/docs/8.x/controllers#shallow-nesting
+            return TransactionResource::collection($account->accountTransactions);
         }
 
-        return $sendRow;
-    }
-
-    public static function transferTransaction(Account $account, Account $receiverAccount, $payload)
-    {
-        $transaction_date = now();
-        $senderData = [
-            'account_id' => $account->id,
-            'user_id' => $account->user_id,
-            'transaction_type' => $payload['transaction_type'],
-            'category' => 'SENDER',
-            'description' => $payload['description'],
-            'starting_balance' => $account->getBalance(),
-            'transaction_amount' => $payload['amount'] * -1,
-            'transaction_date' => $transaction_date,
-        ];
-        $receiverData = [
-            'account_id' => $receiverAccount->id,
-            'user_id' => $receiverAccount->user_id,
-            'transaction_type' => $payload['transaction_type'],
-            'category' => 'RECIPIENT',
-            'description' => $payload['description'],
-            'starting_balance' => $receiverAccount->getBalance(),
-            'transaction_amount' => $payload['amount'],
-            'transaction_date' => $transaction_date,
-        ];
-
-        DB::beginTransaction();
-        try {
-
-            $sendRow = Transaction::create($senderData);
-
-            if (! $sendRow->created_at) {
-                throw new Exception('Transaction Failed. Please try again');
-            }
-
-            $receiverData['transaction_id'] = $sendRow->id;
-
-            $receiverRow = Transaction::create($receiverData);
-
-            if (! $receiverRow->created_at) {
-                throw new Exception('Transaction Failed. Please try again');
-            }
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-            throw $e;
-        }
-
-        return $sendRow;
-    }
-
-    public function index(FilterTransactionRequest $request, Account $account = null)
-    {
-        $filters = $request->validated();
-
-        // Get transactions by all or through accounts
-        // For shallow nesting see https://laravel.com/docs/8.x/controllers#shallow-nesting
-        $transactions = $account ? $account->accountTransactions : Transaction::all();
-
-        // Filter transactions by transaction type
-        // TODO: add validation filter by transaction type
-        if (in_array($request->type, config('enums.transaction_type'))) {
-            $transactions = $transactions->where('transaction_type', $request->type);
-        }
-
-        // Filter transactions by date
-        if (Arr::has($filters, ['from', 'to'])) {
-            $transactions = $transactions->whereBetween('created_at', [$filters['from'], Carbon::make($filters['to'])->addDays(1)]);
-        }
-
-        return TransactionResource::collection($transactions);
+        // For /transactions
+        return TransactionResource::collection(Transaction::all());
     }
 
     public function show(Transaction $transaction)
@@ -152,5 +62,86 @@ class TransactionController extends Controller
         } catch (\Exception $e) {
             abort(403, $e->getMessage());
         }
+    }
+
+    private function creditTransaction(Account $account, $payload)
+    {
+        $transaction_date = now();
+        $senderData = [
+            'account_id' => $account->id,
+            'user_id' => $account->user_id,
+            'transaction_type' => $payload['transaction_type'],
+            'category' => 'SENDER',
+            'description' => $payload['description'],
+            'starting_balance' => $account->getBalance(),
+            'transaction_amount' => $payload['amount'] * -1,
+            'transaction_date' => $transaction_date,
+        ];
+
+        return DB::transaction(function () use ($senderData) {
+
+            try {
+
+                $sendRow = Transaction::create($senderData);
+
+                if (! $sendRow->created_at) {
+                    throw new Exception('Transaction Failed. Please try again');
+                }
+
+                return $sendRow;
+            } catch (\Exception $e) {
+                throw $e;
+            }
+
+        }, 5);
+    }
+
+    private function transferTransaction(Account $account, Account $receiverAccount, $payload)
+    {
+
+        $transaction_date = now();
+        $senderData = [
+            'account_id' => $account->id,
+            'user_id' => $account->user_id,
+            'transaction_type' => $payload['transaction_type'],
+            'category' => 'SENDER',
+            'description' => $payload['description'],
+            'starting_balance' => $account->getBalance(),
+            'transaction_amount' => $payload['amount'] * -1,
+            'transaction_date' => $transaction_date,
+        ];
+        $receiverData = [
+            'account_id' => $receiverAccount->id,
+            'user_id' => $receiverAccount->user_id,
+            'transaction_type' => $payload['transaction_type'],
+            'category' => 'RECIPIENT',
+            'description' => $payload['description'],
+            'starting_balance' => $receiverAccount->getBalance(),
+            'transaction_amount' => $payload['amount'],
+            'transaction_date' => $transaction_date,
+        ];
+
+        return DB::transaction(function () use ($senderData, $receiverData) {
+            try {
+                $sendRow = Transaction::create($senderData);
+
+                if (! $sendRow->created_at) {
+                    throw new Exception('Transaction Failed. Please try again');
+                }
+
+                $receiverData['transaction_id'] = $sendRow->id;
+
+                $receiverRow = Transaction::create($receiverData);
+
+                if (! $receiverRow->created_at) {
+                    throw new Exception('Transaction Failed. Please try again');
+                }
+
+                return $sendRow;
+            } catch (\Exception $e) {
+                throw $e;
+            }
+        }, 5);
+
     }
 }
