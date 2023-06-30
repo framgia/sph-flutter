@@ -45,6 +45,13 @@ class Handler extends ExceptionHandler
                         'error' => ['message' => $errors, 'code' => 400],
                     ], 400);
                 }
+                if ($e instanceof TransactionException) {
+                    $errors = $e;
+
+                    return response()->json([
+                        'error' => ['message' => $e->getError(), 'code' => 400],
+                    ], 400);
+                }
             } else {
                 return response()->json(['error' => $e->getMessage()], 500);
             }
