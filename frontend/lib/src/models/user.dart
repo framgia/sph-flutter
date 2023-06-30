@@ -18,9 +18,6 @@ class User {
     String email;
     String address;
     DateTime birthday;
-    dynamic deletedAt;
-    DateTime createdAt;
-    DateTime updatedAt;
 
     User({
         required this.id,
@@ -32,9 +29,6 @@ class User {
         required this.email,
         required this.address,
         required this.birthday,
-        this.deletedAt,
-        required this.createdAt,
-        required this.updatedAt,
     });
 
     factory User.fromJson(Map<String, dynamic> json) => User(
@@ -47,9 +41,6 @@ class User {
         email: json["email"],
         address: json["address"],
         birthday: DateTime.parse(json["birthday"]),
-        deletedAt: json["deleted_at"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
     );
 
     Map<String, dynamic> toJson() => {
@@ -62,8 +53,5 @@ class User {
         "email": email,
         "address": address,
         "birthday": birthday.toIso8601String(),
-        "deleted_at": deletedAt,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
     };
 }

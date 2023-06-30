@@ -87,10 +87,9 @@ class User extends Authenticatable
     /**
      * Get the list of searched users base on the keyword.
      *
-     * @param string|null $keyword
      * @return object
      */
-    public static function searchUsers(String | null $keyword)
+    public static function searchUsers(string|null $keyword)
     {
         return User::where('is_admin', false)
             ->where(function ($query) use ($keyword) {
@@ -101,10 +100,5 @@ class User extends Authenticatable
                     ->orWhere(DB::raw('CONCAT(first_name," ",middle_name," ",last_name)'), 'LIKE', "%{$keyword}%");
             })
             ->get();
-    }
-
-    public static function usersList()
-    {
-        return User::where(['is_admin' => false])->get();
     }
 }

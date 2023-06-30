@@ -14,7 +14,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        return UserResource::collection(User::usersList());
+        return UserResource::collection(User::all());
     }
 
     public function update(ProfileRequest $request, User $user)

@@ -54,6 +54,7 @@ class AdminUserListPage extends StatelessWidget {
                           User user = controller.users.elementAt(index);
                           return UserListTile(
                             name: '${user.firstName} ${user.lastName}',
+                            isAdmin: user.isAdmin == 1,
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) {
