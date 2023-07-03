@@ -87,10 +87,9 @@ class User extends Authenticatable
     /**
      * Get the list of searched users base on the keyword.
      *
-     * @param string|null $keyword
      * @return object
      */
-    public static function searchUsers(String | null $keyword)
+    public static function searchUsers(string|null $keyword)
     {
         return User::where('is_admin', false)
             ->where(function ($query) use ($keyword) {
