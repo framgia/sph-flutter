@@ -17,6 +17,7 @@ use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -40,7 +41,7 @@ class AuthController extends Controller
     {
         $credentials = $request->validated();
 
-        if (! Auth::attempt($credentials)) {
+        if (!Auth::attempt($credentials)) {
             throw ValidationException::withMessages([
                 'email' => 'Your provided credentials could not be verified.',
             ]);
@@ -85,6 +86,8 @@ class AuthController extends Controller
             ['email' => $validated['email']]
         );
 
+        Log::debug("Send Reset Link Status: [ $status ]");
+
         if ($status === Password::RESET_LINK_SENT) {
             return ForgotPasswordResource::make([
                 'message' => 'The link was sent, please check your email',
@@ -103,7 +106,7 @@ class AuthController extends Controller
 
         $user = User::where('email', $validated['email'])->first();
 
-        if (! $user || Hash::check($validated['password'], $user->password)) {
+        if (!$user || Hash::check($validated['password'], $user->password)) {
             throw ValidationException::withMessages([
                 'password' => 'password should not be an old password',
             ]);

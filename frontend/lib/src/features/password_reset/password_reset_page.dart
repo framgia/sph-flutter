@@ -21,19 +21,19 @@ import 'package:frontend/src/components/button.dart';
 */
 class PasswordResetPage extends StatelessWidget {
   const PasswordResetPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     //LoginController is being used here
     //so that the button will disable and to avoid duplicated code
     final LoginController loginController = Get.put(LoginController());
     final formKey = GlobalKey<FormBuilderState>();
-    final networkConfig = NetworkConfig();
 
     void onSubmit() async {
       // disable the button to prevent multiple requests being sent
       loginController.setLoginButtonEnabled = false;
 
-      final client = networkConfig.client;
+      final client = NetworkConfig().client;
 
       final email = formKey.currentState!.fields['email']!.value;
 
@@ -44,7 +44,9 @@ class PasswordResetPage extends StatelessWidget {
         },
       );
 
-      if (forgotPasswordResponse.statusCode != HttpStatus.badRequest) {
+      debugPrint('${forgotPasswordResponse.statusCode}');
+
+      if (forgotPasswordResponse.statusCode == HttpStatus.ok) {
         showAlertDialog(
           title: 'SUCCESS',
           content: 'The link was sent, please check your email',
@@ -52,20 +54,23 @@ class PasswordResetPage extends StatelessWidget {
             Get.to(ResetPasswordPage(emailValue: email));
           },
         );
-      } else {
+      } else if (forgotPasswordResponse.statusCode == HttpStatus.badRequest) {
         // the error response is in Response<dynamic>, toString + jsonDecode to easily access data
         final error = jsonDecode(forgotPasswordResponse.data.toString());
-        // just use the first validation error (if many)
         final message = error['error']['message']['email'][0];
-        message == 'The selected email is invalid.'
-            ? formKey.currentState?.fields['email']?.invalidate(message)
-            : showAlertDialog(
-                title: 'ERROR',
-                content: message,
-                onClick: () {
-                  Get.to(ResetPasswordPage(emailValue: email));
-                },
-              );
+
+        debugPrint("message $message");
+        if (message == 'The selected email is invalid.') {
+          formKey.currentState?.fields['email']?.invalidate(message);
+        } else {
+          showAlertDialog(
+            title: 'ERROR',
+            content: message,
+            onClick: () {
+              Get.to(ResetPasswordPage(emailValue: email));
+            },
+          );
+        }
       }
     }
 
