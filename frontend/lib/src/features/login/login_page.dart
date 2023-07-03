@@ -59,9 +59,9 @@ class LoginPage extends StatelessWidget {
         final userId = loginResponse.data['data']['id'];
         final isAdmin = loginResponse.data['data']['is_admin'];
 
-        storage.write(key: StorageKeys.loginToken.name, value: loginToken);
-        storage.write(key: StorageKeys.userId.name, value: userId);
-        storage.write(key: StorageKeys.isAdmin.name, value: isAdmin.toString());
+        await storage.write(key: StorageKeys.loginToken.name, value: loginToken);
+        await storage.write(key: StorageKeys.userId.name, value: userId);
+        await storage.write(key: StorageKeys.isAdmin.name, value: isAdmin.toString());
         Get.to(() => const HomeScreen());
       } else if (loginResponse.statusCode == HttpStatus.badRequest) {
         // the error response is in Response<dynamic>, toString + jsonDecode to easily access data

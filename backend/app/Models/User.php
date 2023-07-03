@@ -85,12 +85,21 @@ class User extends Authenticatable
     }
 
     /**
+     * returns list of users where current logged in user is not included
+     */
+    public static function usersList($id)
+    {
+        return User::where('id', '!=', $id)->get();
+    }
+
+    /**
      * Get the list of searched users base on the keyword.
      *
      * @return object
      */
     public static function searchUsers(string|null $keyword)
     {
+        // TODO : exclude current logged in user
         return User::where('is_admin', false)
             ->where(function ($query) use ($keyword) {
                 $query->where('first_name', 'LIKE', "%{$keyword}%")

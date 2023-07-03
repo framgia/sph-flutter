@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:frontend/src/components/breadcrumb.dart';
 import 'package:frontend/src/components/input/search_field.dart';
@@ -19,78 +17,64 @@ class AdminUserListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     AdminUserListController controller = Get.put(AdminUserListController());
 
-    return FutureBuilder(
-      future: controller.getUserId(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return const SizedBox();
-        }
-
-        return GetX<AdminUserListController>(
-            builder: (_) => RefreshIndicator(
-              onRefresh: () {
-                return controller.getUsers();
-              },
+    return GetX<AdminUserListController>(
+      builder: (_) => RefreshIndicator(
+        onRefresh: () {
+          return controller.getUsers();
+        },
+        child: Column(
+          children: [
+            const Breadcrumb(
+              text: "List of Users",
+              withBackIcon: false,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
-                  const Breadcrumb(
-                    text: "List of Users",
-                    withBackIcon: false,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          alignment: Alignment.center,
-                          child: const SearchField(
-                            name: "name",
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 25,
-                        ),
-                        Container(
-                          color: Colors.white,
-                          height: MediaQuery.of(context).size.height * 0.38,
-                          child: MediaQuery.removePadding(
-                            removeTop: true,
-                            context: context,
-                            child: ListView.separated(
-                              shrinkWrap: true,
-                              itemBuilder: (BuildContext context, int index) {
-                                User user = controller.users.elementAt(index);
-
-                                if (user.id == snapshot.data) return null;
-
-                                return UserListTile(
-                                  name: '${user.firstName} ${user.lastName}',
-                                  isAdmin: user.isAdmin == 1,
-                                );
-                              },
-                              separatorBuilder:
-                                  (BuildContext context, int index) {
-                                return const Divider(
-                                  height: 1,
-                                  color: Color.fromRGBO(109, 120, 129, 1),
-                                );
-                              },
-                              itemCount: max(
-                                0,
-                                controller.users.length,
-                              ), // prevent negative itemcount
-                            ),
-                          ),
-                        ),
-                      ],
+                  Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    child: const SearchField(
+                      name: "name",
                     ),
-                  )
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Container(
+                    color: Colors.white,
+                    height: MediaQuery.of(context).size.height * 0.38,
+                    child: MediaQuery.removePadding(
+                      removeTop: true,
+                      context: context,
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          User user = controller.users.elementAt(index);
+
+                          return UserListTile(
+                            name: '${user.firstName} ${user.lastName}',
+                            isAdmin: user.isAdmin == 1,
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Divider(
+                            height: 1,
+                            color: Color.fromRGBO(109, 120, 129, 1),
+                          );
+                        },
+                        itemCount: controller.users.length,
+                        // prevent negative itemcount
+                      ),
+                    ),
+                  ),
                 ],
               ),
-            ),
-        );
-      },
+            )
+          ],
+        ),
+      ),
     );
   }
 }
