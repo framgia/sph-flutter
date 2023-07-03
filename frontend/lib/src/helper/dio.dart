@@ -17,7 +17,7 @@ const loginUrl = '$apiUrl/login';
 const usersUrl = '$apiUrl/users';
 const authUrl = '$apiUrl/auth';
 const logoutUrl = '$apiUrl/logout';
-const forgotPasswordtUrl = '$apiUrl/forgot-password';
+const forgotPasswordUrl = '$apiUrl/forgot-password';
 const resetPasswordtUrl = '$apiUrl/reset-password';
 
 const storage = FlutterSecureStorage();

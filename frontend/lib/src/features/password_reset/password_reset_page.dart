@@ -38,13 +38,21 @@ class PasswordResetPage extends StatelessWidget {
       final email = formKey.currentState!.fields['email']!.value;
 
       final forgotPasswordResponse = await client.post(
-        forgotPasswordtUrl,
+        forgotPasswordUrl,
         data: {
           'email': email,
         },
       );
 
-      if (forgotPasswordResponse.statusCode == HttpStatus.badRequest) {
+      if (forgotPasswordResponse.statusCode != HttpStatus.badRequest) {
+        showAlertDialog(
+          title: 'SUCCESS',
+          content: 'The link was sent, please check your email',
+          onClick: () {
+            Get.to(ResetPasswordPage(emailValue: email));
+          },
+        );
+      } else {
         // the error response is in Response<dynamic>, toString + jsonDecode to easily access data
         final error = jsonDecode(forgotPasswordResponse.data.toString());
         // just use the first validation error (if many)
@@ -58,14 +66,6 @@ class PasswordResetPage extends StatelessWidget {
                   Get.to(ResetPasswordPage(emailValue: email));
                 },
               );
-      } else {
-        showAlertDialog(
-          title: 'SUCCESS',
-          content: 'The link was sent, please check your email',
-          onClick: () {
-            Get.to(ResetPasswordPage(emailValue: email));
-          },
-        );
       }
     }
 
