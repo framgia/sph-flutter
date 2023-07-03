@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\TransactionException;
 use App\Http\Requests\FilterTransactionRequest;
 use App\Http\Requests\TransactionPostRequest;
 use App\Http\Resources\TransactionResource;
@@ -14,55 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
-    public static function transferTransaction(Account $account, Account $receiverAccount, $payload)
-    {
-        $transaction_date = now();
-        $senderData = [
-            'account_id' => $account->id,
-            'user_id' => $account->user_id,
-            'transaction_type' => $payload['transaction_type'],
-            'category' => 'SENDER',
-            'description' => $payload['description'],
-            'starting_balance' => $account->getBalance(),
-            'transaction_amount' => $payload['amount'] * -1,
-            'transaction_date' => $transaction_date,
-        ];
-        $receiverData = [
-            'account_id' => $receiverAccount->id,
-            'user_id' => $receiverAccount->user_id,
-            'transaction_type' => $payload['transaction_type'],
-            'category' => 'RECIPIENT',
-            'description' => $payload['description'],
-            'starting_balance' => $receiverAccount->getBalance(),
-            'transaction_amount' => $payload['amount'],
-            'transaction_date' => $transaction_date,
-        ];
-
-        DB::beginTransaction();
-        try {
-
-            $sendRow = Transaction::create($senderData);
-
-            if (! $sendRow->created_at) {
-                throw new Exception('Transaction Failed. Please try again');
-            }
-
-            $receiverData['transaction_id'] = $sendRow->id;
-
-            $receiverRow = Transaction::create($receiverData);
-
-            if (! $receiverRow->created_at) {
-                throw new Exception('Transaction Failed. Please try again');
-            }
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-            throw $e;
-        }
-
-        return $sendRow;
-    }
-
     public function index(FilterTransactionRequest $request, Account $account = null)
     {
         $filters = $request->validated();
@@ -97,25 +49,105 @@ class TransactionController extends Controller
 
         // - to account
         if ($payload['transaction_type'] === 'CREDIT') {
-            //TODO: Insert Credit Code
+            $sendRow = $this->creditTransaction($account, $payload);
+
+            return TransactionResource::make($sendRow);
         }
 
         // + to $account
         if ($payload['transaction_type'] === 'DEPT') {
-            //TODO: Insert Deposit Code
+            abort(404, 'Transaction type not found'); //TODO: Insert Deposit Code
         }
 
         // - to $account , + to $receiverAccount
         $receiverAccount = Account::find($payload['receiver_id']);
 
         if ($payload['transaction_type'] === 'TRANSFER') {
-            try {
-                $sendRow = $this->transferTransaction($account, $receiverAccount, $payload);
+            $sendRow = $this->transferTransaction($account, $receiverAccount, $payload);
 
-                return TransactionResource::make($sendRow);
-            } catch (\Exception $e) {
-                abort(403, $e->getMessage());
-            }
+            return TransactionResource::make($sendRow);
         }
+
+    }
+
+    private function creditTransaction(Account $account, $payload)
+    {
+        $transaction_date = now();
+        $senderData = [
+            'account_id' => $account->id,
+            'user_id' => $account->user_id,
+            'transaction_type' => $payload['transaction_type'],
+            'category' => 'SENDER',
+            'description' => $payload['description'],
+            'starting_balance' => $account->getBalance(),
+            'transaction_amount' => $payload['amount'] * -1,
+            'transaction_date' => $transaction_date,
+        ];
+
+        return DB::transaction(function () use ($senderData) {
+
+            try {
+
+                $sendRow = Transaction::create($senderData);
+
+                if (! $sendRow->created_at) {
+                    throw new TransactionException('Transaction Failed. Please try again', $sendRow);
+                }
+
+                return $sendRow;
+            } catch (Exception $e) {
+                throw $e;
+            }
+
+        }, 5);
+    }
+
+    private function transferTransaction(Account $account, Account $receiverAccount, $payload)
+    {
+
+        $transaction_date = now();
+        $senderData = [
+            'account_id' => $account->id,
+            'user_id' => $account->user_id,
+            'transaction_type' => $payload['transaction_type'],
+            'category' => 'SENDER',
+            'description' => $payload['description'],
+            'starting_balance' => $account->getBalance(),
+            'transaction_amount' => $payload['amount'] * -1,
+            'transaction_date' => $transaction_date,
+        ];
+        $receiverData = [
+            'account_id' => $receiverAccount->id,
+            'user_id' => $receiverAccount->user_id,
+            'transaction_type' => $payload['transaction_type'],
+            'category' => 'RECIPIENT',
+            'description' => $payload['description'],
+            'starting_balance' => $receiverAccount->getBalance(),
+            'transaction_amount' => $payload['amount'],
+            'transaction_date' => $transaction_date,
+        ];
+
+        return DB::transaction(function () use ($senderData, $receiverData) {
+            try {
+                $sendRow = Transaction::create($senderData);
+
+                if (! $sendRow->created_at) {
+                    throw new TransactionException('Transaction Failed. Please try again', $sendRow);
+                }
+
+                $receiverData['transaction_id'] = $sendRow->id;
+
+                $receiverRow = Transaction::create($receiverData);
+
+                if (! $receiverRow->created_at) {
+                    throw new TransactionException('Transaction Failed. Please try again', $sendRow);
+                }
+
+                return $sendRow;
+            } catch (Exception $e) {
+                throw $e;
+            }
+        }, 5);
+
     }
 }
