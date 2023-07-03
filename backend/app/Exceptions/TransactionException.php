@@ -6,12 +6,10 @@ use Exception;
 
 class TransactionException extends Exception
 {
-    private $data;
 
-    public function __construct($message, object $data)
+    public function __construct($message, private object $data)
     {
         parent::__construct($message);
-        $this->data = $data;
     }
 
     public function getError()
