@@ -1,10 +1,11 @@
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+
 import 'package:frontend/src/components/breadcrumb.dart';
 import 'package:frontend/src/components/input/search_field.dart';
 import 'package:frontend/src/controllers/admin_user_list_controller.dart';
 import 'package:frontend/src/features/admin_user_list/components/user_list_tile.dart';
 import 'package:frontend/src/models/user.dart';
-import 'package:get/get.dart';
 
 /*
   The page where admins can see all the users.
