@@ -21,9 +21,6 @@ class AccountDetailsPage extends StatelessWidget {
     final arguments =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
 
-    // TODO: this is temporary, this is to verify that the argument was passed successfully
-    print(arguments.accountId);
-
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Column(
@@ -148,8 +145,9 @@ class AccountDetailsPage extends StatelessWidget {
                       radius: 8,
                       onPressed: () {
                         dashboardAppNav.currentState?.pushNamed(
-                            '/transactionHistory',
-                            arguments: ScreenArguments(arguments.accountId));
+                          '/transactionHistory',
+                          arguments: ScreenArguments(arguments.accountId),
+                        );
                       },
                     ),
                   ],

@@ -4,12 +4,17 @@ import 'package:frontend/src/features/admin_user_list/components/user_delete_dia
 
 /*
   ListTile that is used for Admin User List Page
+
+  @param name, full name of the user to be displayed
+  
+  @param isAdmin, bool that controls prevention of user deletion (cant delete admin user)
 */
 
 class UserListTile extends StatelessWidget {
-  const UserListTile({super.key, required this.name});
+  const UserListTile({super.key, required this.name, required this.isAdmin});
 
   final String name;
+  final bool isAdmin;
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +31,17 @@ class UserListTile extends StatelessWidget {
         ),
       ),
       trailing: IconButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => const UserDeleteDialog(),
-          );
-        },
-        icon: SvgPicture.asset('assets/svg/trash.svg'),
+        onPressed: isAdmin
+            ? null
+            : () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => const UserDeleteDialog(),
+                );
+              },
+        icon: isAdmin
+            ? const Icon(Icons.admin_panel_settings)
+            : SvgPicture.asset('assets/svg/trash.svg'),
         style: ButtonStyle(
           iconColor: MaterialStateProperty.resolveWith(
             (states) {

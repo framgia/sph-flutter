@@ -29,19 +29,19 @@ class LoginPage extends StatelessWidget {
     final LoginController loginController = Get.put(LoginController());
     final formKey = GlobalKey<FormBuilderState>();
     const storage = FlutterSecureStorage();
-    final networkConfig = NetworkConfig();
 
     void onSubmit() async {
       // disable the button to prevent multiple requests being sent
       loginController.setLoginButtonEnabled = false;
 
       // note: csrf is for web, web implementation not thoroughly tested
-      await networkConfig.getCsrftoken();
-      final client = networkConfig.client;
+      await NetworkConfig().getCsrftoken();
+      final client = NetworkConfig().client;
       // delete the current stored login key, otherwise
       // frontend\lib\src\helper\dio.dart adds this to the request headers
       await storage.delete(key: StorageKeys.loginToken.name);
       await storage.delete(key: StorageKeys.userId.name);
+      await storage.delete(key: StorageKeys.isAdmin.name);
 
       final email = formKey.currentState!.fields['email']!.value;
       final password = formKey.currentState!.fields['password']!.value;
@@ -57,9 +57,11 @@ class LoginPage extends StatelessWidget {
       if (loginResponse.statusCode == HttpStatus.ok) {
         final loginToken = loginResponse.data['data']['token'];
         final userId = loginResponse.data['data']['id'];
+        final isAdmin = loginResponse.data['data']['is_admin'];
 
-        storage.write(key: StorageKeys.loginToken.name, value: loginToken);
-        storage.write(key: StorageKeys.userId.name, value: userId);
+        await storage.write(key: StorageKeys.loginToken.name, value: loginToken);
+        await storage.write(key: StorageKeys.userId.name, value: userId);
+        await storage.write(key: StorageKeys.isAdmin.name, value: isAdmin.toString());
         Get.to(() => const HomeScreen());
       } else if (loginResponse.statusCode == HttpStatus.badRequest) {
         // the error response is in Response<dynamic>, toString + jsonDecode to easily access data

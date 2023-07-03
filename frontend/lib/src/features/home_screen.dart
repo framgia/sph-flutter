@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 
 import 'package:frontend/src/controllers/home_screen_controller.dart';
 import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
-import 'package:frontend/src/navigators/settings_screen_navigator.dart';
+import 'package:frontend/src/navigators/users_list_screen_navigator.dart';
 import 'package:frontend/src/navigators/profile_screen_navigator.dart';
 
 /*
@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
     HomeScreenController homeScreenController = Get.put(HomeScreenController());
 
     final pages = [
-      const SettingsScreenNavigator(),
+      const UserListScreenNavigator(),
       const DashboardScreenNavigator(),
       const ProfileScreenNavigator(),
     ];
