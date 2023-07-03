@@ -56,7 +56,9 @@ class TransactionController extends Controller
 
         // + to $account
         if ($payload['transaction_type'] === 'DEPT') {
-            abort(404, 'Transaction type not found'); //TODO: Insert Deposit Code
+            $sendRow = $this->debitTransaction($account, $payload);
+
+            return TransactionResource::make($sendRow);
         }
 
         // - to $account , + to $receiverAccount
@@ -77,10 +79,42 @@ class TransactionController extends Controller
             'account_id' => $account->id,
             'user_id' => $account->user_id,
             'transaction_type' => $payload['transaction_type'],
-            'category' => 'SENDER',
+            'category' => $payload['category'],
             'description' => $payload['description'],
             'starting_balance' => $account->getBalance(),
             'transaction_amount' => $payload['amount'] * -1,
+            'transaction_date' => $transaction_date,
+        ];
+
+        return DB::transaction(function () use ($senderData) {
+
+            try {
+
+                $sendRow = Transaction::create($senderData);
+
+                if (! $sendRow->created_at) {
+                    throw new TransactionException('Transaction Failed. Please try again', $sendRow);
+                }
+
+                return $sendRow;
+            } catch (Exception $e) {
+                throw $e;
+            }
+
+        }, 5);
+    }
+
+    private function debitTransaction(Account $account, $payload)
+    {
+        $transaction_date = now();
+        $senderData = [
+            'account_id' => $account->id,
+            'user_id' => $account->user_id,
+            'transaction_type' => $payload['transaction_type'],
+            'category' => $payload['category'],
+            'description' => $payload['description'],
+            'starting_balance' => $account->getBalance(),
+            'transaction_amount' => $payload['amount'],
             'transaction_date' => $transaction_date,
         ];
 
