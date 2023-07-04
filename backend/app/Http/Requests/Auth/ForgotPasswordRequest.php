@@ -28,4 +28,11 @@ class ForgotPasswordRequest extends FormRequest
             'email' => ['required', Rule::exists('users', 'email')],
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'email.exists' => 'The email you entered isn\'t connected to an account.',
+        ];
+    }
 }

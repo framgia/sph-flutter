@@ -145,7 +145,7 @@ class ProfileChangePassword extends StatelessWidget {
                         FormBuilderValidators.notEqual(
                           controller.oldPassword,
                           errorText:
-                              "New password must not equal old password.",
+                              "New password must be different from the old password.",
                         ),
                       ]),
                     ),

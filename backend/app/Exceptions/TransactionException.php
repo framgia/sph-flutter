@@ -6,7 +6,6 @@ use Exception;
 
 class TransactionException extends Exception
 {
-
     public function __construct($message, private object $data)
     {
         parent::__construct($message);

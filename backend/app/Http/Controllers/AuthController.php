@@ -66,8 +66,6 @@ class AuthController extends Controller
         ]);
     }
 
-    //TODO: add login, signup, reset_password to the controller
-
     public function update(UpdatePasswordRequest $request, User $user)
     {
         $userPassword = $request->validated();
@@ -87,11 +85,12 @@ class AuthController extends Controller
 
         if ($status === Password::RESET_LINK_SENT) {
             return ForgotPasswordResource::make([
-                'message' => 'The link was sent, please check your email',
+                'message' => 'The token has been sent. Please check your email.',
             ]);
         } else {
             throw ValidationException::withMessages([
-                'message' => 'Unable to send the reset link again, please double check your email',
+                'email' => 'Unable to send the token again, please double check your email',
+                'short' => 'throttled',
             ]);
         }
     }
@@ -105,7 +104,7 @@ class AuthController extends Controller
 
         if (! $user || Hash::check($validated['password'], $user->password)) {
             throw ValidationException::withMessages([
-                'message' => 'password should not be an old password',
+                'password' => 'New password must be different from the old password.',
             ]);
         }
 
@@ -131,11 +130,11 @@ class AuthController extends Controller
 
         if ($status === Password::PASSWORD_RESET) {
             return ResetPasswordResource::make([
-                ['message' => 'Password was reset successfully'],
+                'message' => 'Password changed successfully.',
             ]);
         } else {
             throw ValidationException::withMessages([
-                'message' => 'Your provided credentials could not be verified.',
+                'password' => 'Your provided token could not be verified.',
             ]);
         }
     }
