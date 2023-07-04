@@ -14,6 +14,8 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
   ex FormBuilderValidators.email()
 
   @param yPadding: adds padding to the TextField using EdgeInsets.symmetric(vertical: yPadding)
+
+  @param onChnaged: called when the field value is changed.
 */
 
 class SearchField extends StatelessWidget {
@@ -22,11 +24,13 @@ class SearchField extends StatelessWidget {
     required this.name,
     this.validator,
     this.yPadding = 0,
+    this.onChanged,
   });
 
   final String name;
   final String? Function(String?)? validator;
   final double yPadding;
+  final void Function(String?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,7 @@ class SearchField extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(8)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black,
+            color: Color.fromRGBO(0, 0, 0, 0.25),
             blurRadius: 2,
             spreadRadius: 0.1,
             offset: Offset(0, 2),
@@ -46,6 +50,7 @@ class SearchField extends StatelessWidget {
       child: FormBuilderTextField(
         name: name,
         validator: validator,
+        onChanged: onChanged,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: yPadding),
           border: const OutlineInputBorder(
@@ -55,6 +60,7 @@ class SearchField extends StatelessWidget {
           prefixIconColor: Colors.black,
           hintText: "Search ...",
         ),
+        style: Theme.of(context).textTheme.labelLarge,
       ),
     );
   }

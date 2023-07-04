@@ -12,8 +12,8 @@ class AdminUserListController extends GetxController {
     await getUsers();
   }
 
-  Future<List<User>> getUsers() async {
-    final result = await UserService.getUsers();
+  Future<List<User>> getUsers({String keyword = ''}) async {
+    final result = await UserService.getUsers(keyword: keyword);
     users.assignAll(result);
     return result;
   }

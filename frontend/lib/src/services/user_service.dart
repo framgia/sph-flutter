@@ -7,8 +7,9 @@ import 'package:frontend/src/models/user.dart';
 
 class UserService {
   // returns List of User(model) by hitting /users route, non-admin users only
-  static Future<List<User>> getUsers() async {
-    final usersResponse = await NetworkConfig().client.get(usersUrl);
+  static Future<List<User>> getUsers({String keyword = ''}) async {
+    final usersResponse =
+        await NetworkConfig().client.get('$usersUrl?keyword=$keyword');
 
     if (usersResponse.statusCode == HttpStatus.ok) {
       final Iterable data = usersResponse.data['data'];

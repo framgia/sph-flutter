@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 
 import 'package:frontend/src/components/breadcrumb.dart';
 import 'package:frontend/src/components/input/search_field.dart';
@@ -17,6 +18,7 @@ class AdminUserListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AdminUserListController controller = Get.put(AdminUserListController());
+    final debouncer = Debouncer(delay: const Duration(milliseconds: 400));
 
     return GetX<AdminUserListController>(
       builder: (_) => RefreshIndicator(
@@ -36,8 +38,15 @@ class AdminUserListPage extends StatelessWidget {
                   Container(
                     width: double.infinity,
                     alignment: Alignment.center,
-                    child: const SearchField(
-                      name: "name",
+                    child: SearchField(
+                      name: "search",
+                      onChanged: (value) {
+                        debouncer(
+                          () async {
+                            await controller.getUsers(keyword: value ?? '');
+                          },
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(
@@ -49,25 +58,33 @@ class AdminUserListPage extends StatelessWidget {
                     child: MediaQuery.removePadding(
                       removeTop: true,
                       context: context,
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          User user = controller.users.elementAt(index);
+                      child: controller.users.isEmpty
+                          ? Center(
+                              child: Text(
+                                'No users found.',
+                                style: Theme.of(context).textTheme.labelLarge,
+                              ),
+                            )
+                          : ListView.separated(
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                User user = controller.users.elementAt(index);
 
-                          return UserListTile(
-                            name: '${user.firstName} ${user.lastName}',
-                            isAdmin: user.isAdmin == 1,
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const Divider(
-                            height: 1,
-                            color: Color.fromRGBO(109, 120, 129, 1),
-                          );
-                        },
-                        itemCount: controller.users.length,
-                        // prevent negative itemcount
-                      ),
+                                return UserListTile(
+                                  name: '${user.firstName} ${user.lastName}',
+                                  isAdmin: user.isAdmin == 1,
+                                );
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return const Divider(
+                                  height: 1,
+                                  color: Color.fromRGBO(109, 120, 129, 1),
+                                );
+                              },
+                              itemCount: controller.users.length,
+                              // prevent negative itemcount
+                            ),
                     ),
                   ),
                 ],
