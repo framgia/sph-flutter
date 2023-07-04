@@ -97,7 +97,7 @@ class User extends Authenticatable
      *
      * @return object
      */
-    public static function searchUsers(string | null $keyword, string $id)
+    public static function searchUsers(string|null $keyword, string $id)
     {
         return User::where('id', '!=', $id)
             ->where(function ($query) use ($keyword) {

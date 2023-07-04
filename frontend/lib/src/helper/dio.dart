@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/src/helper/snackbar/show_snackbar.dart';
 import 'package:frontend/src/helper/storage.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -70,6 +71,40 @@ class NetworkConfig {
             return handler.next(options);
           },
           onError: (e, handler) {
+            if (e.type == DioExceptionType.receiveTimeout) {
+              showSnackbar(
+                title: "Timeout",
+                content: "took too long to respond.",
+              );
+            } else if (e.type == DioExceptionType.connectionTimeout) {
+              showSnackbar(
+                title: "Timeout",
+                content: "took too long to connect.",
+              );
+            } else if (e.type == DioExceptionType.sendTimeout) {
+              showSnackbar(title: "Timeout", content: "check your connection.");
+            } else if (e.error.toString().contains('Invalid port')) {
+              showSnackbar(
+                title: "Application Error",
+                content: "message your administrator. error code P01.",
+              ); // invalid port, check server config
+            } else if (e.response?.statusCode == HttpStatus.tooManyRequests) {
+              showSnackbar(
+                title: "Too many requests",
+                content: "you may have been detected as spam.",
+              );
+            } else if (e.response?.statusCode == HttpStatus.notFound) {
+              showSnackbar(
+                title: "404 Not Found",
+                content: "message your administrator. error code S01",
+              ); // 404, check backend routes
+            } else if (e.response?.statusCode == HttpStatus.methodNotAllowed) {
+              showSnackbar(
+                title: "Not Allowed",
+                content: "message your administrator. error code S02",
+              ); // 405, check route allowed methods
+            }
+
             return handler.resolve(
               Response(
                 requestOptions: e.requestOptions,
@@ -136,7 +171,9 @@ class NetworkConfig {
 
       await _client.get(sanctumCsrfCookieUrl);
       await storage.write(
-          key: StorageKeys.csrfToken.name, value: csrfTokenValue);
+        key: StorageKeys.csrfToken.name,
+        value: csrfTokenValue,
+      );
 
       return csrfTokenValue;
     } catch (error, stacktrace) {
