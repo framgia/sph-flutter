@@ -1,1 +1,1 @@
-enum StorageKeys { loginToken, csrfToken, isAdmin, userId }
+enum StorageKeys { loginToken, csrfToken, isAdmin, userId, fullName }

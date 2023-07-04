@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:frontend/src/controllers/auth_header_controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -29,6 +30,7 @@ class AuthHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthHeaderController controller = Get.put(AuthHeaderController());
     const storage = FlutterSecureStorage();
 
     void dropdownCallback(selectedValue) async {
@@ -85,50 +87,60 @@ class AuthHeader extends StatelessWidget {
                       visible: hasAuthToken,
                       child: SizedBox(
                         height: 25,
-                        child: DropdownButton(
-                          value: 'user',
-                          onChanged: dropdownCallback,
-                          items: [
-                            const DropdownMenuItem(
+                        child: FutureBuilder(
+                          future: controller.getFullName(),
+                          builder: (context, snapshot) {
+                            return DropdownButton(
                               value: 'user',
-                              child: Text(
-                                'JOASH C. CAÑETE',
-                              ),
-                            ),
-                            DropdownMenuItem(
-                              value: 'logout',
-                              child: Container(
-                                margin: const EdgeInsets.only(right: 12),
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color.fromRGBO(0, 0, 0, 0.25),
-                                      blurRadius: 1,
-                                      spreadRadius: 1,
-                                      offset: Offset(0, 2),
+                              onChanged: dropdownCallback,
+                              items: [
+                                DropdownMenuItem(
+                                  value: 'user',
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width * 0.40,
+                                    child: Text(
+                                      controller.name,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.end,
                                     ),
-                                  ],
+                                  ),
                                 ),
+                                DropdownMenuItem(
+                                  value: 'logout',
+                                  child: Container(
+                                    margin: const EdgeInsets.only(right: 12),
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                                          blurRadius: 1,
+                                          spreadRadius: 1,
+                                          offset: Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
 
-                                alignment: Alignment
-                                    .center, // Center the text vertically and horizontally
-                                child: Text(
-                                  'Log out',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall, // Customize the text color
+                                    alignment: Alignment
+                                        .center, // Center the text vertically and horizontally
+                                    child: Text(
+                                      'Log out',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall, // Customize the text color
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ],
-                          style: Theme.of(context).textTheme.titleSmall,
-                          underline: Container(), // Remove the underline
-                          iconSize: 0, // Add a custom dropdown icon
-                          dropdownColor: Colors.transparent,
-                          elevation: 0,
+                              ],
+                              style: Theme.of(context).textTheme.titleSmall,
+                              underline: Container(), // Remove the underline
+                              iconSize: 0, // Add a custom dropdown icon
+                              dropdownColor: Colors.transparent,
+                              elevation: 0,
+                            );
+                          },
                         ),
                       ),
                     ),

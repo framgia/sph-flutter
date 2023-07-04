@@ -58,9 +58,18 @@ class LoginPage extends StatelessWidget {
       if (loginResponse.statusCode == HttpStatus.ok) {
         final User user = User.fromJson(loginResponse.data['data']);
 
+        final middleName =
+            user.middleName != null ? '${user.middleName[0]}.' : '';
+
         await storage.write(
-            key: StorageKeys.loginToken.name, value: user.token);
+          key: StorageKeys.loginToken.name,
+          value: user.token,
+        );
         await storage.write(key: StorageKeys.userId.name, value: user.id);
+        await storage.write(
+          key: StorageKeys.fullName.name,
+          value: '${user.firstName} $middleName ${user.lastName}',
+        );
         await storage.write(
           key: StorageKeys.isAdmin.name,
           value: user.isAdmin.toString(),
