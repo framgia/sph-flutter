@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:frontend/src/controllers/login_controller.dart';
-import 'package:frontend/src/helper/storage.dart';
 import 'package:get/get.dart';
 
+import 'package:frontend/src/models/user.dart';
+import 'package:frontend/src/controllers/login_controller.dart';
+import 'package:frontend/src/helper/storage.dart';
 import 'package:frontend/src/features/password_reset/password_reset_page.dart';
 import 'package:frontend/src/features/home_screen.dart';
 import 'package:frontend/src/components/auth/auth_header.dart';
@@ -55,13 +56,14 @@ class LoginPage extends StatelessWidget {
       );
 
       if (loginResponse.statusCode == HttpStatus.ok) {
-        final loginToken = loginResponse.data['data']['token'];
-        final userId = loginResponse.data['data']['id'];
-        final isAdmin = loginResponse.data['data']['is_admin'];
+        final User user = User.fromJson(loginResponse.data['data']);
 
-        await storage.write(key: StorageKeys.loginToken.name, value: loginToken);
-        await storage.write(key: StorageKeys.userId.name, value: userId);
-        await storage.write(key: StorageKeys.isAdmin.name, value: isAdmin.toString());
+        await storage.write(key: StorageKeys.loginToken.name, value: user.token);
+        await storage.write(key: StorageKeys.userId.name, value: user.id);
+        await storage.write(
+          key: StorageKeys.isAdmin.name,
+          value: user.isAdmin.toString(),
+        );
         Get.to(() => const HomeScreen());
       } else if (loginResponse.statusCode == HttpStatus.badRequest) {
         // the error response is in Response<dynamic>, toString + jsonDecode to easily access data
