@@ -1,11 +1,12 @@
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:frontend/src/helper/storage.dart';
 import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
 import 'package:frontend/src/navigators/profile_screen_navigator.dart';
 import 'package:frontend/src/navigators/users_list_screen_navigator.dart';
-import 'package:get/get.dart';
 
 class HomeScreenController extends GetxController {
   final RxInt _currentPage = 0.obs;
