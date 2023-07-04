@@ -5,6 +5,7 @@ import 'package:frontend/src/components/transaction_component/transaction_compon
 import 'package:frontend/src/features/dashboard/components/account_card_button.dart';
 import 'package:frontend/src/models/account.dart';
 import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
+import 'package:intl/intl.dart';
 
 /*
   Card widget used in dashboard.dart
@@ -15,6 +16,7 @@ class AccountCard extends StatelessWidget {
   const AccountCard({Key? key, required this.account}) : super(key: key);
 
   final Account account;
+  static final currencyFormat = NumberFormat(',#00.00');
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class AccountCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  account.name,
+                  account.id,
                   style: Theme.of(context).textTheme.labelMedium!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -47,7 +49,7 @@ class AccountCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 5.0),
                   child: Text(
-                    "Total Deposit: ₱1,000,000",
+                    "Balance: ${currencyFormat.format(account.balance)} Php",
                     style: Theme.of(context).textTheme.labelSmall!.copyWith(
                           fontWeight: FontWeight.normal,
                         ),
@@ -114,7 +116,7 @@ class AccountCard extends StatelessWidget {
 }
 
 class ScreenArguments {
-  final int accountId;
+  final String accountId;
 
   ScreenArguments(this.accountId);
 }
