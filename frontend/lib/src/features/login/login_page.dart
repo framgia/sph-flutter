@@ -2,20 +2,20 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 
 import 'package:frontend/src/models/user.dart';
 import 'package:frontend/src/controllers/login_controller.dart';
 import 'package:frontend/src/helper/storage.dart';
-import 'package:frontend/src/features/password_reset/password_reset_page.dart';
 import 'package:frontend/src/features/home_screen.dart';
 import 'package:frontend/src/components/auth/auth_header.dart';
 import 'package:frontend/src/components/button.dart';
 import 'package:frontend/src/components/input/input_field.dart';
 import 'package:frontend/src/features/sign_up/sign_up_flow.dart';
+import 'package:frontend/src/features/password_reset/forgot_password_page.dart';
 import 'package:frontend/src/helper/dio.dart';
 
 /*
@@ -58,7 +58,8 @@ class LoginPage extends StatelessWidget {
       if (loginResponse.statusCode == HttpStatus.ok) {
         final User user = User.fromJson(loginResponse.data['data']);
 
-        await storage.write(key: StorageKeys.loginToken.name, value: user.token);
+        await storage.write(
+            key: StorageKeys.loginToken.name, value: user.token);
         await storage.write(key: StorageKeys.userId.name, value: user.id);
         await storage.write(
           key: StorageKeys.isAdmin.name,
@@ -139,7 +140,7 @@ class LoginPage extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             child: TextButton(
                               onPressed: () {
-                                Get.to(() => const PasswordResetPage());
+                                Get.to(() => const ForgotPasswordPage());
                               },
                               child: Text(
                                 'Forgot Password?',

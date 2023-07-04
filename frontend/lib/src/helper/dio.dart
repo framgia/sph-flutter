@@ -18,6 +18,8 @@ const usersUrl = '$apiUrl/users';
 const userUrl = '$apiUrl/user';
 const authUrl = '$apiUrl/auth';
 const logoutUrl = '$apiUrl/logout';
+const forgotPasswordUrl = '$apiUrl/forgot-password';
+const resetPasswordtUrl = '$apiUrl/reset-password';
 
 const storage = FlutterSecureStorage();
 
@@ -31,8 +33,8 @@ class NetworkConfig {
     _client = Dio()
       ..options = BaseOptions(
         baseUrl: baseUrl,
-        connectTimeout: const Duration(seconds: 1),
-        receiveTimeout: const Duration(seconds: 2),
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 15),
         contentType: 'application/json',
         responseType: ResponseType.json,
         headers: (kIsWeb)

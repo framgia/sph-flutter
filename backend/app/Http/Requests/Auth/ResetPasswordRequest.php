@@ -30,4 +30,11 @@ class ResetPasswordRequest extends FormRequest
             'password' => ['required', 'confirmed'],
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'password.confirmed' => 'New password does not match.',
+        ];
+    }
 }
