@@ -10,8 +10,8 @@ class AuthHeaderController extends GetxController {
   Future<String> getFullName() async {
     const storage = FlutterSecureStorage();
     final fullName = await storage.read(key: StorageKeys.fullName.name);
-    _name.value = fullName!;
+    _name.value = fullName ?? '';
 
-    return fullName;
+    return name;
   }
 }
