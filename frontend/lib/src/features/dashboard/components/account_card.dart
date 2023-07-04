@@ -49,7 +49,7 @@ class AccountCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 5.0),
                   child: Text(
-                    "Balance: ₱${currencyFormat.format(account.balance)}",
+                    "Balance: ${currencyFormat.format(account.balance)} Php",
                     style: Theme.of(context).textTheme.labelSmall!.copyWith(
                           fontWeight: FontWeight.normal,
                         ),

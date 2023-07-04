@@ -40,7 +40,7 @@ class AuthController extends Controller
     {
         $credentials = $request->validated();
 
-        if (! Auth::attempt($credentials)) {
+        if (!Auth::attempt($credentials)) {
             throw ValidationException::withMessages([
                 'email' => 'Your provided credentials could not be verified.',
             ]);
@@ -102,7 +102,7 @@ class AuthController extends Controller
 
         $user = User::where('email', $validated['email'])->first();
 
-        if (! $user || Hash::check($validated['password'], $user->password)) {
+        if (!$user || Hash::check($validated['password'], $user->password)) {
             throw ValidationException::withMessages([
                 'password' => 'New password must be different from the old password.',
             ]);

@@ -25,6 +25,26 @@ class Dashboard extends StatelessWidget {
           return const CircularProgressIndicator();
         }
 
+        if (controller.accounts.isEmpty) {
+          return Column(
+            children: [
+              Center(
+                child: Text(
+                  "Dashboard",
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              const SizedBox(height: 75,),
+              Center(
+                child: Text(
+                  'No Account Found.',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+              ),
+            ],
+          );
+        }
+
         return Column(
           children: [
             Center(
