@@ -41,7 +41,7 @@ class AccountCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  account.id,
+                  account.accountName,
                   style: Theme.of(context).textTheme.labelMedium!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
