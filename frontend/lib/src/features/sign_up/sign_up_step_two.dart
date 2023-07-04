@@ -1,134 +1,199 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:flow_builder/flow_builder.dart';
 import 'package:get/get.dart';
 
-import 'package:frontend/src/features/sign_up/components/breadcrumb.dart';
+import 'package:frontend/src/helper/dio.dart';
 import 'package:frontend/src/components/input/input_field.dart';
 import 'package:frontend/src/components/button.dart';
+import 'package:frontend/src/features/sign_up/sign_up_flow.dart';
+import 'package:frontend/src/controllers/sign_up_controller.dart';
+import 'package:frontend/src/components/breadcrumb.dart';
 import 'package:frontend/src/features/login/login_page.dart';
-import 'package:frontend/src/components/auth/auth_header.dart';
+import 'package:frontend/src/helper/snackbar/show_snackbar.dart';
 
 /*
   The page where user can fill the second page of sign up.
+
+  @param, userFormData, the current sign up flow data.
 */
 class SignUpStepTwo extends StatelessWidget {
-  const SignUpStepTwo({super.key});
+  const SignUpStepTwo({super.key, required this.userFormData});
+
+  final UserFormData userFormData;
 
   @override
   Widget build(BuildContext context) {
+    final SignUpController signUpController = Get.put(SignUpController());
     final formKey = GlobalKey<FormBuilderState>();
 
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            AuthHeader(
+    void onSubmit() async {
+      signUpController.setSignUpSecondButtonEnabled = false;
+
+      await NetworkConfig().getCsrftoken();
+      final client = NetworkConfig().client;
+
+      try {
+        final signUpResponse = await client.post(
+          authUrl,
+          data: {
+            'first_name': userFormData.firstName,
+            'middle_name': userFormData.middleName,
+            'last_name': userFormData.lastName,
+            'address': userFormData.address,
+            'birthday': userFormData.birthday.toString(),
+            'user_name': formKey.currentState!.fields['username']!.value,
+            'email': formKey.currentState!.fields['email']!.value,
+            'password': formKey.currentState!.fields['password']!.value,
+            'password_confirmation':
+                formKey.currentState!.fields['password_confirmation']!.value,
+          },
+        );
+
+        if (signUpResponse.statusCode == HttpStatus.ok) {
+          Get.offAll(() => const LoginPage());
+
+          showSnackbar(
+            title: 'Success',
+            content: 'Created an account successfully.',
+          );
+        } else if (signUpResponse.statusCode == HttpStatus.badRequest) {
+          final error = jsonDecode(signUpResponse.data.toString());
+
+          final message = error['error']['message'];
+          final emailError = message['email'];
+          final passwordError = message['password'];
+
+          if (emailError != null) {
+            formKey.currentState?.fields['email']?.invalidate(emailError[0]);
+          }
+
+          if (passwordError != null) {
+            formKey.currentState?.fields['password']
+                ?.invalidate(passwordError[0]);
+          }
+        }
+      } catch (e) {
+        showSnackbar(
+          title: 'Error',
+          content: e.toString(),
+        );
+      }
+    }
+
+    void onUpdateFlowState() {
+      context.flow<UserFormData>().update(
+            (data) => data.copyWith(
+              page: 1,
+              username: formKey.currentState?.fields['username']?.value,
+              email: formKey.currentState?.fields['email']?.value,
+              password: formKey.currentState?.fields['password']?.value,
+              passwordConfirmation:
+                  formKey.currentState?.fields['password_confirmation']?.value,
+            ),
+          );
+    }
+
+    return GetX<SignUpController>(
+      builder: (_) => Column(
+        children: [
+          Breadcrumb(
+            text: 'Sign Up',
+            onTap: onUpdateFlowState,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(25, 30, 25, 0),
+            child: FormBuilder(
+              key: formKey,
+              autovalidateMode: AutovalidateMode.disabled,
+              onChanged: () {
+                formKey.currentState?.save();
+
+                formKey.currentState?.fields['email']
+                    ?.validate(focusOnInvalid: false);
+                formKey.currentState?.fields['password']
+                    ?.validate(focusOnInvalid: false);
+                formKey.currentState?.fields['password_confirmation']
+                    ?.validate(focusOnInvalid: false);
+
+                signUpController
+                  ..setPassword =
+                      formKey.currentState?.fields['password']?.value ?? ''
+                  ..setSignUpSecondButtonEnabled =
+                      formKey.currentState!.isValid;
+              },
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Breadcrumb(
-                    text: 'Sign Up',
-                    page: 1,
+                  InputField(
+                    label: 'Username',
+                    name: 'username',
+                    initialValue: userFormData.username,
+                    validator: FormBuilderValidators.required(),
+                  ),
+                  const SizedBox(height: 26),
+                  InputField(
+                    label: 'Email',
+                    name: 'email',
+                    inputType: TextInputType.emailAddress,
+                    initialValue: userFormData.email,
+                    validator: FormBuilderValidators.compose(
+                      [
+                        FormBuilderValidators.required(),
+                        FormBuilderValidators.email(),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 26),
+                  InputField(
+                    label: 'Password',
+                    name: 'password',
+                    inputType: TextInputType.visiblePassword,
+                    obscureText: true,
+                    initialValue: userFormData.password,
+                    validator: FormBuilderValidators.required(),
+                  ),
+                  const SizedBox(height: 26),
+                  InputField(
+                    label: 'Confirm Password',
+                    name: 'password_confirmation',
+                    inputType: TextInputType.visiblePassword,
+                    obscureText: true,
+                    initialValue: userFormData.passwordConfirmation,
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                      FormBuilderValidators.equal(
+                        signUpController.password,
+                        errorText: 'Passwords do not match.',
+                      ),
+                    ]),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(25, 30, 25, 150),
-                    child: FormBuilder(
-                      key: formKey,
-                      autovalidateMode: AutovalidateMode.always,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const InputField(
-                            label: 'Username',
-                            name: 'username',
-                            inputType: TextInputType.text,
+                    padding: const EdgeInsets.only(top: 50, bottom: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Button(
+                          text: 'Sign Up',
+                          enabled: signUpController.signUpSecondButtonEnabled,
+                          onPressed: onSubmit,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 99,
+                            vertical: 16,
                           ),
-                          const SizedBox(height: 26),
-                          InputField(
-                            label: 'Email',
-                            name: 'email',
-                            inputType: TextInputType.emailAddress,
-                            validator: FormBuilderValidators.email(),
-                          ),
-                          const SizedBox(height: 26),
-                          const InputField(
-                            label: 'Password',
-                            name: 'password',
-                            inputType: TextInputType.visiblePassword,
-                            obscureText: true,
-                          ),
-                          const SizedBox(height: 26),
-                          const InputField(
-                            label: 'Confirm Password',
-                            name: 'password_confirmation',
-                            inputType: TextInputType.visiblePassword,
-                            obscureText: true,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 50),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Button(
-                                  text: 'Sign Up',
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 99,
-                                    vertical: 16,
-                                  ),
-                                  onPressed: () {
-                                    if (formKey.currentState
-                                            ?.saveAndValidate() ??
-                                        false) {
-                                      debugPrint(
-                                        formKey.currentState?.value.toString(),
-                                      );
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 25,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Already have an account? ',
-                                style: Theme.of(context).textTheme.labelSmall,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Get.to(() => const LoginPage());
-                                },
-                                child: Text(
-                                  'Log in',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelSmall!
-                                      .copyWith(
-                                        color: const Color.fromARGB(
-                                          255,
-                                          0,
-                                          163,
-                                          255,
-                                        ),
-                                      ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
