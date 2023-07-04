@@ -97,10 +97,9 @@ class User extends Authenticatable
      *
      * @return object
      */
-    public static function searchUsers(string|null $keyword)
+    public static function searchUsers(string | null $keyword, string $id)
     {
-        // TODO : exclude current logged in user
-        return User::where('is_admin', false)
+        return User::where('id', '!=', $id)
             ->where(function ($query) use ($keyword) {
                 $query->where('first_name', 'LIKE', "%{$keyword}%")
                     ->orWhere('middle_name', 'LIKE', "%{$keyword}%")

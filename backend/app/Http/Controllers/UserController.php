@@ -12,9 +12,15 @@ use Illuminate\Validation\UnauthorizedException;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(SearchUserRequest $request)
     {
-        return UserResource::collection(User::usersList(Auth::id()));
+        $validated = $request->validated();
+
+        if (empty($validated)) {
+            return UserResource::collection(User::usersList(Auth::id()));
+        }
+
+        return UserResource::collection(User::searchUsers($validated['keyword'], Auth::id()));
     }
 
     public function update(ProfileRequest $request, User $user)
@@ -46,14 +52,5 @@ class UserController extends Controller
         } else {
             throw new UnauthorizedException('This action is unauthorized.', 401);
         }
-    }
-
-    public function search(SearchUserRequest $request)
-    {
-        $validated = $request->validated();
-
-        $users = User::searchUsers($validated['keyword']);
-
-        return UserResource::make($users);
     }
 }
