@@ -17,4 +17,8 @@ class AdminUserListController extends GetxController {
     users.assignAll(result);
     return result;
   }
+
+  Future<void> deleteUser(String id) async {
+    return await UserService.deleteUser(id);
+  }
 }

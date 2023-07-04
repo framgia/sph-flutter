@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:frontend/src/features/admin_user_list/components/user_delete_dialog.dart';
+import 'package:frontend/src/models/user.dart';
 
 /*
   ListTile that is used for Admin User List Page
 
-  @param name, full name of the user to be displayed
-  
-  @param isAdmin, bool that controls prevention of user deletion (cant delete admin user)
+  @param user: contains user details.
 */
 
 class UserListTile extends StatelessWidget {
-  const UserListTile({super.key, required this.name, required this.isAdmin});
+  const UserListTile({super.key, required this.user});
 
-  final String name;
-  final bool isAdmin;
+  final User user;
 
   @override
   Widget build(BuildContext context) {
+    final isAdmin = user.isAdmin == 1;
+
     return ListTile(
       title: Container(
         height: 50,
         alignment: Alignment.centerLeft,
         child: Text(
-          name,
+          '${user.firstName} ${user.lastName}',
           style: Theme.of(context)
               .textTheme
               .labelLarge!
@@ -36,7 +37,9 @@ class UserListTile extends StatelessWidget {
             : () {
                 showDialog(
                   context: context,
-                  builder: (BuildContext context) => const UserDeleteDialog(),
+                  builder: (BuildContext context) => UserDeleteDialog(
+                    id: user.id,
+                  ),
                 );
               },
         icon: isAdmin
