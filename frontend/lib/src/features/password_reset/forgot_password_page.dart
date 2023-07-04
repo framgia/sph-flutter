@@ -56,13 +56,13 @@ class ForgotPasswordPage extends StatelessWidget {
       } else if (forgotPasswordResponse.statusCode == HttpStatus.badRequest) {
         // the error response is in Response<dynamic>, toString + jsonDecode to easily access data
         final error = jsonDecode(forgotPasswordResponse.data.toString());
-        final message = error['error']['message']['email']?[0];
+        final message = error['error']['message']['email'][0];
 
         if (message == "The email you entered isn't connected to an account.") {
           formKey.currentState?.fields['email']?.invalidate(message);
         }
 
-        final throttledMessage = error['error']['message']['short'][0];
+        final throttledMessage = error['error']['message']['short']?[0];
 
         if (throttledMessage == "throttled") {
           showAlertDialog(
