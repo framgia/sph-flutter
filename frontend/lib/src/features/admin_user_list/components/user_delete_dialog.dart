@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:frontend/src/controllers/admin_user_list_controller.dart';
+
 /*
   Dialog popup when clicking Trash icon in User List Tile
   Warning for user deletion
+
+  @param id: the id of the user
 */
 
 class UserDeleteDialog extends StatelessWidget {
-  const UserDeleteDialog({super.key});
+  const UserDeleteDialog({super.key, required this.id});
+
+  final String id;
 
   @override
   Widget build(BuildContext context) {
+    AdminUserListController controller = Get.put(AdminUserListController());
+
     return AlertDialog(
       backgroundColor: Colors.white,
       content: SizedBox(
@@ -77,8 +85,10 @@ class UserDeleteDialog extends StatelessWidget {
                     backgroundColor: const Color.fromRGBO(255, 0, 0, 1),
                     shadowColor: Colors.black,
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     Get.back();
+                    await controller.deleteUser(id);
+                    await controller.getUsers();
                   },
                   child: Text(
                     'Yes',

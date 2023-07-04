@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/src/helper/dio.dart';
+import 'package:frontend/src/helper/snackbar/show_snackbar.dart';
 import 'package:frontend/src/helper/storage.dart';
 import 'package:frontend/src/models/user.dart';
 
@@ -37,5 +39,33 @@ class UserService {
     final userResponse = await client.get(userUrl);
 
     return userResponse.statusCode == HttpStatus.ok;
+  }
+
+  // returns void, if user successfully deleted, show snackbar with success message.
+  static Future<void> deleteUser(String id) async {
+    try {
+      final response = await NetworkConfig().client.delete('$usersUrl/$id');
+
+      if (response.statusCode == HttpStatus.ok) {
+        final data = await response.data['data'];
+
+        showSnackbar(
+          title: 'Success',
+          content: data['message'],
+        );
+      } else {
+        final error = jsonDecode(response.data.toString());
+
+        showSnackbar(
+          title: 'Error',
+          content: error['message'],
+        );
+      }
+    } catch (e) {
+      showSnackbar(
+        title: 'Error',
+        content: e.toString(),
+      );
+    }
   }
 }

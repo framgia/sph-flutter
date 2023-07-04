@@ -6,7 +6,6 @@ import 'package:frontend/src/components/breadcrumb.dart';
 import 'package:frontend/src/components/input/search_field.dart';
 import 'package:frontend/src/controllers/admin_user_list_controller.dart';
 import 'package:frontend/src/features/admin_user_list/components/user_list_tile.dart';
-import 'package:frontend/src/models/user.dart';
 
 /*
   The page where admins can see all the users.
@@ -68,11 +67,8 @@ class AdminUserListPage extends StatelessWidget {
                           : ListView.separated(
                               shrinkWrap: true,
                               itemBuilder: (BuildContext context, int index) {
-                                User user = controller.users.elementAt(index);
-
                                 return UserListTile(
-                                  name: '${user.firstName} ${user.lastName}',
-                                  isAdmin: user.isAdmin == 1,
+                                  user: controller.users.elementAt(index),
                                 );
                               },
                               separatorBuilder:
