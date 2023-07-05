@@ -7,6 +7,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
+import 'package:frontend/src/helper/user_full_name.dart';
 import 'package:frontend/src/models/user.dart';
 import 'package:frontend/src/controllers/login_controller.dart';
 import 'package:frontend/src/helper/storage.dart';
@@ -58,9 +59,6 @@ class LoginPage extends StatelessWidget {
       if (loginResponse.statusCode == HttpStatus.ok) {
         final User user = User.fromJson(loginResponse.data['data']);
 
-        final middleName =
-            user.middleName != null ? '${user.middleName[0]}.' : '';
-
         await storage.write(
           key: StorageKeys.loginToken.name,
           value: user.token,
@@ -68,7 +66,7 @@ class LoginPage extends StatelessWidget {
         await storage.write(key: StorageKeys.userId.name, value: user.id);
         await storage.write(
           key: StorageKeys.fullName.name,
-          value: '${user.firstName} $middleName ${user.lastName}',
+          value: userFullName(user),
         );
         await storage.write(
           key: StorageKeys.isAdmin.name,
