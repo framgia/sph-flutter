@@ -4,36 +4,47 @@
 
 import 'dart:convert';
 
+User initialProfileInfo = User(
+  id: '',
+  userName: '',
+  isAdmin: 0,
+  firstName: '',
+  lastName: '',
+  email: '',
+  address: '',
+  birthday: DateTime.now(),
+);
+
 User userFromJson(String str) => User.fromJson(json.decode(str));
 
 String userToJson(User data) => json.encode(data.toJson());
 
 class User {
-    String id;
-    String userName;
-    int isAdmin;
-    String firstName;
-    String lastName;
-    dynamic middleName;
-    String email;
-    String address;
-    DateTime birthday;
-    String? token;
+  String id;
+  String userName;
+  int isAdmin;
+  String firstName;
+  String lastName;
+  dynamic middleName;
+  String email;
+  String address;
+  DateTime birthday;
+  String? token;
 
-    User({
-        required this.id,
-        required this.userName,
-        required this.isAdmin,
-        required this.firstName,
-        required this.lastName,
-        this.middleName,
-        required this.email,
-        required this.address,
-        required this.birthday,
-        this.token,
-    });
+  User({
+    required this.id,
+    required this.userName,
+    required this.isAdmin,
+    required this.firstName,
+    required this.lastName,
+    this.middleName,
+    required this.email,
+    required this.address,
+    required this.birthday,
+    this.token,
+  });
 
-    factory User.fromJson(Map<String, dynamic> json) => User(
+  factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         userName: json["user_name"],
         isAdmin: json["is_admin"],
@@ -44,9 +55,9 @@ class User {
         address: json["address"],
         birthday: DateTime.parse(json["birthday"]),
         token: json["token"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "user_name": userName,
         "is_admin": isAdmin,
@@ -57,5 +68,5 @@ class User {
         "address": address,
         "birthday": birthday.toIso8601String(),
         "token": token,
-    };
+      };
 }

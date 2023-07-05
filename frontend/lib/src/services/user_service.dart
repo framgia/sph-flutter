@@ -68,4 +68,30 @@ class UserService {
       );
     }
   }
+
+  static Future<User> getUser() async {
+    final userId = await storage.read(key: StorageKeys.userId.name);
+
+    final userResponse = await NetworkConfig().client.get('$usersUrl/$userId');
+
+    if (userResponse.statusCode == HttpStatus.ok) {
+      final data = userResponse.data['data'];
+      User user = User.fromJson(data);
+
+      return user;
+    } else {
+      return initialProfileInfo;
+    }
+  }
+
+  static Future<bool> updateUserProfile(User userInfo) async {
+    final userId = await storage.read(key: StorageKeys.userId.name);
+
+    final response = await NetworkConfig().client.put(
+          '$usersUrl/$userId',
+          data: userToJson(userInfo),
+        );
+
+    return response.statusCode == HttpStatus.ok;
+  }
 }
