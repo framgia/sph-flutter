@@ -21,7 +21,9 @@ class TransactionController extends Controller
 
         // Get transactions by all or through accounts
         // For shallow nesting see https://laravel.com/docs/8.x/controllers#shallow-nesting
-        $transactions = $account ? $account->accountTransactions : Transaction::all();
+        $transactions = $account
+            ? Transaction::where('account_id', $account['id'])->orderBy('transaction_date')->get()
+            : Transaction::orderBy('transaction_date')->get();
 
         // Filter transactions by transaction type
         // TODO: add validation filter by transaction type
@@ -67,7 +69,6 @@ class TransactionController extends Controller
 
             return TransactionResource::make($sendRow);
         }
-
     }
 
     private function creditTransaction(Account $account, $payload)
@@ -98,7 +99,6 @@ class TransactionController extends Controller
             } catch (Exception $e) {
                 throw $e;
             }
-
         }, 5);
     }
 
@@ -148,6 +148,5 @@ class TransactionController extends Controller
                 throw $e;
             }
         }, 5);
-
     }
 }
