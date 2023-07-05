@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 
 import 'package:frontend/src/controllers/home_screen_controller.dart';
+import 'package:frontend/src/controllers/user_profile_controller.dart';
 
 /*
   Home screen that houses the following:
@@ -16,6 +17,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeScreenController controller = Get.put(HomeScreenController());
+    UserProfileController userProfileController =
+        Get.put(UserProfileController());
 
     return FutureBuilder(
       future: controller.getUserIsAdmin(),
@@ -77,6 +80,9 @@ class HomeScreen extends StatelessWidget {
                     if ((controller.isAdmin && index == 1) ||
                         (!controller.isAdmin && index == 0)) {
                       controller.setCurrentDashboardSettingsName = '/dashboard';
+                    } else if ((controller.isAdmin && index == 2) ||
+                        (!controller.isAdmin && index == 1)) {
+                      userProfileController.getUser();
                     }
                   },
                 ),

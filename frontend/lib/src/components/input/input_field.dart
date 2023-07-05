@@ -28,6 +28,8 @@ import 'package:frontend/src/components/label.dart';
 
   @param obscureText: boolean type to hide the text, usualy used in password field
   ex InputField(obscureText: true)
+
+  @param enabled: boolean type to disable the field
 */
 class InputField extends StatelessWidget {
   const InputField({
@@ -39,6 +41,7 @@ class InputField extends StatelessWidget {
     this.controller,
     this.validator,
     this.obscureText = false,
+    this.enabled = true,
   });
 
   final String name;
@@ -48,6 +51,7 @@ class InputField extends StatelessWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final bool obscureText;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +79,7 @@ class InputField extends StatelessWidget {
             obscureText: obscureText,
             keyboardType: inputType,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            enabled: enabled,
             decoration: const InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
