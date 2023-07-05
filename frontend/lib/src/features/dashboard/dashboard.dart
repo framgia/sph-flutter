@@ -5,7 +5,7 @@ import 'package:frontend/src/features/dashboard/components/account_card.dart';
 import 'package:frontend/src/controllers/dashboard_controller.dart';
 
 /*
-  This widget displays the dashboard of the application 
+  This widget displays the dashboard of the application
   User should see:
    - App logo (top-left)
    - User name (top-right)
@@ -34,7 +34,9 @@ class Dashboard extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
-              const SizedBox(height: 75,),
+              const SizedBox(
+                height: 75,
+              ),
               Center(
                 child: Text(
                   'No Account Found.',

@@ -65,8 +65,9 @@ class AccountCard extends StatelessWidget {
                         backgroundColor: const Color(0xFFF66868),
                         onClick: () {
                           Get.bottomSheet(
-                            const TransactionComponent(
+                            TransactionComponent(
                               label: 'Deposit Cash',
+                              accountId: account.id,
                             ),
                             backgroundColor: Colors.white,
                           );
@@ -80,8 +81,10 @@ class AccountCard extends StatelessWidget {
                         backgroundColor: const Color(0xFF44AE00),
                         onClick: () {
                           Get.bottomSheet(
-                            const TransactionComponent(
+                            TransactionComponent(
                               label: 'Witdraw Cash',
+                              type: 'CREDIT',
+                              accountId: account.id,
                             ),
                             backgroundColor: Colors.white,
                           );
@@ -95,9 +98,10 @@ class AccountCard extends StatelessWidget {
                         backgroundColor: const Color(0xFFC106C5),
                         onClick: () {
                           Get.bottomSheet(
-                            const TransactionComponent(
+                            TransactionComponent(
                               label: 'Transfer Cash',
                               type: 'TRANSFER',
+                              accountId: account.id,
                             ),
                             backgroundColor: Colors.white,
                           );

@@ -82,8 +82,9 @@ class AccountDetailsPage extends StatelessWidget {
                       radius: 8,
                       onPressed: () {
                         Get.bottomSheet(
-                          const TransactionComponent(
+                          TransactionComponent(
                             label: 'Deposit Cash',
+                            accountId: arguments.accountId,
                           ),
                           backgroundColor: Colors.white,
                         );
@@ -101,8 +102,10 @@ class AccountDetailsPage extends StatelessWidget {
                       radius: 8,
                       onPressed: () {
                         Get.bottomSheet(
-                          const TransactionComponent(
+                          TransactionComponent(
                             label: 'Witdraw Cash',
+                            type: 'CREDIT',
+                            accountId: arguments.accountId,
                           ),
                           backgroundColor: Colors.white,
                         );
@@ -125,9 +128,10 @@ class AccountDetailsPage extends StatelessWidget {
                       radius: 8,
                       onPressed: () {
                         Get.bottomSheet(
-                          const TransactionComponent(
+                          TransactionComponent(
                             label: 'Transfer Cash',
                             type: 'TRANSFER',
+                            accountId: arguments.accountId,
                           ),
                           backgroundColor: Colors.white,
                         );
