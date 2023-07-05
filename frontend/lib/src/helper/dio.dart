@@ -22,6 +22,7 @@ const logoutUrl = '$apiUrl/logout';
 const forgotPasswordUrl = '$apiUrl/forgot-password';
 const resetPasswordtUrl = '$apiUrl/reset-password';
 const userAccountsUrl = '$apiUrl/users/{id}/accounts';
+const userAccountUrl = '$apiUrl/accounts/{account_id}';
 const accountTransactionsUrl = '$apiUrl/accounts/{id}/transactions';
 
 const storage = FlutterSecureStorage();
