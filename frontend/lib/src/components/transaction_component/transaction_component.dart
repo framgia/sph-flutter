@@ -11,6 +11,7 @@ import 'package:frontend/src/components/input/input_field.dart';
 import 'package:frontend/src/helper/dialog/show_alert_dialog.dart';
 import 'package:frontend/src/helper/dio.dart';
 import 'package:frontend/src/controllers/dashboard_controller.dart';
+import 'package:frontend/src/controllers/transaction_submit_controller.dart';
 
 /*
   Reusable transaction component for deposit, withdraw, and transfer cash
@@ -40,7 +41,9 @@ class TransactionComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormBuilderState>();
-    final DashboardController controller = Get.put(DashboardController());
+    final DashboardController dashboardController = Get.find();
+    final TransactionSubmitController transactionSubmitController =
+        Get.put(TransactionSubmitController());
 
     void alertDialog({String? title, String? content}) => showAlertDialog(
           title: title ?? 'Invalid Input',
@@ -59,7 +62,7 @@ class TransactionComponent extends StatelessWidget {
             formKey.currentState?.fields['description']?.value;
         // Manually set category for now as there is no plan for this feature as of now
         // TODO: Deposit and transfer
-        final Map typeTexts = {
+        final Map<String, Map<String, String>> typeTexts = {
           'CREDIT': {'category': 'BILLS', 'success': 'withdrawn'},
         };
 
@@ -78,15 +81,15 @@ class TransactionComponent extends StatelessWidget {
             'amount': amountValue,
             'description': descriptionValue,
             'transaction_type': type,
-            'category': typeTexts[type]['category'],
+            'category': typeTexts[type]?['category'],
             'receiver_id': receiverValue,
           },
         );
 
         if (transactionResponse.statusCode == HttpStatus.created) {
-          final success = typeTexts[type]['success'];
+          final success = typeTexts[type]?['success'];
 
-          controller.getUserAccounts();
+          dashboardController.getUserAccounts();
 
           Get.back();
 
@@ -112,76 +115,109 @@ class TransactionComponent extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(25, 30, 25, 0),
       child: SizedBox(
         height: 450,
-        child: FormBuilder(
-          key: formKey,
-          autovalidateMode: AutovalidateMode.always,
-          onChanged: () {
-            formKey.currentState!.save();
-          },
-          child: Column(
-            children: [
-              Text(
-                label,
-                style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              const SizedBox(
-                height: 13,
-              ),
-              if (type == 'TRANSFER') ...[
-                const InputField(
-                  name: 'receiver_id',
-                  label: 'Account id',
-                  inputType: TextInputType.emailAddress,
+        child: GetX<TransactionSubmitController>(
+          builder: (_) => FormBuilder(
+            key: formKey,
+            autovalidateMode: AutovalidateMode.disabled,
+            onChanged: () {
+              formKey.currentState!.save();
+
+              // Fields required for each type
+              final Map<String, List<String>> requiredFields = {
+                'DEPT': ['amount', 'description'],
+                'CREDIT': ['amount', 'description'],
+                'TRANSFER': ['receiver_id', 'amount', 'description'],
+              };
+
+              // Enable submit button once requirements are met
+              final validFields = requiredFields[type]
+                  ?.where(
+                    (field) => formKey.currentState!.fields[field]!.isValid,
+                  )
+                  .toList();
+
+              transactionSubmitController.setTransactionSubmitEnabled =
+                  requiredFields[type]?.length == validFields?.length;
+            },
+            child: Column(
+              children: [
+                Text(
+                  label,
+                  style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 const SizedBox(
-                  height: 32,
+                  height: 13,
+                ),
+                if (type == 'TRANSFER') ...[
+                  InputField(
+                    name: 'receiver_id',
+                    label: 'Account id',
+                    inputType: TextInputType.text,
+                    validator: FormBuilderValidators.required(),
+                  ),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                ],
+                InputField(
+                  name: 'amount',
+                  label: 'Amount',
+                  validator: FormBuilderValidators.compose(
+                    [
+                      FormBuilderValidators.integer(),
+                      FormBuilderValidators.required(),
+                    ],
+                  ),
+                  inputType: TextInputType.number,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                InputField(
+                  name: 'description',
+                  label: 'Description',
+                  inputType: TextInputType.text,
+                  validator: FormBuilderValidators.required(),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Button(
+                      text: 'Confirm',
+                      onPressed:
+                          transactionSubmitController.transactionSubmitEnabled
+                              ? onSubmit
+                              : null,
+                      buttonColor:
+                          transactionSubmitController.transactionSubmitEnabled
+                              ? const Color(0xFF00CCFF)
+                              : Colors.grey,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 38,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: Text(
+                        'Cancel',
+                        style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: const Color.fromARGB(255, 0, 140, 255),
+                            ),
+                      ),
+                    )
+                  ],
                 ),
               ],
-              InputField(
-                name: 'amount',
-                label: 'Amount',
-                validator: FormBuilderValidators.integer(),
-                inputType: TextInputType.number,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const InputField(
-                name: 'description',
-                label: 'Description',
-                inputType: TextInputType.text,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Button(
-                    text: 'Confirm',
-                    onPressed: onSubmit,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 16,
-                      horizontal: 38,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    child: Text(
-                      'Cancel',
-                      style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: const Color.fromARGB(255, 0, 140, 255),
-                          ),
-                    ),
-                  )
-                ],
-              ),
-            ],
+            ),
           ),
         ),
       ),
