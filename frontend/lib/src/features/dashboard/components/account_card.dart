@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import 'package:frontend/src/components/transaction_component/transaction_component.dart';
 import 'package:frontend/src/features/dashboard/components/account_card_button.dart';
 import 'package:frontend/src/models/account.dart';
 import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
-import 'package:intl/intl.dart';
+import 'package:frontend/src/models/transaction.dart';
 
 /*
   Card widget used in dashboard.dart
@@ -83,7 +84,7 @@ class AccountCard extends StatelessWidget {
                           Get.bottomSheet(
                             TransactionComponent(
                               label: 'Witdraw Cash',
-                              type: 'CREDIT',
+                              type: TransactionTypes.CREDIT,
                               accountId: account.id,
                             ),
                             backgroundColor: Colors.white,
@@ -100,7 +101,7 @@ class AccountCard extends StatelessWidget {
                           Get.bottomSheet(
                             TransactionComponent(
                               label: 'Transfer Cash',
-                              type: 'TRANSFER',
+                              type: TransactionTypes.TRANSFER,
                               accountId: account.id,
                             ),
                             backgroundColor: Colors.white,
