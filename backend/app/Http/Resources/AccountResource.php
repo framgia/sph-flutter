@@ -29,7 +29,8 @@ class AccountResource extends JsonResource
         $sortedTransactions = Arr::sort($transactions, function ($value) {
             return $value['transaction_date'];
         });
-        $latestTransaction = $sortedTransactions[0];
+
+        $latestTransaction = last($sortedTransactions);
 
         $data['balance'] = $latestTransaction['starting_balance'] + $latestTransaction['transaction_amount'];
 

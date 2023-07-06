@@ -10,13 +10,14 @@ class AccountController extends Controller
 {
     public function index($user_id = null)
     {
-
         //For /users/{user_id}/accounts
         if ($user_id) {
             //For shallow nesting
             // see https://laravel.com/docs/10.x/controllers#shallow-nesting
 
-            $user = User::where('id', $user_id)->with(['userAccounts'])->first();
+            $user = User::where('id', $user_id)
+                ->with(['userAccounts', 'userAccounts.accountTransactions'])
+                ->first();
 
             return AccountResource::collection($user->userAccounts);
         }
