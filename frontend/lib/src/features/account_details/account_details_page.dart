@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/controllers/account_details_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import 'package:frontend/src/controllers/account_details_controller.dart';
 import 'package:frontend/src/components/transaction_component/transaction_component.dart';
 import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
 import 'package:frontend/src/components/breadcrumb.dart';
