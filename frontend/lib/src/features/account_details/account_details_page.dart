@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import 'package:frontend/src/controllers/account_details_controller.dart';
+import 'package:frontend/src/controllers/home_screen_controller.dart';
 import 'package:frontend/src/components/transaction_component/transaction_component.dart';
 import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
 import 'package:frontend/src/components/breadcrumb.dart';
@@ -26,6 +27,7 @@ class AccountDetailsPage extends StatelessWidget {
     final arguments =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     AccountDetailsController controller = Get.put(AccountDetailsController());
+    HomeScreenController homeScreenController = Get.find();
 
     return FutureBuilder(
       future: controller.getUserAccount(accountId: arguments.accountId),
@@ -41,6 +43,9 @@ class AccountDetailsPage extends StatelessWidget {
               Breadcrumb(
                 text: 'Account Details',
                 onTap: () {
+                  // show the floating button again
+                  homeScreenController.floatingActionButtonVisible = true;
+
                   return dashboardAppNav.currentState?.popUntil((route) {
                     return route.isFirst;
                   });

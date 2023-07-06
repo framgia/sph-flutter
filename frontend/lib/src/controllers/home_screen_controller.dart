@@ -10,16 +10,14 @@ import 'package:frontend/src/navigators/users_list_screen_navigator.dart';
 
 class HomeScreenController extends GetxController {
   final RxInt _currentPage = 0.obs;
-  final RxString _currentDashboardSettingsName = '/dashboard'.obs;
   final RxBool _isAdmin = false.obs;
+  final RxBool _floatingActionButtonVisible = false.obs;
 
   int get currentPage => _currentPage.value;
   set setCurrentPage(int newValue) => _currentPage.value = newValue;
 
-  String get currentDashboardSettingsName =>
-      _currentDashboardSettingsName.value;
-  set setCurrentDashboardSettingsName(String newValue) =>
-      _currentDashboardSettingsName.value = newValue;
+  bool get floatingActionButtonVisible => _floatingActionButtonVisible.value;
+  set floatingActionButtonVisible(bool newValue) => _floatingActionButtonVisible.value = newValue;
 
   // navbar section
   final RxList<GlobalKey<NavigatorState>> adminNavigatorKeys = [
@@ -66,6 +64,7 @@ class HomeScreenController extends GetxController {
   void onInit() async {
     super.onInit();
     await getUserIsAdmin();
+    floatingActionButtonVisible = !isAdmin;
   }
 
   Future<bool> getUserIsAdmin() async {
