@@ -1,7 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:frontend/src/helper/storage.dart';
 import 'package:get/get.dart';
 
+import 'package:frontend/src/helper/storage.dart';
 import 'package:frontend/src/helper/user_full_name.dart';
 import 'package:frontend/src/models/user.dart';
 import 'package:frontend/src/services/user_service.dart';
