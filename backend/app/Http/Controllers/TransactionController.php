@@ -58,7 +58,7 @@ class TransactionController extends Controller
 
         // + to $account
         if ($payload['transaction_type'] === 'DEPT') {
-            $sendRow = $this->debitTransaction($account, $payload);
+            $sendRow = $this->deptTransaction($account, $payload);
 
             return TransactionResource::make($sendRow);
         }
@@ -76,7 +76,7 @@ class TransactionController extends Controller
     private function creditTransaction(Account $account, $payload)
     {
         $transaction_date = now();
-        $senderData = [
+        $creditData = [
             'account_id' => $account->id,
             'user_id' => $account->user_id,
             'transaction_type' => $payload['transaction_type'],
@@ -87,27 +87,27 @@ class TransactionController extends Controller
             'transaction_date' => $transaction_date,
         ];
 
-        return DB::transaction(function () use ($senderData) {
+        return DB::transaction(function () use ($creditData) {
 
             try {
 
-                $sendRow = Transaction::create($senderData);
+                $creditRow = Transaction::create($creditData);
 
-                if (! $sendRow->created_at) {
-                    throw new TransactionException('Transaction Failed. Please try again', $sendRow);
+                if (! $creditRow->created_at) {
+                    throw new TransactionException('Transaction Failed. Please try again', $creditRow);
                 }
 
-                return $sendRow;
+                return $creditRow;
             } catch (Exception $e) {
                 throw $e;
             }
         }, 5);
     }
 
-    private function debitTransaction(Account $account, $payload)
+    private function deptTransaction(Account $account, $payload)
     {
         $transaction_date = now();
-        $senderData = [
+        $deptData = [
             'account_id' => $account->id,
             'user_id' => $account->user_id,
             'transaction_type' => $payload['transaction_type'],
@@ -118,11 +118,11 @@ class TransactionController extends Controller
             'transaction_date' => $transaction_date,
         ];
 
-        return DB::transaction(function () use ($senderData) {
+        return DB::transaction(function () use ($deptData) {
 
             try {
 
-                $sendRow = Transaction::create($senderData);
+                $sendRow = Transaction::create($deptData);
 
                 if (! $sendRow->created_at) {
                     throw new TransactionException('Transaction Failed. Please try again', $sendRow);
@@ -135,6 +135,7 @@ class TransactionController extends Controller
 
         }, 5);
     }
+
 
     private function transferTransaction(Account $account, Account $receiverAccount, $payload)
     {

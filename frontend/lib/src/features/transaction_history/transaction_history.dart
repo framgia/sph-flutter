@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import 'package:frontend/src/features/transaction_history/components/transaction_card.dart';
-import 'package:frontend/src/features/transaction_history/data/data.dart';
 import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
 import 'package:frontend/src/controllers/transaction_controller.dart';
 import 'package:frontend/src/components/input/date_picker_field.dart';
@@ -19,9 +18,10 @@ class TransactionHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final transactionController = Get.put(TransactionController());
+    final controller = Get.put(TransactionController());
     final arguments =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
+    controller.getTransactions(accountId: arguments.accountId);
 
     return Column(
       children: [
@@ -42,27 +42,27 @@ class TransactionHistory extends StatelessWidget {
                 Dropdown(
                   labelText: 'Filter transaction by type',
                   items: transactionTypes,
-                  selectedValue: transactionController.selectedTransactionType,
+                  selectedValue: controller.selectedTransactionType,
                   onChanged: (value) {
-                    transactionController.setSelectedTransactionType =
-                        value.toString();
-                    debugPrint(transactionController.selectedTransactionType);
+                    controller.setSelectedTransactionType = value.toString();
+                    debugPrint(controller.selectedTransactionType);
                   },
                 ),
                 const SizedBox(height: 20),
                 DatePickerField(
                   labelText: 'Filter transaction by date',
                   name: 'filter_by_date',
-                  initialValue: transactionController.selectedTransactionDate,
+                  initialValue: controller.selectedTransactionDate,
                   lastDate: DateTime.now(),
                   onChanged: (value) {
-                    transactionController.setSelectedTransactionDate = value!;
+                    controller.setSelectedTransactionDate = value!;
                     final formattedDate = DateFormat.yMd().format(value);
                     debugPrint(formattedDate);
                   },
                 ),
                 const SizedBox(height: 35),
-                if (transactionData.isEmpty)
+                //Start Future Builder
+                if (controller.transactionList.isEmpty)
                   Container(
                     margin: const EdgeInsets.only(top: 20),
                     child: Text(
@@ -72,15 +72,16 @@ class TransactionHistory extends StatelessWidget {
                   )
                 else
                   ListView.builder(
-                    itemCount: transactionData.length,
+                    itemCount: controller.transactionList.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
                       return TransactionCard(
-                        transaction: transactionData[index],
+                        transaction: controller.transactionList[index],
                       );
                     },
                   ),
+                //End Future Builder
               ],
             ),
           ),

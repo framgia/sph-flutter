@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:frontend/src/models/transaction.dart';
+import 'package:intl/intl.dart';
 
 /*
   Component only for transaction history page.
@@ -12,7 +13,6 @@ class TransactionCard extends StatelessWidget {
   const TransactionCard({super.key, required this.transaction});
 
   final Transaction transaction;
-
   @override
   Widget build(BuildContext context) {
     TextTheme customTextTheme = Theme.of(context).textTheme.copyWith(
@@ -26,7 +26,6 @@ class TransactionCard extends StatelessWidget {
             color: Color(0xFF6D7881),
           ),
         );
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: const BoxDecoration(
@@ -38,29 +37,35 @@ class TransactionCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                transaction.description,
-                style: customTextTheme.titleSmall,
-              ),
-              Text(
-                transaction.name ?? '',
-                style: customTextTheme.titleMedium,
-              )
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  transaction.generateDescription(),
+                  style: customTextTheme.titleSmall,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  transaction.participantName ?? '',
+                  style: customTextTheme.titleMedium,
+                )
+              ],
+            ),
+          ),
+          SizedBox(
+            width: 10,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                transaction.date ?? '',
+                DateFormat('MMMM d, y').format(transaction.transactionDate),
                 style: customTextTheme.titleSmall,
               ),
               Row(
                 children: [
-                  if (transaction.description.contains('Received'))
+                  if (transaction.amount > 0)
                     const FaIcon(
                       FontAwesomeIcons.plus,
                       size: 13,
@@ -80,7 +85,7 @@ class TransactionCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 2),
                   Text(
-                    transaction.amount,
+                    transaction.amount.abs().toStringAsFixed(2),
                     style: customTextTheme.titleMedium,
                   ),
                 ],

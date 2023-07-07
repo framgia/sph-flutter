@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:frontend/src/helper/dio.dart';
 import 'package:frontend/src/models/transaction.dart';
 
@@ -24,5 +23,23 @@ class TransactionService {
     }
 
     return jsonDecode(response.data.toString())['error']['message'];
+  }
+
+  static Future<List<Transaction>> getTransactions({
+    String accountId = '',
+  }) async {
+    final url = accountTransactionsUrl.replaceFirst('{id}', accountId);
+    final transactionResponse = await NetworkConfig().client.get(url);
+
+    if (transactionResponse.statusCode == HttpStatus.ok) {
+      final Iterable data = transactionResponse.data['data'];
+      final List<Transaction> transactions = List<Transaction>.from(
+        data.map(
+          (transaction) => Transaction.fromJson(transaction),
+        ),
+      );
+      return transactions;
+    }
+    return [];
   }
 }

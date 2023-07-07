@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:frontend/src/models/transaction.dart';
+import 'package:frontend/src/services/transaction_service.dart';
 
 import 'package:frontend/src/models/transaction.dart';
 import 'package:frontend/src/services/transaction_service.dart';
@@ -17,6 +19,15 @@ class TransactionController extends GetxController {
   DateTime get selectedTransactionDate => _selectedTransactionDate.value;
 
   bool get transactionSubmitEnabled => _transactionSubmitEnabled.value;
+
+  RxList<Transaction> transactionList = <Transaction>[].obs;
+
+  Future<List<Transaction>> getTransactions({String accountId = ''}) async {
+    final result =
+        await TransactionService.getTransactions(accountId: accountId);
+    transactionList.assignAll(result);
+    return result;
+  }
 
   set setSelectedTransactionType(String newValue) =>
       _selectedTransactionType.value = newValue;
