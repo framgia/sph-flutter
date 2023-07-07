@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 
+import 'package:frontend/src/controllers/auth_header_controller.dart';
 import 'package:frontend/src/components/breadcrumb.dart';
 import 'package:frontend/src/components/input/input_field.dart';
 import 'package:frontend/src/components/button.dart';
@@ -22,15 +23,17 @@ class ProfileInfo extends StatelessWidget {
     final formKey = GlobalKey<FormBuilderState>();
 
     UserProfileController controller = Get.put(UserProfileController());
+    AuthHeaderController authHeaderController = Get.find();
 
     onSubmit() async {
       controller.setLoading = true;
 
-      final isUpdated = await controller.updateUserProfile(controller.user);
+      final updated = await controller.updateUserProfile(controller.user);
+      if (updated) await authHeaderController.getFullName();
 
       controller.setLoading = false;
 
-      if (isUpdated) {
+      if (updated) {
         showSnackbar(
           title: "Success",
           content: "Profile updated successfully.",

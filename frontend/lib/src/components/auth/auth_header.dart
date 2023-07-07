@@ -1,9 +1,10 @@
 import 'dart:io';
-import 'package:frontend/src/controllers/auth_header_controller.dart';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'package:frontend/src/controllers/auth_header_controller.dart';
 import 'package:frontend/src/features/login/login_page.dart';
 import 'package:frontend/src/helper/dialog/show_alert_dialog.dart';
 import 'package:frontend/src/helper/dio.dart';
@@ -97,11 +98,14 @@ class AuthHeader extends StatelessWidget {
                                 DropdownMenuItem(
                                   value: 'user',
                                   child: SizedBox(
-                                    width: MediaQuery.of(context).size.width * 0.40,
-                                    child: Text(
-                                      controller.name,
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.end,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.40,
+                                    child: Obx(
+                                      () => Text(
+                                        controller.name,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.end,
+                                      ),
                                     ),
                                   ),
                                 ),
