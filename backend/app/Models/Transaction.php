@@ -54,11 +54,11 @@ class Transaction extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Transaction::class,'transaction_id');
+        return $this->belongsTo(Transaction::class, 'transaction_id');
     }
 
     public function child()
     {
-        return $this->hasOne(Transaction::class,'transaction_id');
+        return $this->hasOne(Transaction::class, 'transaction_id');
     }
 }

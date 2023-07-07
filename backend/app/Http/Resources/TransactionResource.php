@@ -24,6 +24,5 @@ class TransactionResource extends JsonResource
                     $data['account_name'] = $this->parent->account->account_name;
                 }
             }
-            return $data;
         }
 }
