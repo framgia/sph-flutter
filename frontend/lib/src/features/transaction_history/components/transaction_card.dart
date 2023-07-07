@@ -5,7 +5,7 @@ import 'package:frontend/src/models/transaction.dart';
 
 /*
   Component only for transaction history page.
-  
+
   @param transaction, contains transaction details.
 */
 class TransactionCard extends StatelessWidget {
@@ -46,7 +46,7 @@ class TransactionCard extends StatelessWidget {
                 style: customTextTheme.titleSmall,
               ),
               Text(
-                transaction.name,
+                transaction.name ?? '',
                 style: customTextTheme.titleMedium,
               )
             ],
@@ -55,7 +55,7 @@ class TransactionCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                transaction.date,
+                transaction.date ?? '',
                 style: customTextTheme.titleSmall,
               ),
               Row(

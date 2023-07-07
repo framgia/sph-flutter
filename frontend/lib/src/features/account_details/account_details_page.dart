@@ -8,6 +8,7 @@ import 'package:frontend/src/components/button.dart';
 import 'package:frontend/src/components/balance_card.dart';
 import 'package:frontend/src/components/graph.dart';
 import 'package:frontend/src/features/dashboard/components/account_card.dart';
+import 'package:frontend/src/models/transaction.dart';
 
 /*
   The page where user can see their account details.
@@ -82,8 +83,9 @@ class AccountDetailsPage extends StatelessWidget {
                       radius: 8,
                       onPressed: () {
                         Get.bottomSheet(
-                          const TransactionComponent(
+                          TransactionComponent(
                             label: 'Deposit Cash',
+                            accountId: arguments.accountId,
                           ),
                           backgroundColor: Colors.white,
                         );
@@ -101,8 +103,10 @@ class AccountDetailsPage extends StatelessWidget {
                       radius: 8,
                       onPressed: () {
                         Get.bottomSheet(
-                          const TransactionComponent(
+                          TransactionComponent(
                             label: 'Witdraw Cash',
+                            type: TransactionTypes.CREDIT,
+                            accountId: arguments.accountId,
                           ),
                           backgroundColor: Colors.white,
                         );
@@ -125,9 +129,10 @@ class AccountDetailsPage extends StatelessWidget {
                       radius: 8,
                       onPressed: () {
                         Get.bottomSheet(
-                          const TransactionComponent(
+                          TransactionComponent(
                             label: 'Transfer Cash',
-                            type: 'TRANSFER',
+                            type: TransactionTypes.TRANSFER,
+                            accountId: arguments.accountId,
                           ),
                           backgroundColor: Colors.white,
                         );

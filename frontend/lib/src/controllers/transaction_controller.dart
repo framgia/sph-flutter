@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
 
+import 'package:frontend/src/models/transaction.dart';
+import 'package:frontend/src/services/transaction_service.dart';
+
 List<String> transactionTypes = ['Credit', 'Dept', 'Transfer'];
 
 class TransactionController extends GetxController {
@@ -7,13 +10,30 @@ class TransactionController extends GetxController {
 
   final Rx<DateTime> _selectedTransactionDate = DateTime.now().obs;
 
+  final RxBool _transactionSubmitEnabled = false.obs;
+
   String get selectedTransactionType => _selectedTransactionType.value;
 
   DateTime get selectedTransactionDate => _selectedTransactionDate.value;
+
+  bool get transactionSubmitEnabled => _transactionSubmitEnabled.value;
 
   set setSelectedTransactionType(String newValue) =>
       _selectedTransactionType.value = newValue;
 
   set setSelectedTransactionDate(DateTime newValue) =>
       _selectedTransactionDate.value = newValue;
+
+  set setTransactionSubmitEnabled(bool newValue) =>
+      _transactionSubmitEnabled.value = newValue;
+
+  Future<dynamic> postTransaction(
+    Transaction transaction,
+    String accountId,
+  ) async {
+    return await TransactionService.postTransaction(
+      transaction,
+      accountId,
+    );
+  }
 }
