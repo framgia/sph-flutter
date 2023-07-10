@@ -18,7 +18,9 @@ class Transaction {
   Category category;
   double amount;
   String description;
-  String? participantName;
+  String? accountName;
+  String? senderName;
+  String? receiverName;
 
   Transaction({
     this.transactionId,
@@ -27,21 +29,24 @@ class Transaction {
     required this.category,
     required this.amount,
     required this.description,
-    this.participantName,
+    this.accountName,
+    this.senderName,
+    this.receiverName,
   });
 
   // DateFormat('yyyy-MM-ddTHH:mm:ssZ').parseUTC(json["created_at"]),
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
-        transactionId: json['id'],
-        transactionDate:
-            DateFormat('yyyy-MM-ddTHH:mm:ssZ').parseUTC(json["created_at"]),
-        transactionType: TransactionTypes.values
-            .firstWhere((e) => e.name == json['transaction_type']),
-        category: Category.values.firstWhere((e) => e.name == json['category']),
-        amount: (json["transaction_amount"] as num).toDouble(),
-        description: json["description"],
-        participantName: json["account_name"],
-      );
+      transactionId: json['id'],
+      transactionDate:
+          DateFormat('yyyy-MM-ddTHH:mm:ssZ').parseUTC(json["created_at"]),
+      transactionType: TransactionTypes.values
+          .firstWhere((e) => e.name == json['transaction_type']),
+      category: Category.values.firstWhere((e) => e.name == json['category']),
+      amount: (json["transaction_amount"] as num).toDouble(),
+      description: json["description"],
+      accountName: json["account_name"],
+      receiverName: json['receiver_name'],
+      senderName: json['sender_name']);
 
   Map<String, dynamic> toJson() => {
         "transactionId": transactionId,
@@ -50,7 +55,7 @@ class Transaction {
         "category": category,
         "amount": amount,
         "description": description,
-        "participantName": participantName
+        "accountName": accountName
       };
   String generateDescription() {
     if (transactionType == TransactionTypes.DEPT) {
@@ -63,9 +68,9 @@ class Transaction {
 
     if (transactionType == TransactionTypes.TRANSFER) {
       if (category == Category.SENDER) {
-        return 'Transferred money to';
+        return 'Deposited money to';
       }
-      return 'Transferred money from';
+      return 'Received money from';
     }
     return '';
   }

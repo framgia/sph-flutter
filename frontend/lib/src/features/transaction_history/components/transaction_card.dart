@@ -47,7 +47,10 @@ class TransactionCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  transaction.participantName ?? '',
+                  transaction.senderName ??
+                      transaction.receiverName ??
+                      transaction.accountName ??
+                      '',
                   style: customTextTheme.titleMedium,
                 )
               ],
