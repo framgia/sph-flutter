@@ -1,5 +1,7 @@
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
+import 'package:frontend/src/controllers/home_screen_controller.dart';
 import 'package:frontend/src/features/transaction_history/transaction_history.dart';
 import 'package:frontend/src/components/auth/auth_header.dart';
 import 'package:frontend/src/features/dashboard/dashboard.dart';
@@ -11,8 +13,11 @@ GlobalKey<NavigatorState> dashboardAppNav = GlobalKey();
 class DashboardScreenNavigator extends StatelessWidget {
   const DashboardScreenNavigator({super.key});
 
+  
   @override
   Widget build(BuildContext context) {
+    final HomeScreenController homeScreenController = Get.find();
+
     return Navigator(
       key: dashboardAppNav,
       onGenerateRoute: (RouteSettings settings) {
@@ -24,6 +29,7 @@ class DashboardScreenNavigator extends StatelessWidget {
             break;
           case '/accountDetails':
             page = const AccountDetailsPage();
+            homeScreenController.floatingActionButtonVisible = false;
             break;
           case '/transactionHistory':
             page = const TransactionHistory();

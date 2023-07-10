@@ -19,4 +19,16 @@ class AccountService {
       return [];
     }
   }
+
+  static Future<Account?> getUserAccount({String accountId = ''}) async {
+    final url = userAccountUrl
+      .replaceFirst('{account_id}', accountId);
+    final userAccountResponse = await NetworkConfig().client.get(url);
+
+    if (userAccountResponse.statusCode == HttpStatus.ok) {
+      return Account.fromJson(userAccountResponse.data['data']);
+    } else {
+      return null;
+    }
+  }
 }

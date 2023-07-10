@@ -1,8 +1,10 @@
+import 'package:get/get.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 
+import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
+import 'package:frontend/src/navigators/profile_screen_navigator.dart';
 import 'package:frontend/src/features/dashboard/components/add_account_dialog.dart';
 import 'package:frontend/src/controllers/home_screen_controller.dart';
 import 'package:frontend/src/controllers/user_profile_controller.dart';
@@ -48,55 +50,49 @@ class HomeScreen extends StatelessWidget {
           onWillPop: onWillPop,
           child: SafeArea(
             child: Obx(
-              () => Scaffold(
-                floatingActionButton: Visibility(
-                  visible: (controller.isAdmin &&
-                          controller.currentPage == 1) ||
-                      (!controller.isAdmin && controller.currentPage == 0) &&
-                          controller.currentDashboardSettingsName ==
-                              '/dashboard',
-                  child: FloatingActionButton(
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
+              () {
+                return Scaffold(
+                  floatingActionButton: Visibility(
+                    visible: controller.floatingActionButtonVisible,
+                    child: FloatingActionButton(
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
                       Get.dialog(
                         barrierDismissible: false,
                         const AddAccountDialog(),
                       );
                     },
+                    ),
                   ),
-                ),
-                bottomNavigationBar: CurvedNavigationBar(
-                  backgroundColor: const Color(0xFFDAEAEE),
-                  color: const Color(0xFF5D8A99),
-                  items: items,
-                  onTap: (index) {
-                    controller.setCurrentPage = index;
+                  bottomNavigationBar: CurvedNavigationBar(
+                    backgroundColor: const Color(0xFFDAEAEE),
+                    color: const Color(0xFF5D8A99),
+                    items: items,
+                    onTap: (index) {
+                      controller.setCurrentPage = index;
 
-                    if (index == controller.currentPage) {
                       navigatorKeys[controller.currentPage]
                           .currentState
                           ?.popUntil((route) {
                         return route.isFirst;
                       });
-                    }
 
-                    if ((controller.isAdmin && index == 1) ||
-                        (!controller.isAdmin && index == 0)) {
-                      controller.setCurrentDashboardSettingsName = '/dashboard';
-                    } else if ((controller.isAdmin && index == 2) ||
-                        (!controller.isAdmin && index == 1)) {
-                      userProfileController.getUser();
-                    }
-                  },
-                ),
-                body: IndexedStack(
-                  index: controller.currentPage,
-                  children: pages,
-                ),
-              ),
+                      controller.floatingActionButtonVisible = pages[index] is DashboardScreenNavigator;
+
+                      if (pages[index] is ProfileScreenNavigator) {
+                        userProfileController.getUser();
+                      }
+                    },
+                  ),
+                  body: IndexedStack(
+                    index: controller.currentPage,
+                    children: pages,
+                  ),
+                );
+              },
             ),
           ),
         );
