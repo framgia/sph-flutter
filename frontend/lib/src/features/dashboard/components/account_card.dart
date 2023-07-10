@@ -83,7 +83,7 @@ class AccountCard extends StatelessWidget {
                         onClick: () {
                           Get.bottomSheet(
                             TransactionComponent(
-                              label: 'Witdraw Cash',
+                              label: 'Withdraw Cash',
                               type: TransactionTypes.CREDIT,
                               accountId: account.id,
                             ),

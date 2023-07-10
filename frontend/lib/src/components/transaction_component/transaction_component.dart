@@ -60,7 +60,6 @@ class TransactionComponent extends StatelessWidget {
             'success': 'withdrawn'
           },
         };
-
         // If field is null, do not execute Get.back();
         if (amountValue == null ||
             descriptionValue == null ||
@@ -70,7 +69,7 @@ class TransactionComponent extends StatelessWidget {
           return;
         }
         final transaction = Transaction(
-          amount: amountValue,
+          amount: double.parse(amountValue),
           description: descriptionValue,
           transactionType: type,
           category: typeTexts[type]!['category'],

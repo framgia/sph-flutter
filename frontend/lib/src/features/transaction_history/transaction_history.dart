@@ -24,76 +24,78 @@ class TransactionHistory extends StatelessWidget {
     final arguments =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
 
-    return Column(
-      children: [
-        Breadcrumb(
-          text: 'Transaction History',
-          onTap: () {
-            dashboardAppNav.currentState?.pushNamed(
-              '/accountDetails',
-              arguments: ScreenArguments(arguments.accountId),
-            );
-          },
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(25, 35, 25, 110),
-          child: Obx(
-            () => Column(
-              children: [
-                Dropdown(
-                  labelText: 'Filter transaction by type',
-                  items: transactionTypes,
-                  selectedValue: controller.selectedTransactionType,
-                  onChanged: (value) {
-                    controller.setSelectedTransactionType = value.toString();
-                    debugPrint(controller.selectedTransactionType);
-                  },
-                ),
-                const SizedBox(height: 20),
-                DatePickerField(
-                  labelText: 'Filter transaction by date',
-                  name: 'filter_by_date',
-                  initialValue: controller.selectedTransactionDate,
-                  lastDate: DateTime.now(),
-                  onChanged: (value) {
-                    controller.setSelectedTransactionDate = value!;
-                    final formattedDate = DateFormat.yMd().format(value);
-                    debugPrint(formattedDate);
-                  },
-                ),
-                const SizedBox(height: 35),
-                GetX<TransactionController>(
-                  builder: (_) => RefreshIndicator(
-                    onRefresh: () {
-                      return controller.getTransactions(
-                        accountId: arguments.accountId,
-                      );
-                    },
-                    child: controller.transactionList.isEmpty
-                        ? Container(
-                            margin: const EdgeInsets.only(top: 20),
-                            child: Text(
-                              'No Transaction Record',
-                              style: Theme.of(context).textTheme.labelMedium,
-                            ),
-                          )
-                        : ListView.builder(
-                            itemCount: controller.transactionList.length,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return TransactionCard(
-                                transaction: controller.transactionList[index],
-                              );
-                            },
-                          ),
-                  ),
-                ),
-              ],
+    return FutureBuilder(
+      future: controller.getTransactions(accountId: arguments.accountId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const CircularProgressIndicator();
+        }
+
+        return Column(
+          children: [
+            Breadcrumb(
+              text: 'Transaction History',
+              onTap: () {
+                dashboardAppNav.currentState?.pushNamed(
+                  '/accountDetails',
+                  arguments: ScreenArguments(arguments.accountId),
+                );
+              },
             ),
-          ),
-        ),
-      ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(25, 35, 25, 110),
+              child: Obx(
+                () => Column(
+                  children: [
+                    Dropdown(
+                      labelText: 'Filter transaction by type',
+                      items: transactionTypes,
+                      selectedValue: controller.selectedTransactionType,
+                      onChanged: (value) {
+                        controller.setSelectedTransactionType =
+                            value.toString();
+                        debugPrint(controller.selectedTransactionType);
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    DatePickerField(
+                      labelText: 'Filter transaction by date',
+                      name: 'filter_by_date',
+                      initialValue: controller.selectedTransactionDate,
+                      lastDate: DateTime.now(),
+                      onChanged: (value) {
+                        controller.setSelectedTransactionDate = value!;
+                        final formattedDate = DateFormat.yMd().format(value);
+                        debugPrint(formattedDate);
+                      },
+                    ),
+                    const SizedBox(height: 35),
+                    if (controller.transactionList.isEmpty)
+                      Container(
+                        margin: const EdgeInsets.only(top: 20),
+                        child: Text(
+                          'No Transaction Record',
+                          style: Theme.of(context).textTheme.labelMedium,
+                        ),
+                      )
+                    else
+                      ListView.builder(
+                        itemCount: controller.transactionList.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return TransactionCard(
+                            transaction: controller.transactionList[index],
+                          );
+                        },
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

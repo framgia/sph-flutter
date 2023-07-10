@@ -17,13 +17,6 @@ class TransactionController extends GetxController {
 
   bool get transactionSubmitEnabled => _transactionSubmitEnabled.value;
 
-  Future<List<Transaction>> getTransactions({String accountId = ''}) async {
-    final result =
-        await TransactionService.getTransactions(accountId: accountId);
-    transactionList.assignAll(result);
-    return result;
-  }
-
   set setSelectedTransactionType(String newValue) =>
       _selectedTransactionType.value = newValue;
 
@@ -32,6 +25,13 @@ class TransactionController extends GetxController {
 
   set setTransactionSubmitEnabled(bool newValue) =>
       _transactionSubmitEnabled.value = newValue;
+
+  Future<List<Transaction>> getTransactions({String accountId = ''}) async {
+    final result =
+        await TransactionService.getTransactions(accountId: accountId);
+    transactionList.assignAll(result);
+    return result;
+  }
 
   Future<dynamic> postTransaction(
     Transaction transaction,
