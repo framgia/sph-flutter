@@ -12,6 +12,8 @@ import 'package:frontend/src/features/dashboard/components/account_card.dart';
 
 /*
   The page where user can see their transaction history per account.
+
+  @arguments accountId, contains Id to access account details
 */
 class TransactionHistory extends StatelessWidget {
   const TransactionHistory({super.key});
@@ -61,7 +63,6 @@ class TransactionHistory extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 35),
-                //Start Future Builder
                 if (controller.transactionList.isEmpty)
                   Container(
                     margin: const EdgeInsets.only(top: 20),
@@ -81,7 +82,6 @@ class TransactionHistory extends StatelessWidget {
                       );
                     },
                   ),
-                //End Future Builder
               ],
             ),
           ),

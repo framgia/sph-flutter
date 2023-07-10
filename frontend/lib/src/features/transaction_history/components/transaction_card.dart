@@ -53,14 +53,16 @@ class TransactionCard extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                DateFormat('MMMM d, y').format(transaction.transactionDate),
+                DateFormat('MMMM d, y').format(
+                  transaction.transactionDate ?? DateTime.utc(0, 0, 0, 0, 0, 0),
+                ),
                 style: customTextTheme.titleSmall,
               ),
               Row(

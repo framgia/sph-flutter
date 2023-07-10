@@ -2,9 +2,6 @@ import 'package:get/get.dart';
 import 'package:frontend/src/models/transaction.dart';
 import 'package:frontend/src/services/transaction_service.dart';
 
-import 'package:frontend/src/models/transaction.dart';
-import 'package:frontend/src/services/transaction_service.dart';
-
 List<String> transactionTypes = ['Credit', 'Dept', 'Transfer'];
 
 class TransactionController extends GetxController {

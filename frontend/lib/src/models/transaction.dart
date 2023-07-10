@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:intl/intl.dart';
 
 Transaction transactionFromJson(String str) =>
@@ -13,8 +12,8 @@ enum TransactionTypes { CREDIT, DEPT, TRANSFER }
 enum Category { SAVINGS, SALARY, BILLS, SENDER, RECIPIENT }
 
 class Transaction {
-  String transactionId;
-  DateTime transactionDate;
+  String? transactionId;
+  DateTime? transactionDate;
   TransactionTypes transactionType;
   Category category;
   double amount;
@@ -22,8 +21,8 @@ class Transaction {
   String? participantName;
 
   Transaction({
-    required this.transactionId,
-    required this.transactionDate,
+    this.transactionId,
+    this.transactionDate,
     required this.transactionType,
     required this.category,
     required this.amount,
