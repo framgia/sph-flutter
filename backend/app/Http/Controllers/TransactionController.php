@@ -21,9 +21,13 @@ class TransactionController extends Controller
 
         // Get transactions by all or through accounts
         // For shallow nesting see https://laravel.com/docs/8.x/controllers#shallow-nesting
-        $transactions = $account
-            ? Transaction::where('account_id', $account['id'])->orderBy('transaction_date')->get()
-            : Transaction::orderBy('transaction_date')->get();
+        $transactions = ($account ? Transaction::where('account_id', $account['id']) : Transaction::all())
+            ->with(['account'])
+            ->orderBy('transaction_date')
+            ->get();
+        // $transactions = $account
+        //     ? Transaction::where('account_id', $account['id'])->orderBy('transaction_date')->get()
+        //     : Transaction::orderBy('transaction_date')->get();
 
         // Filter transactions by transaction type
         // TODO: add validation filter by transaction type

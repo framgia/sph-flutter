@@ -18,10 +18,10 @@ class TransactionResource extends JsonResource
         $data['account_name'] = $this->account->account_name;
         if ($data['transaction_type'] == 'TRANSFER') {
             if ($data['category'] == 'SENDER') {
-                $data['account_name'] = $this->child->account->account_name;
+                $data['receiver_name'] = $this->child->account->account_name;
             }
             if ($data['category'] == 'RECIPIENT') {
-                $data['account_name'] = $this->parent->account->account_name;
+                $data['sender_name'] = $this->parent->account->account_name;
             }
         }
 
