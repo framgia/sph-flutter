@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\UniqueCodeTrait;
 use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
 {
-    use Uuid;
+    use Uuid, UniqueCodeTrait;
     use HasFactory;
 
     /**
@@ -19,6 +20,8 @@ class Account extends Model
     protected $fillable = [
         'user_id',
         'account_type',
+        'account_name',
+        'account_number',
     ];
 
     /**
@@ -34,6 +37,15 @@ class Account extends Model
      * @var bool
      */
     public $incrementing = false;
+
+    /**
+     * function used in UniqueCodeTrait to retrieve the column
+     * name where unique code will be stored.
+     */
+    public function getUniqueCodeKeyName()
+    {
+        return 'account_number';
+    }
 
     public function user()
     {
