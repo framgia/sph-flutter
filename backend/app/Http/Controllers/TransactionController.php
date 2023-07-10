@@ -136,7 +136,6 @@ class TransactionController extends Controller
         }, 5);
     }
 
-
     private function transferTransaction(Account $account, Account $receiverAccount, $payload)
     {
 
