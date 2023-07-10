@@ -35,8 +35,9 @@ class Transaction {
         transactionId: json['id'],
         transactionDate:
             DateFormat('yyyy-MM-ddTHH:mm:ssZ').parseUTC(json["created_at"]),
-        transactionType: json['transaction_type'],
-        category: json['category'],
+        transactionType: TransactionTypes.values
+            .firstWhere((e) => e.name == json['transaction_type']),
+        category: Category.values.firstWhere((e) => e.name == json['category']),
         amount: (json["transaction_amount"] as num).toDouble(),
         description: json["description"],
         participantName: json["account_name"],
