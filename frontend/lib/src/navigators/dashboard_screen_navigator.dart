@@ -13,7 +13,6 @@ GlobalKey<NavigatorState> dashboardAppNav = GlobalKey();
 class DashboardScreenNavigator extends StatelessWidget {
   const DashboardScreenNavigator({super.key});
 
-  
   @override
   Widget build(BuildContext context) {
     final HomeScreenController homeScreenController = Get.find();
@@ -33,6 +32,7 @@ class DashboardScreenNavigator extends StatelessWidget {
             break;
           case '/transactionHistory':
             page = const TransactionHistory();
+            homeScreenController.floatingActionButtonVisible = false;
             break;
           default:
             page = Dashboard();

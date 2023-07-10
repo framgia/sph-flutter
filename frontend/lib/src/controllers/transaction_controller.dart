@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+
 import 'package:frontend/src/models/transaction.dart';
 import 'package:frontend/src/services/transaction_service.dart';
 
@@ -6,18 +7,15 @@ List<String> transactionTypes = ['Credit', 'Dept', 'Transfer'];
 
 class TransactionController extends GetxController {
   final RxString _selectedTransactionType = transactionTypes[0].obs;
-
   final Rx<DateTime> _selectedTransactionDate = DateTime.now().obs;
-
   final RxBool _transactionSubmitEnabled = false.obs;
+  RxList<Transaction> transactionList = <Transaction>[].obs;
 
   String get selectedTransactionType => _selectedTransactionType.value;
 
   DateTime get selectedTransactionDate => _selectedTransactionDate.value;
 
   bool get transactionSubmitEnabled => _transactionSubmitEnabled.value;
-
-  RxList<Transaction> transactionList = <Transaction>[].obs;
 
   Future<List<Transaction>> getTransactions({String accountId = ''}) async {
     final result =

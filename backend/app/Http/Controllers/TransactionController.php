@@ -25,9 +25,6 @@ class TransactionController extends Controller
             ->with(['account'])
             ->orderBy('transaction_date')
             ->get();
-        // $transactions = $account
-        //     ? Transaction::where('account_id', $account['id'])->orderBy('transaction_date')->get()
-        //     : Transaction::orderBy('transaction_date')->get();
 
         // Filter transactions by transaction type
         // TODO: add validation filter by transaction type

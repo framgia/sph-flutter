@@ -12,7 +12,7 @@ enum TransactionTypes { CREDIT, DEPT, TRANSFER }
 enum Category { SAVINGS, SALARY, BILLS, SENDER, RECIPIENT }
 
 class Transaction {
-  String? transactionId;
+  String? id;
   DateTime? transactionDate;
   TransactionTypes transactionType;
   Category category;
@@ -23,7 +23,7 @@ class Transaction {
   String? receiverName;
 
   Transaction({
-    this.transactionId,
+    this.id,
     this.transactionDate,
     required this.transactionType,
     required this.category,
@@ -34,9 +34,8 @@ class Transaction {
     this.receiverName,
   });
 
-  // DateFormat('yyyy-MM-ddTHH:mm:ssZ').parseUTC(json["created_at"]),
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
-      transactionId: json['id'],
+      id: json['id'],
       transactionDate:
           DateFormat('yyyy-MM-ddTHH:mm:ssZ').parseUTC(json["created_at"]),
       transactionType: TransactionTypes.values
@@ -49,7 +48,7 @@ class Transaction {
       senderName: json['sender_name']);
 
   Map<String, dynamic> toJson() => {
-        "transactionId": transactionId,
+        "id": id,
         "date": transactionDate,
         "transaction_type": transactionType,
         "category": category,
@@ -57,6 +56,7 @@ class Transaction {
         "description": description,
         "accountName": accountName
       };
+
   String generateDescription() {
     if (transactionType == TransactionTypes.DEPT) {
       return 'Deposited money from';

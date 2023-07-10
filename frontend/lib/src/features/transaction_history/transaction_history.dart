@@ -20,10 +20,9 @@ class TransactionHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(TransactionController());
+    TransactionController controller = Get.put(TransactionController());
     final arguments =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
-    controller.getTransactions(accountId: arguments.accountId);
 
     return Column(
       children: [
@@ -63,25 +62,33 @@ class TransactionHistory extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 35),
-                if (controller.transactionList.isEmpty)
-                  Container(
-                    margin: const EdgeInsets.only(top: 20),
-                    child: Text(
-                      'No Transaction Record',
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                  )
-                else
-                  ListView.builder(
-                    itemCount: controller.transactionList.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return TransactionCard(
-                        transaction: controller.transactionList[index],
+                GetX<TransactionController>(
+                  builder: (_) => RefreshIndicator(
+                    onRefresh: () {
+                      return controller.getTransactions(
+                        accountId: arguments.accountId,
                       );
                     },
+                    child: controller.transactionList.isEmpty
+                        ? Container(
+                            margin: const EdgeInsets.only(top: 20),
+                            child: Text(
+                              'No Transaction Record',
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: controller.transactionList.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return TransactionCard(
+                                transaction: controller.transactionList[index],
+                              );
+                            },
+                          ),
                   ),
+                ),
               ],
             ),
           ),

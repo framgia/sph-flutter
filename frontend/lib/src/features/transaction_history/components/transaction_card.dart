@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 import 'package:frontend/src/models/transaction.dart';
-import 'package:intl/intl.dart';
 
 /*
   Component only for transaction history page.
@@ -13,6 +13,7 @@ class TransactionCard extends StatelessWidget {
   const TransactionCard({super.key, required this.transaction});
 
   final Transaction transaction;
+
   @override
   Widget build(BuildContext context) {
     TextTheme customTextTheme = Theme.of(context).textTheme.copyWith(
@@ -26,6 +27,7 @@ class TransactionCard extends StatelessWidget {
             color: Color(0xFF6D7881),
           ),
         );
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: const BoxDecoration(
