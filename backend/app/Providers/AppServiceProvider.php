@@ -18,13 +18,13 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-     /**
-      * Bootstrap any application services.
-      *
-      * @return void
-      */
-     public function boot()
-     {
-         Transaction::observe(TransactionObserver::class);
-     }
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Transaction::observe(TransactionObserver::class);
+    }
 }
