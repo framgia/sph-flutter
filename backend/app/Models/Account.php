@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\UniqueCodeTrait;
 use App\Traits\Uuid;
+use Database\Factories\AccountFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +12,14 @@ class Account extends Model
 {
     use Uuid, UniqueCodeTrait;
     use HasFactory;
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
+    {
+        return new AccountFactory();
+    }
 
     /**
      * The attributes that are mass assignable.
