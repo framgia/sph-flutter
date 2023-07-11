@@ -28,10 +28,21 @@ class TransactionPostRequest extends FormRequest
     {
         return [
             'description' => 'required|string',
-            'transaction_type' => ['required', Rule::in(config('enums.transaction_type'))],
-            'category' => ['required', Rule::in(config('enums.transaction_category'))],
             'amount' => 'required|numeric|gt:0',
             'receiver_id' => 'required_if:transaction_type,TRANSFER|nullable|uuid|exists:accounts,id',
+            'transaction_type' => ['required', Rule::in(config('enums.transaction_type'))],
+            'category' => ['required', function ($attribute, $value, $fail) {
+                $type = $this->input('transaction_type');
+                if ($type == 'DEPT' && ! in_array($value, ['SAVINGS', 'SALARY'])) {
+                    $fail('Wrong transaction category');
+                }
+                if ($type == 'CREDIT' && ! in_array($value, ['FOOD', 'TRANSPORTATION', 'BILLS', 'SAVINGS', 'MISC'])) {
+                    $fail('Wrong transaction category');
+                }
+                if ($type == 'TRANSFER' && ! in_array($value, ['SENDER', 'RECIPIENT'])) {
+                    $fail('Wrong transaction category');
+                }
+            }],
         ];
     }
 }
