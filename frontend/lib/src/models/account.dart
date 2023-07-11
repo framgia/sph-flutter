@@ -13,7 +13,7 @@ class Account {
   String userId;
   int accountType;
   String accountName;
-  int balance;
+  double balance;
 
   Account({
     required this.id,
@@ -28,7 +28,7 @@ class Account {
         userId: json["user_id"],
         accountType: json["account_type"],
         accountName: json["account_name"],
-        balance: json["balance"],
+        balance: json["balance"].toDouble(),
       );
 
   Map<String, dynamic> toJson() => {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+
 import 'package:frontend/src/components/label.dart';
 
 /*
@@ -9,15 +11,15 @@ import 'package:frontend/src/components/label.dart';
   @param name, similar to html name attribute, provides the form widget the key to assign its value
   ex InputField(name: "last_name") , then printing the formKey values provides { last_name: "abc" }
 
-  @param label, add label to the Text Field, 
+  @param label, add label to the Text Field,
   ex InputField(label: "Enter Email")
 
-  @param initialValue, provide the text field its initial value 
+  @param initialValue, provide the text field its initial value
 
-  @param inputType, to add a inputType in the field like email field, text field, password field and ect., 
+  @param inputType, to add a inputType in the field like email field, text field, password field and ect.,
   ex InputField(inputType: TextInputType.emailAddress)
 
-  @param controller, By using a controller, you can perform various tasks such as: 
+  @param controller, By using a controller, you can perform various tasks such as:
   Retrieving input data, Setting initial values, Modifying input content, Clearing input
   ex final TextEditingController emailController = TextEditingController();
   InputField(inputType: controller: emailController,)
@@ -42,6 +44,7 @@ class InputField extends StatelessWidget {
     this.validator,
     this.obscureText = false,
     this.enabled = true,
+    this.inputFormatters,
   });
 
   final String name;
@@ -52,6 +55,7 @@ class InputField extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool obscureText;
   final bool enabled;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +82,7 @@ class InputField extends StatelessWidget {
             controller: controller,
             obscureText: obscureText,
             keyboardType: inputType,
+            inputFormatters: inputFormatters,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             enabled: enabled,
             decoration: const InputDecoration(
