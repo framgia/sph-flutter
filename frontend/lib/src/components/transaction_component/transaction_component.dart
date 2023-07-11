@@ -9,6 +9,7 @@ import 'package:frontend/src/helper/dialog/show_alert_dialog.dart';
 import 'package:frontend/src/controllers/dashboard_controller.dart';
 import 'package:frontend/src/models/transaction.dart';
 import 'package:frontend/src/controllers/transaction_controller.dart';
+import 'package:frontend/src/controllers/account_details_controller.dart';
 
 /*
   Reusable transaction component for deposit, withdraw, and transfer cash
@@ -39,6 +40,8 @@ class TransactionComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormBuilderState>();
     final DashboardController dashboardController = Get.find();
+    final AccountDetailsController accountDetailsController =
+        Get.put(AccountDetailsController());
     final TransactionController transactionController =
         Get.put(TransactionController());
 
@@ -59,6 +62,10 @@ class TransactionComponent extends StatelessWidget {
             'category': Category.BILLS,
             'success': 'withdrawn'
           },
+          TransactionTypes.DEPT: {
+            'category': Category.SAVINGS,
+            'success': 'deposited',
+          }
         };
 
         // If field is null, do not execute Get.back();
@@ -83,6 +90,7 @@ class TransactionComponent extends StatelessWidget {
           final success = typeTexts[type]?['success'];
 
           dashboardController.getUserAccounts();
+          accountDetailsController.getUserAccount(accountId: accountId);
           transactionController.setTransactionSubmitEnabled = false;
 
           Get.back();
@@ -104,7 +112,7 @@ class TransactionComponent extends StatelessWidget {
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(25, 30, 25, 0),
       child: SizedBox(
-        height: 450,
+        height: type == TransactionTypes.TRANSFER ? 450 : 350,
         child: GetX<TransactionController>(
           builder: (_) => FormBuilder(
             key: formKey,
