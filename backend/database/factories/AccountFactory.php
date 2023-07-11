@@ -16,7 +16,6 @@ class AccountFactory extends Factory
 
         return [
             'id' => $this->faker->unique()->uuid(),
-            'account_type' => 1,
         ];
     }
 }

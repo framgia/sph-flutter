@@ -20,6 +20,7 @@ class AccountSeeder extends Seeder
         foreach ($users as $user) {
             $accounts = Account::factory(rand(1, 3))->create([
                 'user_id' => $user->id,
+                'account_type' => config('enums.account_type')[rand(0, 4)],
             ]);
             foreach ($accounts as $account) {
                 $account->save();
