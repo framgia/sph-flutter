@@ -4,7 +4,9 @@ import 'package:frontend/src/models/account.dart';
 import 'package:frontend/src/services/account_service.dart';
 
 class AccountDetailsController extends GetxController {
-  final Rx<Account> _account = Account(id: '', balance: 0, userId: '', accountType: 0).obs;
+  final Rx<Account> _account =
+      Account(id: '', balance: 0, userId: '', accountType: 0, accountName: '')
+          .obs;
 
   Account get account => _account.value;
 
