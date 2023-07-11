@@ -59,7 +59,7 @@ class Transaction {
 
   String generateDescription() {
     if (transactionType == TransactionTypes.DEPT) {
-      return 'Deposited money from';
+      return 'Deposited money to';
     }
 
     if (transactionType == TransactionTypes.CREDIT) {
@@ -68,7 +68,7 @@ class Transaction {
 
     if (transactionType == TransactionTypes.TRANSFER) {
       if (category == Category.SENDER) {
-        return 'Deposited money to';
+        return 'Transferred money to';
       }
       return 'Received money from';
     }
