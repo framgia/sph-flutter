@@ -7,10 +7,9 @@ List<String> transactionTypes = ['Credit', 'Dept', 'Transfer'];
 
 class TransactionController extends GetxController {
   final RxString _selectedTransactionType = transactionTypes[0].obs;
-
   final Rx<DateTime> _selectedTransactionDate = DateTime.now().obs;
-
   final RxBool _transactionSubmitEnabled = false.obs;
+  RxList<Transaction> transactionList = <Transaction>[].obs;
 
   String get selectedTransactionType => _selectedTransactionType.value;
 
@@ -26,6 +25,13 @@ class TransactionController extends GetxController {
 
   set setTransactionSubmitEnabled(bool newValue) =>
       _transactionSubmitEnabled.value = newValue;
+
+  Future<List<Transaction>> getTransactions({String accountId = ''}) async {
+    final result =
+        await TransactionService.getTransactions(accountId: accountId);
+    transactionList.assignAll(result);
+    return result;
+  }
 
   Future<dynamic> postTransaction(
     Transaction transaction,

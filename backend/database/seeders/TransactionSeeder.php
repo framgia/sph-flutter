@@ -68,7 +68,7 @@ class TransactionSeeder extends Seeder
                 ]);
 
                 if (! $sender->created_at) {
-                    return;
+                    continue;
                 }
 
                 Transaction::factory()->create([

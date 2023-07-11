@@ -125,7 +125,7 @@ class AccountDetailsPage extends StatelessWidget {
                           onPressed: () {
                             Get.bottomSheet(
                               TransactionComponent(
-                                label: 'Witdraw Cash',
+                                label: 'Withdraw Cash',
                                 type: TransactionTypes.CREDIT,
                                 accountId: arguments.accountId,
                               ),

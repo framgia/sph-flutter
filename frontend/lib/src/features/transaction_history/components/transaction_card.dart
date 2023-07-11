@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 import 'package:frontend/src/models/transaction.dart';
 
@@ -38,29 +39,40 @@ class TransactionCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                transaction.description,
-                style: customTextTheme.titleSmall,
-              ),
-              Text(
-                transaction.name ?? '',
-                style: customTextTheme.titleMedium,
-              )
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  transaction.generateDescription(),
+                  style: customTextTheme.titleSmall,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  transaction.senderName ??
+                      transaction.receiverName ??
+                      transaction.accountName ??
+                      '',
+                  style: customTextTheme.titleMedium,
+                )
+              ],
+            ),
+          ),
+          const SizedBox(
+            width: 10,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                transaction.date ?? '',
+                DateFormat('MMMM d, y').format(
+                  transaction.transactionDate ?? DateTime.utc(0, 0, 0, 0, 0, 0),
+                ),
                 style: customTextTheme.titleSmall,
               ),
               Row(
                 children: [
-                  if (transaction.description.contains('Received'))
+                  if (transaction.amount > 0)
                     const FaIcon(
                       FontAwesomeIcons.plus,
                       size: 13,
@@ -80,7 +92,7 @@ class TransactionCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 2),
                   Text(
-                    transaction.amount,
+                    transaction.amount.abs().toStringAsFixed(2),
                     style: customTextTheme.titleMedium,
                   ),
                 ],

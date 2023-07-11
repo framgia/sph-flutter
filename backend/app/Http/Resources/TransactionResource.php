@@ -14,6 +14,17 @@ class TransactionResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $data = parent::toArray($request);
+        $data['account_name'] = $this->account->account_name;
+        if ($data['transaction_type'] == 'TRANSFER') {
+            if ($data['category'] == 'SENDER') {
+                $data['receiver_name'] = $this->child->account->account_name;
+            }
+            if ($data['category'] == 'RECIPIENT') {
+                $data['sender_name'] = $this->parent->account->account_name;
+            }
+        }
+
+        return $data;
     }
 }
