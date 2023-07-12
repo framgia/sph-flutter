@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CategoryValidation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -28,10 +29,10 @@ class TransactionPostRequest extends FormRequest
     {
         return [
             'description' => 'required|string',
-            'transaction_type' => ['required', Rule::in(config('enums.transaction_type'))],
-            'category' => ['required', Rule::in(config('enums.transaction_category'))],
             'amount' => 'required|numeric|gt:0',
             'receiver_id' => 'required_if:transaction_type,TRANSFER|nullable|uuid|exists:accounts,id',
+            'transaction_type' => ['required', Rule::in(config('enums.transaction_type'))],
+            'category' => ['required', new CategoryValidation($this->input('transaction_type'))],
         ];
     }
 }

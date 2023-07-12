@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'transaction_type' => ['CREDIT', 'DEPT', 'TRANSFER'],
-    'transaction_category' => ['SAVINGS', 'SALARY', 'BILLS', 'SENDER', 'RECIPIENT'],
+    'transaction_type' => ['DEPT', 'CREDIT', 'TRANSFER'],
+    'transaction_category' => ['SENDER', 'RECIPIENT', 'SALARY', 'SAVINGS',  'FOOD', 'TRANSPORTATION', 'BILLS', 'MISC'],
     'account_type' => ['SAVINGS', 'SALARY', 'BILLS', 'SENDER', 'RECIPIENT'],
 ];
