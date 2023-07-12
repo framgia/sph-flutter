@@ -25,6 +25,7 @@ class CategoryValidation implements Rule
      */
     public function passes($attribute, $value)
     {
+        // TODO: improve logic, use subcategories of enum
         $type = $this->type;
         if ($type == 'DEPT' && in_array($value, ['SAVINGS', 'SALARY'])) {
             return true;
