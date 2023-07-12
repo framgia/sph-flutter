@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CategoryValidation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -31,23 +32,7 @@ class TransactionPostRequest extends FormRequest
             'amount' => 'required|numeric|gt:0',
             'receiver_id' => 'required_if:transaction_type,TRANSFER|nullable|uuid|exists:accounts,id',
             'transaction_type' => ['required', Rule::in(config('enums.transaction_type'))],
-            'category' => ['required', $this->getCategoryValidationRule()],
+            'category' => ['required', new CategoryValidation($this->input('transaction_type'))],
         ];
-    }
-
-    private function getCategoryValidationRule()
-    {
-        return function ($attribute, $value, $fail) {
-            $type = $this->input('transaction_type');
-            if ($type == 'DEPT' && ! in_array($value, ['SAVINGS', 'SALARY'])) {
-                $fail('Wrong transaction category');
-            }
-            if ($type == 'CREDIT' && ! in_array($value, ['FOOD', 'TRANSPORTATION', 'BILLS', 'SAVINGS', 'MISC'])) {
-                $fail('Wrong transaction category');
-            }
-            if ($type == 'TRANSFER' && ! in_array($value, ['SENDER', 'RECIPIENT'])) {
-                $fail('Wrong transaction category');
-            }
-        };
     }
 }
