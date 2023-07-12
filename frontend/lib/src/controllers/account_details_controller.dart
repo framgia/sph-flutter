@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import 'package:frontend/src/models/account.dart';
+import 'package:frontend/src/enums/account_enum.dart';
 import 'package:frontend/src/services/account_service.dart';
 
 class AccountDetailsController extends GetxController {
@@ -8,7 +9,7 @@ class AccountDetailsController extends GetxController {
     id: '',
     balance: 0.00,
     userId: '',
-    accountType: 0,
+    accountType: AccountType.SAVINGS,
     accountName: '',
   ).obs;
 

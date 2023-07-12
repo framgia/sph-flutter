@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:frontend/src/enums/account_enum.dart';
+
 Account accountFromJson(String str) => Account.fromJson(json.decode(str));
 
 String accountToJson(Account data) => json.encode(data.toJson());
@@ -11,7 +13,7 @@ String accountToJson(Account data) => json.encode(data.toJson());
 class Account {
   String id;
   String userId;
-  int accountType;
+  AccountType accountType;
   String accountName;
   double balance;
 
@@ -26,7 +28,8 @@ class Account {
   factory Account.fromJson(Map<String, dynamic> json) => Account(
         id: json["id"],
         userId: json["user_id"],
-        accountType: json["account_type"],
+        accountType: AccountType.values
+            .firstWhere((e) => e.name == json['account_type']),
         accountName: json["account_name"],
         balance: json["balance"].toDouble(),
       );
