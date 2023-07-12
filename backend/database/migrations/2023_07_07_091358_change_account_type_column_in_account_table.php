@@ -22,6 +22,6 @@ class ChangeAccountTypeColumnInAccountTable extends Migration
      */
     public function down()
     {
-        DB::statement("ALTER TABLE accounts MODIFY COLUMN account_type INT");
+        DB::statement('ALTER TABLE accounts MODIFY COLUMN account_type INT');
     }
 }

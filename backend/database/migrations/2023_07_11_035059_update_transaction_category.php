@@ -31,11 +31,7 @@ class UpdateTransactionCategory extends Migration
 
         Schema::table('transactions', function (Blueprint $table) {
 
-            $transactions = Transaction::where('transaction_type', 'CREDIT')->get();
-            foreach ($transactions as $transaction) {
-                $transaction->category = 'BILLS';
-                $transaction->save();
-            }
+            Transaction::where('transaction_type', 'CREDIT')->update(['category' => 'BILLS']);
             DB::statement("ALTER TABLE `transactions` MODIFY COLUMN `category` ENUM('SAVINGS', 'SALARY', 'SENDER', 'RECIPIENT', 'BILLS')  DEFAULT 'BILLS';");
         });
 
