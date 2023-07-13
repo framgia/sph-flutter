@@ -39,4 +39,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('accounts', AccountController::class)->only(['index', 'show', 'store']);
     Route::apiResource('accounts.transactions', TransactionController::class)->shallow()->only(['index', 'store']);
     Route::apiResource('transactions', TransactionController::class)->only(['index', 'show']);
+    Route::get('accounts/{account}/spending-breakdown', [AccountController::class, 'spendingBreakdown']);
 });

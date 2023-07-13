@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Traits\UniqueCodeTrait;
 use App\Traits\Uuid;
+use Carbon\Carbon;
 use Database\Factories\AccountFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class Account extends Model
@@ -90,12 +92,34 @@ class Account extends Model
             $user = User::find($account->user_id);
             $fullName = $user->first_name.' '.$user->middle_name.' '.$user->last_name;
             similar_text(Str::lower($fullName), Str::lower($accountName), $percentSimilarity);
-            
+
             if ($percentSimilarity >= 80) {
                 return $account;
             }
         }
 
         return null;
+    }
+
+    // @param input: SpendingBreakdownRequest validated fields
+    public static function getSpendingBreakdown($input, Account $account)
+    {
+        $query = DB::table('transactions')
+            ->selectRaw(
+                'account_id, category, 
+                SUM(starting_balance) as total_starting_balance, 
+                SUM(transaction_amount) as total_transaction_amount,
+                MAX(transaction_date) as latest_transaction_date'
+            )
+            ->where([['account_id', $account->id], ['transaction_type', 'CREDIT']]);
+
+        if ($input['days']) {
+            $to = Carbon::now();
+            $days = (int) $input['days'];
+            $from = Carbon::now()->subDays($days);
+            $query->whereBetween('transaction_date', [$from, $to]);
+        }
+
+        return $query->groupByRaw('account_id, category')->get();
     }
 }

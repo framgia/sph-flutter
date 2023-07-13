@@ -140,7 +140,6 @@ class TransactionController extends Controller
             } catch (Exception $e) {
                 throw $e;
             }
-
         }, 5);
     }
 
