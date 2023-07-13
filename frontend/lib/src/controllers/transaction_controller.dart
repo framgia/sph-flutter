@@ -54,6 +54,7 @@ class TransactionController extends GetxController {
       accountId: accountId,
       from: selectedTransactionDateFrom,
       to: selectedTransactionDateTo,
+      type: selectedTransactionType,
     );
     transactionList.assignAll(result);
 
