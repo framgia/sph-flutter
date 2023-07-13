@@ -4,8 +4,7 @@ import 'package:frontend/src/models/user.dart';
 // ex. Foo X. Bar
 // or  Bar Foo
 String userFullName(User user) {
-  final middleName = user.middleName != null ? 
-    '${user.middleName[0]}. ' : '';
-  
+  final middleName = user.middleName != null ? '${user.middleName[0]}. ' : '';
+
   return '${user.firstName} $middleName${user.lastName}';
 }

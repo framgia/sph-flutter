@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:dio/dio.dart' as dio;
 
 import 'package:frontend/src/helper/storage.dart';
 import 'package:frontend/src/helper/user_full_name.dart';
@@ -44,15 +47,16 @@ class UserProfileController extends GetxController {
     loading.value = false;
   }
 
-  Future<bool> updateUserProfile(User user) async {
-    final updated = await UserService.updateUserProfile(user);
-    
-    if (updated) {
+  Future<dio.Response> updateUserProfile(User user) async {
+    final updatedProfile = await UserService.updateUserProfile(user);
+
+    if (updatedProfile.statusCode == HttpStatus.ok) {
+      final userData = User.fromJson(updatedProfile.data['data']);
       const storage = FlutterSecureStorage();
-      final fullName = userFullName(user);
+      final fullName = userFullName(userData);
       await storage.write(key: StorageKeys.fullName.name, value: fullName);
     }
 
-    return updated;
+    return updatedProfile;
   }
 }

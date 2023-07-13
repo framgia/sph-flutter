@@ -29,7 +29,7 @@ class UserController extends Controller
 
         $user->update($profileInfo);
 
-        return UserResource::make(array_merge(['message' => 'Profile info updated successfully.'], $profileInfo));
+        return UserResource::make($user);
     }
 
     public function show(User $user)
