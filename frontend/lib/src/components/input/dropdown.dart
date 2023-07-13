@@ -14,6 +14,9 @@ import 'package:frontend/src/components/label.dart';
   @param selectedValue, current selected value.
 
   @param onChanged, called when the user selects an item.
+
+  @param style, to change TextStyle of the dropdown.
+
 */
 class Dropdown extends StatelessWidget {
   const Dropdown({
@@ -22,12 +25,14 @@ class Dropdown extends StatelessWidget {
     required this.items,
     required this.selectedValue,
     this.onChanged,
+    this.style,
   });
 
   final String labelText;
   final List<dynamic> items;
   final String selectedValue;
   final void Function(Object?)? onChanged;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +61,12 @@ class Dropdown extends StatelessWidget {
                     value: item,
                     child: Text(
                       item,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                      ),
+                      style: style ??
+                          const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal,
+                          ),
                     ),
                   ),
                 )

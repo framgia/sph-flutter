@@ -6,7 +6,7 @@ import 'package:frontend/src/components/transaction_component/transaction_compon
 import 'package:frontend/src/features/dashboard/components/account_card_button.dart';
 import 'package:frontend/src/models/account.dart';
 import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
-import 'package:frontend/src/models/transaction.dart';
+import 'package:frontend/src/enums/transaction_enum.dart';
 
 /*
   Card widget used in dashboard.dart

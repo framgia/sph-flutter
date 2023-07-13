@@ -11,7 +11,7 @@ import 'package:frontend/src/components/button.dart';
 import 'package:frontend/src/components/balance_card.dart';
 import 'package:frontend/src/components/graph.dart';
 import 'package:frontend/src/features/dashboard/components/account_card.dart';
-import 'package:frontend/src/models/transaction.dart';
+import 'package:frontend/src/enums/transaction_enum.dart';
 
 /*
   The page where user can see their account details.

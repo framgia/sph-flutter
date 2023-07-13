@@ -8,13 +8,15 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import 'package:frontend/src/helper/dialog/show_alert_dialog.dart';
+import 'package:frontend/src/models/transaction.dart';
+import 'package:frontend/src/components/input/dropdown.dart';
 import 'package:frontend/src/components/button.dart';
 import 'package:frontend/src/components/input/input_field.dart';
-import 'package:frontend/src/helper/dialog/show_alert_dialog.dart';
-import 'package:frontend/src/controllers/transaction_controller.dart';
-import 'package:frontend/src/models/transaction.dart';
 import 'package:frontend/src/controllers/dashboard_controller.dart';
+import 'package:frontend/src/controllers/transaction_controller.dart';
 import 'package:frontend/src/controllers/account_details_controller.dart';
+import 'package:frontend/src/enums/transaction_enum.dart';
 
 /*
   Reusable transaction component for deposit, withdraw, and transfer cash
@@ -71,15 +73,15 @@ class TransactionComponent extends StatelessWidget {
     // TODO: Transfer type texts
     final Map<TransactionTypes, Map<String, dynamic>> typeTexts = {
       TransactionTypes.CREDIT: {
-        'category': Category.BILLS,
+        'category': TransactionCategories.BILLS,
         'success': 'withdrawn'
       },
       TransactionTypes.DEPT: {
-        'category': Category.SAVINGS,
+        'category': TransactionCategories.SAVINGS,
         'success': 'deposited',
       },
       TransactionTypes.TRANSFER: {
-        'category': Category.SENDER,
+        'category': TransactionCategories.SENDER,
         'success': 'transfered'
       },
     };
@@ -157,7 +159,7 @@ class TransactionComponent extends StatelessWidget {
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(25, 30, 25, 0),
       child: SizedBox(
-        height: type == TransactionTypes.TRANSFER ? 650 : 400,
+        height: type == TransactionTypes.TRANSFER ? 650 : 450,
         child: GetX<TransactionController>(
           builder: (_) => FormBuilder(
             key: formKey,
@@ -209,6 +211,25 @@ class TransactionComponent extends StatelessWidget {
                   const SizedBox(
                     height: 32,
                   ),
+                ],
+                if (type == TransactionTypes.CREDIT) ...[
+                  Dropdown(
+                    labelText: 'Category',
+                    items: creditCategories,
+                    selectedValue:
+                        transactionController.selectedTransactionCategory.value,
+                    onChanged: (value) {
+                      final selectedCategory =
+                          transactionCategoriesFromString(value.toString());
+                      transactionController.setSelectedTransactionCategory =
+                          selectedCategory;
+                      debugPrint(selectedCategory.name);
+                    },
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                  const SizedBox(
+                    height: 27,
+                  )
                 ],
                 InputField(
                   name: 'amount',
