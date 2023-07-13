@@ -66,7 +66,7 @@ class TransactionController extends Controller
         }
 
         // - to $account , + to $receiverAccount
-        $receiverAccount = Account::getAccountByNameAndNumber($payload['account_number'], $payload['account_name']);
+        $receiverAccount = Account::getAccountByNumberAndName($payload['account_number'], $payload['account_name']);
 
         if (! $receiverAccount) {
             throw ValidationException::withMessages([

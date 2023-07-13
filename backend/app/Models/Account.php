@@ -82,7 +82,7 @@ class Account extends Model
         return 0;
     }
 
-    public static function getAccountByNameAndNumber(string $accountNumber, string $accountName)
+    public static function getAccountByNumberAndName(string $accountNumber, string $accountName)
     {
         $account = Account::where('account_number', $accountNumber)->first();
 
