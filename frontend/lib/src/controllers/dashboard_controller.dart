@@ -12,7 +12,7 @@ class DashboardController extends GetxController {
     const storage = FlutterSecureStorage();
     final userId = await storage.read(key: StorageKeys.userId.name);
     accounts.value = await AccountService.getUserAccounts(userId: userId!);
-    
+
     return accounts;
   }
 }

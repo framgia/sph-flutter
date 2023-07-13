@@ -18,7 +18,7 @@ class Transaction {
   Category category;
   double amount;
   String description;
-  String? accountName;
+  String accountName;
   String? senderName;
   String? receiverName;
 
@@ -29,7 +29,7 @@ class Transaction {
     required this.category,
     required this.amount,
     required this.description,
-    this.accountName,
+    required this.accountName,
     this.senderName,
     this.receiverName,
   });

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:dio/dio.dart' as dio;
 
 import 'package:frontend/src/models/transaction.dart';
 import 'package:frontend/src/services/transaction_service.dart';
@@ -13,13 +14,12 @@ class TransactionController extends GetxController {
 
   String get selectedTransactionType => _selectedTransactionType.value;
 
-  DateTime get selectedTransactionDate => _selectedTransactionDate.value;
-
   bool get transactionSubmitEnabled => _transactionSubmitEnabled.value;
 
   set setSelectedTransactionType(String newValue) =>
       _selectedTransactionType.value = newValue;
 
+  DateTime get selectedTransactionDate => _selectedTransactionDate.value;
   set setSelectedTransactionDate(DateTime newValue) =>
       _selectedTransactionDate.value = newValue;
 
@@ -33,13 +33,15 @@ class TransactionController extends GetxController {
     return result;
   }
 
-  Future<dynamic> postTransaction(
+  Future<dio.Response> postTransaction(
     Transaction transaction,
     String accountId,
+    String accountNumber,
   ) async {
     return await TransactionService.postTransaction(
       transaction,
       accountId,
+      accountNumber,
     );
   }
 }

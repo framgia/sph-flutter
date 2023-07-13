@@ -11,6 +11,7 @@ class AccountDetailsController extends GetxController {
     userId: '',
     accountType: AccountType.SAVINGS,
     accountName: '',
+    accountNumber: '',
   ).obs;
 
   Account get account => _account.value;

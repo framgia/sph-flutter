@@ -21,8 +21,7 @@ class AccountService {
   }
 
   static Future<Account?> getUserAccount({String accountId = ''}) async {
-    final url = userAccountUrl
-      .replaceFirst('{account_id}', accountId);
+    final url = userAccountUrl.replaceFirst('{account_id}', accountId);
     final userAccountResponse = await NetworkConfig().client.get(url);
 
     if (userAccountResponse.statusCode == HttpStatus.ok) {

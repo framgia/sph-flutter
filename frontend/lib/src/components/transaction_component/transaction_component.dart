@@ -1,15 +1,19 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import 'package:frontend/src/components/button.dart';
 import 'package:frontend/src/components/input/input_field.dart';
 import 'package:frontend/src/helper/dialog/show_alert_dialog.dart';
-import 'package:frontend/src/controllers/dashboard_controller.dart';
-import 'package:frontend/src/models/transaction.dart';
 import 'package:frontend/src/controllers/transaction_controller.dart';
+import 'package:frontend/src/models/transaction.dart';
+import 'package:frontend/src/controllers/dashboard_controller.dart';
 import 'package:frontend/src/controllers/account_details_controller.dart';
 
 /*
@@ -29,13 +33,17 @@ class TransactionComponent extends StatelessWidget {
   const TransactionComponent({
     Key? key,
     required this.label,
-    this.type = TransactionTypes.DEPT,
     required this.accountId,
+    this.type = TransactionTypes.DEPT,
+    this.balance = 0,
   }) : super(key: key);
 
   final String label;
   final TransactionTypes type;
   final String accountId;
+  final double balance;
+
+  static final currencyFormat = NumberFormat(',#00.00');
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +54,36 @@ class TransactionComponent extends StatelessWidget {
     final TransactionController transactionController =
         Get.put(TransactionController());
 
+    // Fields required for each type
+    // TODO: Transfer required fields
+    final Map<TransactionTypes, List<String>> requiredFields = {
+      TransactionTypes.CREDIT: ['amount', 'description'],
+      TransactionTypes.DEPT: ['amount', 'description'],
+      TransactionTypes.TRANSFER: [
+        'amount',
+        'recipientAccountNumber',
+        'accountName',
+        'description'
+      ]
+    };
+
+    // Manually set category for now as there is no plan for this feature as of now
+    // TODO: Transfer type texts
+    final Map<TransactionTypes, Map<String, dynamic>> typeTexts = {
+      TransactionTypes.CREDIT: {
+        'category': Category.BILLS,
+        'success': 'withdrawn'
+      },
+      TransactionTypes.DEPT: {
+        'category': Category.SAVINGS,
+        'success': 'deposited',
+      },
+      TransactionTypes.TRANSFER: {
+        'category': Category.SENDER,
+        'success': 'transfered'
+      },
+    };
+
     void alertDialog({String? title, String? content}) => showAlertDialog(
           title: title ?? 'Invalid Input',
           content: content ?? 'Please make sure to fill out the field',
@@ -53,41 +91,36 @@ class TransactionComponent extends StatelessWidget {
 
     void onSubmit() async {
       if (formKey.currentState?.isValid ?? false) {
-        final emailValue = formKey.currentState?.fields['email']?.value;
+        final recipientAccountNumber =
+            formKey.currentState?.fields['recipientAccountNumber']?.value;
         final amountValue = formKey.currentState?.fields['amount']?.value;
+        final accountNameValue =
+            formKey.currentState?.fields['accountName']?.value;
         final descriptionValue =
             formKey.currentState?.fields['description']?.value;
-        // Manually set category for now as there is no plan for this feature as of now
-        // TODO: Transfer type texts
-        final Map<TransactionTypes, Map<String, dynamic>> typeTexts = {
-          TransactionTypes.CREDIT: {
-            'category': Category.BILLS,
-            'success': 'withdrawn'
-          },
-          TransactionTypes.DEPT: {
-            'category': Category.SAVINGS,
-            'success': 'deposited',
-          }
-        };
-        // If field is null, do not execute Get.back();
-        if (amountValue == null ||
-            descriptionValue == null ||
-            ((type == TransactionTypes.TRANSFER) && (emailValue == null))) {
-          alertDialog();
+
+        if (type == TransactionTypes.TRANSFER &&
+            recipientAccountNumber.length != 11) {
+          alertDialog(content: 'Account number must be 11 digits.');
 
           return;
         }
+
         final transaction = Transaction(
           amount: double.parse(amountValue),
           description: descriptionValue,
           transactionType: type,
           category: typeTexts[type]!['category'],
+          accountName: accountNameValue ?? '',
         );
 
-        final transactionResponse =
-            await transactionController.postTransaction(transaction, accountId);
+        final transactionResponse = await transactionController.postTransaction(
+          transaction,
+          accountId,
+          recipientAccountNumber ?? '',
+        );
 
-        if (transactionResponse == true) {
+        if ((transactionResponse.statusCode == HttpStatus.created)) {
           final success = typeTexts[type]?['success'];
 
           dashboardController.getUserAccounts();
@@ -100,8 +133,19 @@ class TransactionComponent extends StatelessWidget {
             title: 'Success',
             content: 'You have successfully $success ₱$amountValue.',
           );
-        } else if (transactionResponse.runtimeType == String) {
-          alertDialog(content: transactionResponse);
+        } else if (transactionResponse.statusCode == HttpStatus.badRequest) {
+          final error = jsonDecode(transactionResponse.data.toString())['error']
+              ['message'];
+          if (error['account'] != null) {
+            alertDialog(title: 'Unsuccessful', content: error['account'][0]);
+          } else if (error['amount'] != null) {
+            alertDialog(
+              title: 'Unsuccessful',
+              content: error['amount'][0],
+            );
+          } else {
+            alertDialog();
+          }
         } else {
           alertDialog();
         }
@@ -113,20 +157,13 @@ class TransactionComponent extends StatelessWidget {
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(25, 30, 25, 0),
       child: SizedBox(
-        height: type == TransactionTypes.TRANSFER ? 450 : 350,
+        height: type == TransactionTypes.TRANSFER ? 650 : 400,
         child: GetX<TransactionController>(
           builder: (_) => FormBuilder(
             key: formKey,
             autovalidateMode: AutovalidateMode.disabled,
             onChanged: () {
               formKey.currentState!.save();
-
-              // Fields required for each type
-              // TODO: Transfer required fields
-              final Map<TransactionTypes, List<String>> requiredFields = {
-                TransactionTypes.CREDIT: ['amount', 'description'],
-                TransactionTypes.DEPT: ['amount', 'description'],
-              };
 
               // Enable submit button once requirements are met
               final validFields = requiredFields[type]
@@ -151,10 +188,23 @@ class TransactionComponent extends StatelessWidget {
                 ),
                 if (type == TransactionTypes.TRANSFER) ...[
                   InputField(
-                    name: 'email',
-                    label: 'Email',
-                    inputType: TextInputType.emailAddress,
-                    validator: FormBuilderValidators.email(),
+                      name: 'recipientAccountNumber',
+                      label: 'Recipient\'s Account Number',
+                      validator: FormBuilderValidators.compose(
+                        [
+                          FormBuilderValidators.numeric(),
+                          FormBuilderValidators.required(),
+                          FormBuilderValidators.equalLength(11),
+                        ],
+                      )),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  InputField(
+                    name: 'accountName',
+                    label: 'Recipient\'s Name',
+                    inputType: TextInputType.text,
+                    validator: FormBuilderValidators.required(),
                   ),
                   const SizedBox(
                     height: 32,
@@ -162,7 +212,8 @@ class TransactionComponent extends StatelessWidget {
                 ],
                 InputField(
                   name: 'amount',
-                  label: 'Amount',
+                  label:
+                      'Amount (Balance: ${currencyFormat.format(balance)} Php)',
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(
                       RegExp(r'^\d+\.?\d{0,2}'),
@@ -172,6 +223,17 @@ class TransactionComponent extends StatelessWidget {
                     [
                       FormBuilderValidators.numeric(),
                       FormBuilderValidators.required(),
+                      type == TransactionTypes.DEPT
+                          ? FormBuilderValidators.max(
+                              500000,
+                              errorText:
+                                  "Amount exceeds to deposit limit of 500, 000 Php.",
+                            )
+                          : FormBuilderValidators.max(
+                              balance,
+                              errorText:
+                                  "Amount exceeds the remaining balance.",
+                            ),
                     ],
                   ),
                   inputType:
@@ -194,17 +256,12 @@ class TransactionComponent extends StatelessWidget {
                   children: [
                     Button(
                       text: 'Confirm',
-                      onPressed: transactionController.transactionSubmitEnabled
-                          ? onSubmit
-                          : null,
-                      buttonColor:
-                          transactionController.transactionSubmitEnabled
-                              ? const Color(0xFF00CCFF)
-                              : Colors.grey,
+                      onPressed: onSubmit,
                       padding: const EdgeInsets.symmetric(
                         vertical: 16,
                         horizontal: 38,
                       ),
+                      enabled: transactionController.transactionSubmitEnabled,
                     ),
                     TextButton(
                       onPressed: () {

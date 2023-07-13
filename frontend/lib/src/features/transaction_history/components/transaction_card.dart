@@ -51,8 +51,7 @@ class TransactionCard extends StatelessWidget {
                 Text(
                   transaction.senderName ??
                       transaction.receiverName ??
-                      transaction.accountName ??
-                      '',
+                      transaction.accountName,
                   style: customTextTheme.titleMedium,
                 )
               ],
