@@ -157,7 +157,7 @@ class TransactionComponent extends StatelessWidget {
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(25, 30, 25, 0),
       child: SizedBox(
-        height: type == TransactionTypes.TRANSFER ? 600 : 400,
+        height: type == TransactionTypes.TRANSFER ? 650 : 400,
         child: GetX<TransactionController>(
           builder: (_) => FormBuilder(
             key: formKey,
