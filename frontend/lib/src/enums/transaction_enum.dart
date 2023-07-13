@@ -13,6 +13,25 @@ enum TransactionCategories {
   MISC,
 }
 
+extension TransactionCategoriesExtension on TransactionCategories {
+  String get value {
+    switch (this) {
+      case TransactionCategories.FOOD:
+        return 'Food/Drinks';
+      case TransactionCategories.TRANSPORTATION:
+        return 'Transportation';
+      case TransactionCategories.BILLS:
+        return 'Housing/Billings';
+      case TransactionCategories.SAVINGS:
+        return 'Savings';
+      case TransactionCategories.MISC:
+        return 'Miscellaneous';
+      default:
+        return '';
+    }
+  }
+}
+
 List<String> creditCategories = TransactionCategories.values
     .where(
   (value) =>
@@ -38,25 +57,6 @@ List<String> creditCategories = TransactionCategories.values
       return '';
   }
 }).toList();
-
-extension TransactionCategoriesExtension on TransactionCategories {
-  String get value {
-    switch (this) {
-      case TransactionCategories.FOOD:
-        return 'Food/Drinks';
-      case TransactionCategories.TRANSPORTATION:
-        return 'Transportation';
-      case TransactionCategories.BILLS:
-        return 'Housing/Billings';
-      case TransactionCategories.SAVINGS:
-        return 'Savings';
-      case TransactionCategories.MISC:
-        return 'Miscellaneous';
-      default:
-        return '';
-    }
-  }
-}
 
 TransactionCategories transactionCategoriesFromString(
   String creditTransaction,
