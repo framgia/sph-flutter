@@ -37,8 +37,10 @@ class TransactionController extends GetxController {
       _transactionSubmitEnabled.value = newValue;
 
   Future<List<Transaction>> getTransactions({String accountId = ''}) async {
-    final result =
-        await TransactionService.getTransactions(accountId: accountId);
+    final result = await TransactionService.getTransactions(
+      accountId: accountId,
+      type: selectedTransactionType,
+    );
     transactionList.assignAll(result);
     return result;
   }
