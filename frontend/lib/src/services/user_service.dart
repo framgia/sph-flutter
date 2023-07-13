@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/src/helper/dio.dart';
 import 'package:frontend/src/helper/snackbar/show_snackbar.dart';
@@ -84,7 +86,7 @@ class UserService {
     }
   }
 
-  static Future<bool> updateUserProfile(User userInfo) async {
+  static Future<Response> updateUserProfile(User userInfo) async {
     final userId = await storage.read(key: StorageKeys.userId.name);
 
     final response = await NetworkConfig().client.put(
@@ -92,6 +94,6 @@ class UserService {
           data: userToJson(userInfo),
         );
 
-    return response.statusCode == HttpStatus.ok;
+    return response;
   }
 }
