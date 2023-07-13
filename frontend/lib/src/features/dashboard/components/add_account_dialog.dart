@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -29,7 +32,7 @@ class AddAccountDialog extends StatelessWidget {
     void onSubmit() async {
       controller.setButtonEnabled = false;
 
-      final accountCreated = await controller.addUserAccount(
+      final accountResponse = await controller.addUserAccount(
         Account(
           accountName: formKey.currentState!.fields['account_name']!.value,
           accountType: AccountType.fromValue(
@@ -38,7 +41,7 @@ class AddAccountDialog extends StatelessWidget {
         ),
       );
 
-      if (accountCreated != null) {
+      if (accountResponse.statusCode == HttpStatus.created) {
         Get.back();
 
         showSnackbar(
@@ -47,13 +50,16 @@ class AddAccountDialog extends StatelessWidget {
         );
 
         await dashboardController.getUserAccounts();
-      } else {
-        Get.back();
+      } else if (accountResponse.statusCode == HttpStatus.badRequest) {
+        final error =
+            jsonDecode(accountResponse.data.toString())['error']['message'];
 
-        showSnackbar(
-          title: 'Error',
-          content: 'Something went wrong, please try again.',
-        );
+        final accountNameError = error['account_name'];
+
+        if (accountNameError != null) {
+          formKey.currentState?.fields['account_name']
+              ?.invalidate(accountNameError[0]);
+        }
       }
     }
 
@@ -98,6 +104,9 @@ class AddAccountDialog extends StatelessWidget {
                     formKey.currentState!.save();
 
                     controller.setButtonEnabled = formKey.currentState!.isValid;
+
+                    formKey.currentState?.fields['account_name']
+                        ?.validate(focusOnInvalid: false);
                   },
                   child: Column(
                     children: [

@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
+
 import 'package:frontend/src/helper/dio.dart';
 import 'package:frontend/src/models/account.dart';
 
@@ -31,16 +33,10 @@ class AccountService {
     }
   }
 
-  static Future<Account?> addUserAccount(Account account) async {
-    final res = await NetworkConfig().client.post(
+  static Future<Response> addUserAccount(Account account) async {
+    return await NetworkConfig().client.post(
           accountUrl,
           data: accountToJson(account),
         );
-
-    if (res.statusCode == HttpStatus.created) {
-      return Account.fromJson(res.data['data']);
-    } else {
-      return null;
-    }
   }
 }
