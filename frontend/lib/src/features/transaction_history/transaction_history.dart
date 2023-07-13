@@ -25,7 +25,6 @@ class TransactionHistory extends StatelessWidget {
     TransactionController controller = Get.put(TransactionController());
     final arguments =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
-
     return Obx(
       () => FutureBuilder(
         future: controller.getTransactions(accountId: arguments.accountId),
@@ -71,10 +70,10 @@ class TransactionHistory extends StatelessWidget {
                     Obx(
                       () => DatePickerField(
                         labelText: 'From',
-                        name: 'filter_by_date',
-                        initialValue: controller.selectedTransactionDateFrom ??
+                        name: 'filter_by_date_from',
+                        initialValue: controller.selectedTransactionDateFrom,
+                        lastDate: controller.selectedTransactionDateTo ??
                             DateTime.now(),
-                        lastDate: controller.selectedTransactionDateTo,
                         onChanged: (value) {
                           controller.setSelectedTransactionDateFrom = value!;
                         },

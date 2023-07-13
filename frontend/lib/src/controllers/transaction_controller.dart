@@ -11,7 +11,7 @@ class TransactionController extends GetxController {
   final Rx<TransactionCategories> _selectedTransactionCategory =
       TransactionCategories.FOOD.obs;
   final Rxn<DateTime> _selectedTransactionDateFrom = Rxn<DateTime>();
-  final Rx<DateTime> _selectedTransactionDateTo = DateTime.now().obs;
+  final Rxn<DateTime> _selectedTransactionDateTo = Rxn<DateTime>();
   final RxBool _transactionSubmitEnabled = false.obs;
   RxList<Transaction> transactionList = <Transaction>[].obs;
 
@@ -24,7 +24,7 @@ class TransactionController extends GetxController {
   DateTime? get selectedTransactionDateFrom =>
       _selectedTransactionDateFrom.value;
 
-  DateTime get selectedTransactionDateTo => _selectedTransactionDateTo.value;
+  DateTime? get selectedTransactionDateTo => _selectedTransactionDateTo.value;
 
   bool get transactionSubmitEnabled => _transactionSubmitEnabled.value;
 
