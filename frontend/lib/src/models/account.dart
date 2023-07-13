@@ -16,6 +16,7 @@ class Account {
   AccountType accountType;
   String accountName;
   double balance;
+  String accountNumber;
 
   Account({
     required this.id,
@@ -23,6 +24,7 @@ class Account {
     required this.accountType,
     required this.accountName,
     required this.balance,
+    required this.accountNumber,
   });
 
   factory Account.fromJson(Map<String, dynamic> json) => Account(
@@ -32,6 +34,7 @@ class Account {
             .firstWhere((e) => e.name == json['account_type']),
         accountName: json["account_name"],
         balance: json["balance"].toDouble(),
+        accountNumber: json["account_number"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -40,5 +43,6 @@ class Account {
         "account_type": accountType,
         "account_name": accountName,
         "balance": balance,
+        "account_number": accountNumber
       };
 }

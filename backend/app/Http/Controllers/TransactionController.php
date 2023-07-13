@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class TransactionController extends Controller
 {
@@ -65,7 +66,13 @@ class TransactionController extends Controller
         }
 
         // - to $account , + to $receiverAccount
-        $receiverAccount = Account::find($payload['receiver_id']);
+        $receiverAccount = Account::getAccountByNameAndNumber($payload['account_number'], $payload['account_name']);
+
+        if (! $receiverAccount) {
+            throw ValidationException::withMessages([
+                'account' => 'Account doesn\'t exist.',
+            ]);
+        }
 
         if ($payload['transaction_type'] === 'TRANSFER') {
             $sendRow = $this->transferTransaction($account, $receiverAccount, $payload);
@@ -139,7 +146,6 @@ class TransactionController extends Controller
 
     private function transferTransaction(Account $account, Account $receiverAccount, $payload)
     {
-
         $transaction_date = now();
         $senderData = [
             'account_id' => $account->id,

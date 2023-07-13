@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:get/get.dart';
 
 import 'package:frontend/src/components/transaction_component/transaction_component.dart';
 import 'package:frontend/src/features/dashboard/components/account_card_button.dart';
@@ -69,6 +69,7 @@ class AccountCard extends StatelessWidget {
                             TransactionComponent(
                               label: 'Deposit Cash',
                               accountId: account.id,
+                              balance: account.balance,
                             ),
                             backgroundColor: Colors.white,
                           );
@@ -86,6 +87,7 @@ class AccountCard extends StatelessWidget {
                               label: 'Withdraw Cash',
                               type: TransactionTypes.CREDIT,
                               accountId: account.id,
+                              balance: account.balance,
                             ),
                             backgroundColor: Colors.white,
                           );
@@ -103,8 +105,10 @@ class AccountCard extends StatelessWidget {
                               label: 'Transfer Cash',
                               type: TransactionTypes.TRANSFER,
                               accountId: account.id,
+                              balance: account.balance,
                             ),
                             backgroundColor: Colors.white,
+                            isScrollControlled: true,
                           );
                         },
                       ),

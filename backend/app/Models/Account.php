@@ -7,6 +7,7 @@ use App\Traits\Uuid;
 use Database\Factories\AccountFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Account extends Model
 {
@@ -79,5 +80,22 @@ class Account extends Model
         }
 
         return 0;
+    }
+
+    public static function getAccountByNameAndNumber(string $accountNumber, string $accountName)
+    {
+        $account = Account::where('account_number', $accountNumber)->first();
+
+        if ($account) {
+            $user = User::find($account->user_id);
+            $fullName = $user->first_name.' '.$user->middle_name.' '.$user->last_name;
+            similar_text(Str::lower($fullName), Str::lower($accountName), $percentSimilarity);
+            
+            if ($percentSimilarity >= 80) {
+                return $account;
+            }
+        }
+
+        return null;
     }
 }

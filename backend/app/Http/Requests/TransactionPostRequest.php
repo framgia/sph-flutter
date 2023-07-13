@@ -30,9 +30,10 @@ class TransactionPostRequest extends FormRequest
         return [
             'description' => 'required|string',
             'amount' => 'required|numeric|gt:0',
-            'receiver_id' => 'required_if:transaction_type,TRANSFER|nullable|uuid|exists:accounts,id',
             'transaction_type' => ['required', Rule::in(config('enums.transaction_type'))],
             'category' => ['required', new CategoryValidation($this->input('transaction_type'))],
+            'account_number' => 'required_if:transaction_type,TRANSFER|nullable',
+            'account_name' => 'required_if:transaction_type,TRANSFER|nullable',
         ];
     }
 }

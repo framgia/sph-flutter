@@ -1,13 +1,15 @@
-import 'dart:convert';
 import 'dart:io';
+
+import 'package:dio/dio.dart';
 
 import 'package:frontend/src/helper/dio.dart';
 import 'package:frontend/src/models/transaction.dart';
 
 class TransactionService {
-  static Future<dynamic> postTransaction(
+  static Future<Response> postTransaction(
     Transaction transaction,
     String accountId,
+    String accountNumber,
   ) async {
     final response = await NetworkConfig().client.post(
       accountTransactionsUrl.replaceFirst('{id}', accountId),
@@ -16,14 +18,12 @@ class TransactionService {
         'transaction_type': transaction.transactionType.name,
         'category': transaction.category.name,
         'description': transaction.description,
+        'account_number': accountNumber,
+        'account_name': transaction.accountName,
       },
     );
 
-    if (response.statusCode == HttpStatus.created) {
-      return true;
-    }
-
-    return jsonDecode(response.data.toString())['error']['message'];
+    return response;
   }
 
   static Future<List<Transaction>> getTransactions({

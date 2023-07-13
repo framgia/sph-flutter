@@ -107,6 +107,7 @@ class AccountDetailsPage extends StatelessWidget {
                                 label: 'Deposit Cash',
                                 type: TransactionTypes.DEPT,
                                 accountId: arguments.accountId,
+                                balance: controller.account.balance,
                               ),
                               backgroundColor: Colors.white,
                             );
@@ -128,6 +129,7 @@ class AccountDetailsPage extends StatelessWidget {
                                 label: 'Withdraw Cash',
                                 type: TransactionTypes.CREDIT,
                                 accountId: arguments.accountId,
+                                balance: controller.account.balance,
                               ),
                               backgroundColor: Colors.white,
                             );
@@ -154,8 +156,10 @@ class AccountDetailsPage extends StatelessWidget {
                                 label: 'Transfer Cash',
                                 type: TransactionTypes.TRANSFER,
                                 accountId: arguments.accountId,
+                                balance: controller.account.balance,
                               ),
                               backgroundColor: Colors.white,
+                              isScrollControlled: true,
                             );
                           },
                         ),
