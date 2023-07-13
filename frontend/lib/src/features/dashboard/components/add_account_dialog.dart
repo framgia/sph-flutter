@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -7,6 +10,10 @@ import 'package:frontend/src/components/input/dropdown.dart';
 import 'package:frontend/src/components/input/input_field.dart';
 import 'package:frontend/src/controllers/add_account_controller.dart';
 import 'package:frontend/src/components/button.dart';
+import 'package:frontend/src/models/account.dart';
+import 'package:frontend/src/enums/account_enum.dart';
+import 'package:frontend/src/controllers/dashboard_controller.dart';
+import 'package:frontend/src/helper/snackbar/show_snackbar.dart';
 
 /*
   The dialog for adding new account
@@ -19,14 +26,41 @@ class AddAccountDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey<FormBuilderState> formKey = GlobalKey<FormBuilderState>();
     final AddAccountController controller = Get.put(AddAccountController());
+    final DashboardController dashboardController =
+        Get.put(DashboardController());
 
-    void onSubmit() {
+    void onSubmit() async {
       controller.setButtonEnabled = false;
 
-      debugPrint(controller.selectedAccountType);
-      debugPrint(formKey.currentState!.fields['account_name']!.value);
+      final accountResponse = await controller.addUserAccount(
+        Account(
+          accountName: formKey.currentState!.fields['account_name']!.value,
+          accountType: AccountType.fromValue(
+            controller.selectedAccountType,
+          ),
+        ),
+      );
 
-      Get.back();
+      if (accountResponse.statusCode == HttpStatus.created) {
+        Get.back();
+
+        showSnackbar(
+          title: 'Success',
+          content: 'You have successfully created an account.',
+        );
+
+        await dashboardController.getUserAccounts();
+      } else if (accountResponse.statusCode == HttpStatus.badRequest) {
+        final error =
+            jsonDecode(accountResponse.data.toString())['error']['message'];
+
+        final accountNameError = error['account_name'];
+
+        if (accountNameError != null) {
+          formKey.currentState?.fields['account_name']
+              ?.invalidate(accountNameError[0]);
+        }
+      }
     }
 
     return Dialog(
@@ -70,6 +104,9 @@ class AddAccountDialog extends StatelessWidget {
                     formKey.currentState!.save();
 
                     controller.setButtonEnabled = formKey.currentState!.isValid;
+
+                    formKey.currentState?.fields['account_name']
+                        ?.validate(focusOnInvalid: false);
                   },
                   child: Column(
                     children: [
