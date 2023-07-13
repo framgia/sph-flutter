@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:frontend/src/enums/transaction_enum.dart';
 import 'package:intl/intl.dart';
 
 Transaction transactionFromJson(String str) =>
@@ -6,16 +7,11 @@ Transaction transactionFromJson(String str) =>
 
 String transactionToJson(Transaction data) => json.encode(data.toJson());
 
-// ignore_for_file: constant_identifier_names
-enum TransactionTypes { CREDIT, DEPT, TRANSFER }
-
-enum Category { SAVINGS, SALARY, BILLS, SENDER, RECIPIENT }
-
 class Transaction {
   String? id;
   DateTime? transactionDate;
   TransactionTypes transactionType;
-  Category category;
+  TransactionCategories category;
   double amount;
   String description;
   String accountName;
@@ -40,7 +36,8 @@ class Transaction {
           DateFormat('yyyy-MM-ddTHH:mm:ssZ').parseUTC(json["created_at"]),
       transactionType: TransactionTypes.values
           .firstWhere((e) => e.name == json['transaction_type']),
-      category: Category.values.firstWhere((e) => e.name == json['category']),
+      category: TransactionCategories.values
+          .firstWhere((e) => e.name == json['category']),
       amount: (json["transaction_amount"] as num).toDouble(),
       description: json["description"],
       accountName: json["account_name"],
@@ -67,7 +64,7 @@ class Transaction {
     }
 
     if (transactionType == TransactionTypes.TRANSFER) {
-      if (category == Category.SENDER) {
+      if (category == TransactionCategories.SENDER) {
         return 'Transferred money to';
       }
       return 'Received money from';

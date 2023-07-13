@@ -2,24 +2,34 @@ import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 
 import 'package:frontend/src/models/transaction.dart';
+import 'package:frontend/src/enums/transaction_enum.dart';
 import 'package:frontend/src/services/transaction_service.dart';
 
-List<String> transactionTypes = ['Credit', 'Dept', 'Transfer'];
-
 class TransactionController extends GetxController {
-  final RxString _selectedTransactionType = transactionTypes[0].obs;
+  final Rx<TransactionTypes> _selectedTransactionType =
+      TransactionTypes.CREDIT.obs;
+  final Rx<TransactionCategories> _selectedTransactionCategory =
+      TransactionCategories.FOOD.obs;
   final Rx<DateTime> _selectedTransactionDate = DateTime.now().obs;
   final RxBool _transactionSubmitEnabled = false.obs;
   RxList<Transaction> transactionList = <Transaction>[].obs;
 
-  String get selectedTransactionType => _selectedTransactionType.value;
+  TransactionTypes get selectedTransactionType =>
+      _selectedTransactionType.value;
+
+  TransactionCategories get selectedTransactionCategory =>
+      _selectedTransactionCategory.value;
 
   bool get transactionSubmitEnabled => _transactionSubmitEnabled.value;
 
-  set setSelectedTransactionType(String newValue) =>
+  DateTime get selectedTransactionDate => _selectedTransactionDate.value;
+
+  set setSelectedTransactionType(TransactionTypes newValue) =>
       _selectedTransactionType.value = newValue;
 
-  DateTime get selectedTransactionDate => _selectedTransactionDate.value;
+  set setSelectedTransactionCategory(TransactionCategories newValue) =>
+      _selectedTransactionCategory.value = newValue;
+
   set setSelectedTransactionDate(DateTime newValue) =>
       _selectedTransactionDate.value = newValue;
 

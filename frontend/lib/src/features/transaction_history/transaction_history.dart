@@ -9,6 +9,8 @@ import 'package:frontend/src/components/input/date_picker_field.dart';
 import 'package:frontend/src/components/breadcrumb.dart';
 import 'package:frontend/src/components/input/dropdown.dart';
 import 'package:frontend/src/features/dashboard/components/account_card.dart';
+import 'package:frontend/src/enums/transaction_enum.dart';
+import 'package:frontend/src/helper/capitalize_first_letter.dart';
 
 /*
   The page where user can see their transaction history per account.
@@ -49,12 +51,20 @@ class TransactionHistory extends StatelessWidget {
                   children: [
                     Dropdown(
                       labelText: 'Filter transaction by type',
-                      items: transactionTypes,
-                      selectedValue: controller.selectedTransactionType,
+                      items: TransactionTypes.values
+                          .map((type) => capitalizeFirstLetter(type.name))
+                          .toList(),
+                      selectedValue: capitalizeFirstLetter(
+                        controller.selectedTransactionType.name,
+                      ),
                       onChanged: (value) {
                         controller.setSelectedTransactionType =
-                            value.toString();
-                        debugPrint(controller.selectedTransactionType);
+                            TransactionTypes.values.firstWhere(
+                          (type) => capitalizeFirstLetter(type.name) == value,
+                        );
+                        debugPrint(
+                          controller.selectedTransactionType.name,
+                        );
                       },
                     ),
                     const SizedBox(height: 20),
