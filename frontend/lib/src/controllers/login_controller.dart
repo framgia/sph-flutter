@@ -1,6 +1,7 @@
+import 'package:get/get.dart';
+
 import 'package:frontend/src/features/home_screen.dart';
 import 'package:frontend/src/services/user_service.dart';
-import 'package:get/get.dart';
 
 class LoginController extends GetxController {
   final RxBool _withLoginToken = false.obs; // determines if storage has login token
@@ -16,21 +17,20 @@ class LoginController extends GetxController {
   set setLoginButtonEnabled(bool newValue) =>
       _loginButtonEnabled.value = newValue;
 
-  @override
-  void onInit() async {
-    super.onInit();
-
+  Future<bool> validateLoginToken({bool redirect = false}) async {
     _withLoginToken.value = await UserService.hasLoginToken();
 
     if (_withLoginToken.value) {
       _checkingLoginToken.value = true;
       _validLoginToken.value = await UserService.checkLoginToken();
 
-      if (_validLoginToken.value) {
-        Get.to(() => const HomeScreen());
+      if (_validLoginToken.value && redirect) {
+        await Get.to(() => const HomeScreen());
       }
 
       _checkingLoginToken.value = false;
     }
-  }
+
+    return _validLoginToken.value;
+  }  
 }
