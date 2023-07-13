@@ -26,28 +26,28 @@ class TransactionHistory extends StatelessWidget {
     final arguments =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
 
-    return FutureBuilder(
-      future: controller.getTransactions(accountId: arguments.accountId),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return const CircularProgressIndicator();
-        }
+    return Obx(
+      () => FutureBuilder(
+        future: controller.getTransactions(accountId: arguments.accountId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const CircularProgressIndicator();
+          }
 
-        return Column(
-          children: [
-            Breadcrumb(
-              text: 'Transaction History',
-              onTap: () {
-                dashboardAppNav.currentState?.pushNamed(
-                  '/accountDetails',
-                  arguments: ScreenArguments(arguments.accountId),
-                );
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(25, 35, 25, 110),
-              child: Obx(
-                () => Column(
+          return Column(
+            children: [
+              Breadcrumb(
+                text: 'Transaction History',
+                onTap: () {
+                  dashboardAppNav.currentState?.pushNamed(
+                    '/accountDetails',
+                    arguments: ScreenArguments(arguments.accountId),
+                  );
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(25, 35, 25, 110),
+                child: Column(
                   children: [
                     Dropdown(
                       labelText: 'Filter transaction by type',
@@ -68,16 +68,30 @@ class TransactionHistory extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 20),
-                    DatePickerField(
-                      labelText: 'Filter transaction by date',
-                      name: 'filter_by_date',
-                      initialValue: controller.selectedTransactionDate,
-                      lastDate: DateTime.now(),
-                      onChanged: (value) {
-                        controller.setSelectedTransactionDate = value!;
-                        final formattedDate = DateFormat.yMd().format(value);
-                        debugPrint(formattedDate);
-                      },
+                    Obx(
+                      () => DatePickerField(
+                        labelText: 'From',
+                        name: 'filter_by_date',
+                        initialValue: controller.selectedTransactionDateFrom ??
+                            DateTime.now(),
+                        lastDate: controller.selectedTransactionDateTo,
+                        onChanged: (value) {
+                          controller.setSelectedTransactionDateFrom = value!;
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Obx(
+                      () => DatePickerField(
+                        labelText: 'To',
+                        name: 'filter_by_date_to',
+                        initialValue: controller.selectedTransactionDateTo,
+                        firstDate: controller.selectedTransactionDateFrom,
+                        lastDate: DateTime.now(),
+                        onChanged: (value) {
+                          controller.setSelectedTransactionDateTo = value!;
+                        },
+                      ),
                     ),
                     const SizedBox(height: 35),
                     if (controller.transactionList.isEmpty)
@@ -102,10 +116,10 @@ class TransactionHistory extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-          ],
-        );
-      },
+            ],
+          );
+        },
+      ),
     );
   }
 }

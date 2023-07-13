@@ -15,7 +15,7 @@ import 'package:frontend/src/components/label.dart';
 
   @param onChanged, called when the user selects a date.
 
-  @param initialValue, initial value for the date time picker. 
+  @param initialValue, initial value for the date time picker.
 
   @param lastDate, the latest choosable date.
 */
@@ -27,6 +27,7 @@ class DatePickerField extends StatelessWidget {
     this.validator,
     this.onChanged,
     this.initialValue,
+    this.firstDate,
     this.lastDate,
   });
 
@@ -35,6 +36,7 @@ class DatePickerField extends StatelessWidget {
   final String? Function(DateTime?)? validator;
   final void Function(DateTime?)? onChanged;
   final DateTime? initialValue;
+  final DateTime? firstDate;
   final DateTime? lastDate;
 
   @override
@@ -82,6 +84,7 @@ class DatePickerField extends StatelessWidget {
               validator: validator,
               initialEntryMode: DatePickerEntryMode.calendar,
               initialValue: initialValue,
+              firstDate: firstDate,
               lastDate: lastDate,
               inputType: InputType.date,
               onChanged: onChanged,
