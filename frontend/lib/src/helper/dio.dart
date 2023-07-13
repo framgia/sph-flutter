@@ -19,6 +19,7 @@ const usersUrl = '$apiUrl/users';
 const userUrl = '$apiUrl/user';
 const authUrl = '$apiUrl/auth';
 const logoutUrl = '$apiUrl/logout';
+const accountUrl = '$apiUrl/accounts';
 const forgotPasswordUrl = '$apiUrl/forgot-password';
 const resetPasswordtUrl = '$apiUrl/reset-password';
 const userAccountsUrl = '$apiUrl/users/{id}/accounts';

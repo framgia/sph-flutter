@@ -7,6 +7,10 @@ import 'package:frontend/src/components/input/dropdown.dart';
 import 'package:frontend/src/components/input/input_field.dart';
 import 'package:frontend/src/controllers/add_account_controller.dart';
 import 'package:frontend/src/components/button.dart';
+import 'package:frontend/src/models/account.dart';
+import 'package:frontend/src/enums/account_enum.dart';
+import 'package:frontend/src/controllers/dashboard_controller.dart';
+import 'package:frontend/src/helper/snackbar/show_snackbar.dart';
 
 /*
   The dialog for adding new account
@@ -19,14 +23,38 @@ class AddAccountDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey<FormBuilderState> formKey = GlobalKey<FormBuilderState>();
     final AddAccountController controller = Get.put(AddAccountController());
+    final DashboardController dashboardController =
+        Get.put(DashboardController());
 
-    void onSubmit() {
+    void onSubmit() async {
       controller.setButtonEnabled = false;
 
-      debugPrint(controller.selectedAccountType);
-      debugPrint(formKey.currentState!.fields['account_name']!.value);
+      final accountCreated = await controller.addUserAccount(
+        Account(
+          accountName: formKey.currentState!.fields['account_name']!.value,
+          accountType: AccountType.fromValue(
+            controller.selectedAccountType,
+          ),
+        ),
+      );
 
-      Get.back();
+      if (accountCreated != null) {
+        Get.back();
+
+        showSnackbar(
+          title: 'Success',
+          content: 'You have successfully created an account.',
+        );
+
+        await dashboardController.getUserAccounts();
+      } else {
+        Get.back();
+
+        showSnackbar(
+          title: 'Error',
+          content: 'Something went wrong, please try again.',
+        );
+      }
     }
 
     return Dialog(

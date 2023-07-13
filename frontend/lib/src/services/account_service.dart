@@ -30,4 +30,17 @@ class AccountService {
       return null;
     }
   }
+
+  static Future<Account?> addUserAccount(Account account) async {
+    final res = await NetworkConfig().client.post(
+          accountUrl,
+          data: accountToJson(account),
+        );
+
+    if (res.statusCode == HttpStatus.created) {
+      return Account.fromJson(res.data['data']);
+    } else {
+      return null;
+    }
+  }
 }

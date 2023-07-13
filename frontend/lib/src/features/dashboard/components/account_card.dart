@@ -31,7 +31,7 @@ class AccountCard extends StatelessWidget {
           onTap: () {
             dashboardAppNav.currentState?.pushNamed(
               '/accountDetails',
-              arguments: ScreenArguments(account.id),
+              arguments: ScreenArguments(account.id!),
             );
           },
           child: Padding(
@@ -68,8 +68,8 @@ class AccountCard extends StatelessWidget {
                           Get.bottomSheet(
                             TransactionComponent(
                               label: 'Deposit Cash',
-                              accountId: account.id,
-                              balance: account.balance,
+                              accountId: account.id!,
+                              balance: account.balance!,
                             ),
                             backgroundColor: Colors.white,
                           );
@@ -86,8 +86,8 @@ class AccountCard extends StatelessWidget {
                             TransactionComponent(
                               label: 'Withdraw Cash',
                               type: TransactionTypes.CREDIT,
-                              accountId: account.id,
-                              balance: account.balance,
+                              accountId: account.id!,
+                              balance: account.balance!,
                             ),
                             backgroundColor: Colors.white,
                           );
@@ -104,8 +104,8 @@ class AccountCard extends StatelessWidget {
                             TransactionComponent(
                               label: 'Transfer Cash',
                               type: TransactionTypes.TRANSFER,
-                              accountId: account.id,
-                              balance: account.balance,
+                              accountId: account.id!,
+                              balance: account.balance!,
                             ),
                             backgroundColor: Colors.white,
                             isScrollControlled: true,
