@@ -77,7 +77,7 @@ class TransactionHistory extends StatelessWidget {
                           lastDate: controller.selectedTransactionDateTo ??
                               DateTime.now(),
                           onChanged: (value) {
-                            controller.setSelectedTransactionDateFrom = value!;
+                            controller.setSelectedTransactionDateFrom = value;
                             controller.getTransactions(
                               accountId: arguments.accountId,
                             );
@@ -91,7 +91,7 @@ class TransactionHistory extends StatelessWidget {
                           firstDate: controller.selectedTransactionDateFrom,
                           lastDate: DateTime.now(),
                           onChanged: (value) {
-                            controller.setSelectedTransactionDateTo = value!;
+                            controller.setSelectedTransactionDateTo = value;
                             controller.getTransactions(
                               accountId: arguments.accountId,
                             );
