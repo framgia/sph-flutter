@@ -22,7 +22,7 @@ class AccountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AccountDetailsController accountDetailsController =
+    final AccountDetailsController controller =
         Get.put(AccountDetailsController());
 
     return Padding(
@@ -104,7 +104,7 @@ class AccountCard extends StatelessWidget {
                         text: 'Transfer',
                         backgroundColor: const Color(0xFFC106C5),
                         onClick: () {
-                          accountDetailsController.setAccount = account;
+                          controller.setAccount = account;
                           Get.bottomSheet(
                             TransactionComponent(
                               label: 'Transfer Cash',
