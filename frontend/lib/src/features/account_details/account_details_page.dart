@@ -59,30 +59,66 @@ class AccountDetailsPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                         vertical: 21,
                       ),
-                      child: Center(
                         child: Column(
                           children: [
-                            const Text(
-                              "Balance",
-                              style: TextStyle(
-                                color: Color(0xFF6D7881),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
+                            SizedBox(
+                              height: 21,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Obx(
+                                    () => Text(
+                                      controller.account.accountName,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium!
+                                          .copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                  ),
+                                  const VerticalDivider(
+                                    color: Color(0xFF6D7881),
+                                    width: 20,
+                                    thickness: 1,
+                                    indent: 0,
+                                    endIndent: 0,
+                                  ),
+                                  Obx(
+                                    () => Text(
+                                      controller.account.accountNumber ?? '',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelSmall,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            Obx(
-                              () => Text(
-                                "PHP ${currencyFormat.format(controller.account.balance)}",
-                                style: const TextStyle(
-                                  color: Color(0xFF6D7881),
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
+                            const SizedBox(height: 14,),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Balance",
+                                  style: Theme.of(context).textTheme.titleSmall,
                                 ),
-                              ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Obx(
+                                  () => Text(
+                                    "PHP ${currencyFormat.format(controller.account.balance)}",
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ),
                     ),
                   ),
                 ),
