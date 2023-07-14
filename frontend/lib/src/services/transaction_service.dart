@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 
 import 'package:frontend/src/helper/dio.dart';
 import 'package:frontend/src/models/transaction.dart';
+import 'package:frontend/src/enums/transaction_enum.dart';
 
 class TransactionService {
   static Future<Response> postTransaction(
@@ -28,9 +29,15 @@ class TransactionService {
 
   static Future<List<Transaction>> getTransactions({
     String accountId = '',
+    TransactionTypes? type,
   }) async {
     final url = accountTransactionsUrl.replaceFirst('{id}', accountId);
-    final transactionResponse = await NetworkConfig().client.get(url);
+    final Map<String, dynamic> query = {};
+
+    if (type != TransactionTypes.ALL) query['type'] = type?.name;
+
+    final transactionResponse =
+        await NetworkConfig().client.get(url, queryParameters: query);
 
     if (transactionResponse.statusCode == HttpStatus.ok) {
       final Iterable data = transactionResponse.data['data'];

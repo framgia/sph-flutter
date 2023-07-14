@@ -12,6 +12,7 @@ import 'package:frontend/src/components/balance_card.dart';
 import 'package:frontend/src/components/graph.dart';
 import 'package:frontend/src/features/dashboard/components/account_card.dart';
 import 'package:frontend/src/enums/transaction_enum.dart';
+import 'package:frontend/src/controllers/transaction_controller.dart';
 
 /*
   The page where user can see their account details.
@@ -28,6 +29,8 @@ class AccountDetailsPage extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     AccountDetailsController controller = Get.put(AccountDetailsController());
     HomeScreenController homeScreenController = Get.find();
+    TransactionController transactionController =
+        Get.put(TransactionController());
 
     return FutureBuilder(
       future: controller.getUserAccount(accountId: arguments.accountId),
@@ -210,6 +213,8 @@ class AccountDetailsPage extends StatelessWidget {
                           size: const Size(110, 90),
                           radius: 8,
                           onPressed: () {
+                            transactionController
+                                .resetFilters(arguments.accountId);
                             dashboardAppNav.currentState?.pushNamed(
                               '/transactionHistory',
                               arguments: ScreenArguments(arguments.accountId),

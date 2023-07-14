@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-enum TransactionTypes { CREDIT, DEPT, TRANSFER }
+enum TransactionTypes { ALL, CREDIT, DEPT, TRANSFER }
 
 enum TransactionCategories {
   FOOD,
