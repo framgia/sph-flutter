@@ -93,6 +93,7 @@ or
 `php artisan migrate:fresh --seeder=UserSeeder`
 
 ## Thunder client
+https://github.com/rangav/thunder-client-support#how-to-use
 ### Download vscode extension for Thunder Client
 ### Thunder client extension settings
 - update on User Settings
