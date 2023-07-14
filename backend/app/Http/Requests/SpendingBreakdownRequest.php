@@ -25,7 +25,7 @@ class SpendingBreakdownRequest extends FormRequest
     public function rules()
     {
         return [
-            'days' => ['nullable', Rule::in(['0', '7', '30'])],
+            'days' => ['nullable', Rule::in(['1', '7', '30'])],
         ];
     }
 }
