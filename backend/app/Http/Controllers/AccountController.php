@@ -45,7 +45,7 @@ class AccountController extends Controller
     }
 
     // api endpoint for retrieving aggregated data on an account's CREDIT transactions
-    // @param days (null | 0 | 7 | 30) filter for transaction date between Now and {days} Days before
+    // @param days (null | 1 | 7 | 30) filter for transaction date between Now and {days} Days before
     // spending breakdown groups the transactions by the categories and the main data to manage
     //   is total_transaction_amount and latest_transaction_date
     // diff_for_human data is also made available to easily display words like "Yesterday"
