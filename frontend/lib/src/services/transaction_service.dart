@@ -34,7 +34,7 @@ class TransactionService {
     final url = accountTransactionsUrl.replaceFirst('{id}', accountId);
     final Map<String, dynamic> query = {};
 
-    if (type != null) query['type'] = type.name;
+    if (type != TransactionTypes.ALL) query['type'] = type?.name;
 
     final transactionResponse =
         await NetworkConfig().client.get(url, queryParameters: query);

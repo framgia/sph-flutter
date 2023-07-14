@@ -53,18 +53,29 @@ class TransactionHistory extends StatelessWidget {
                       Dropdown(
                         labelText: 'Filter transaction by type',
                         items: TransactionTypes.values
-                            .map((type) => capitalizeFirstLetter(type.name))
+                            .map(
+                              (type) => type == TransactionTypes.ALL
+                                  ? 'All transactions'
+                                  : capitalizeFirstLetter(type.name),
+                            )
                             .toList(),
-                        selectedValue: capitalizeFirstLetter(
-                          controller.selectedTransactionType.name,
-                        ),
+                        selectedValue: controller.selectedTransactionType ==
+                                TransactionTypes.ALL
+                            ? 'All transactions'
+                            : capitalizeFirstLetter(
+                                controller.selectedTransactionType.name,
+                              ),
                         onChanged: (value) {
+                          final convertValue =
+                              value.toString() == 'All transactions'
+                                  ? 'All'
+                                  : value;
+
                           controller.setSelectedTransactionType =
                               TransactionTypes.values.firstWhere(
-                            (type) => capitalizeFirstLetter(type.name) == value,
-                          );
-                          debugPrint(
-                            controller.selectedTransactionType.name,
+                            (type) =>
+                                capitalizeFirstLetter(type.name) ==
+                                convertValue,
                           );
                         },
                       ),
@@ -80,26 +91,6 @@ class TransactionHistory extends StatelessWidget {
                           debugPrint(formattedDate);
                         },
                       ),
-                      const SizedBox(height: 35),
-                      if (controller.transactionList.isEmpty)
-                        Container(
-                          margin: const EdgeInsets.only(top: 20),
-                          child: Text(
-                            'No Transaction Record',
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ),
-                        )
-                      else
-                        ListView.builder(
-                          itemCount: controller.transactionList.length,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return TransactionCard(
-                              transaction: controller.transactionList[index],
-                            );
-                          },
-                        ),
                       const SizedBox(height: 35),
                       if (controller.transactionList.isEmpty)
                         Container(
