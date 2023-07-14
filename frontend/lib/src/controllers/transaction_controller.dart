@@ -44,6 +44,13 @@ class TransactionController extends GetxController {
       _transactionSubmitEnabled.value = newValue;
 
   Future<List<Transaction>> getTransactions({String accountId = ''}) async {
+    if ((selectedTransactionDateFrom == null &&
+            selectedTransactionDateTo != null) ||
+        (selectedTransactionDateFrom != null &&
+            selectedTransactionDateTo == null)) {
+      return transactionList;
+    }
+
     final result = await TransactionService.getTransactions(
       accountId: accountId,
       from: selectedTransactionDateFrom,
