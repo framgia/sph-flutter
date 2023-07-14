@@ -1,3 +1,4 @@
+import 'package:frontend/src/controllers/transaction_controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,8 @@ class DashboardScreenNavigator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeScreenController homeScreenController = Get.find();
+    final TransactionController transactionController =
+        Get.put(TransactionController());
 
     return Navigator(
       key: dashboardAppNav,
@@ -32,6 +35,8 @@ class DashboardScreenNavigator extends StatelessWidget {
             break;
           case '/transactionHistory':
             page = const TransactionHistory();
+            transactionController.setSelectedTransactionDateFrom = null;
+            transactionController.setSelectedTransactionDateTo = null;
             homeScreenController.floatingActionButtonVisible = false;
             break;
           default:
