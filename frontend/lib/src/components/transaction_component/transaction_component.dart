@@ -122,7 +122,9 @@ class TransactionComponent extends StatelessWidget {
           amount: double.parse(amountValue),
           description: descriptionValue ?? 'Deposit',
           transactionType: type,
-          category: typeTexts[type]!['category'],
+          category: type == TransactionTypes.CREDIT
+              ? transactionController.selectedTransactionCategory
+              : typeTexts[type]!['category'],
           accountName: accountNameValue ?? '',
         );
 
