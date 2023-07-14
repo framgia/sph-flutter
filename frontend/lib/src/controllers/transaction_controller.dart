@@ -14,7 +14,6 @@ class TransactionController extends GetxController {
   final Rxn<DateTime> _selectedTransactionDateTo = Rxn<DateTime>();
   final RxBool _transactionSubmitEnabled = false.obs;
   RxList<Transaction> transactionList = <Transaction>[].obs;
-
   TransactionTypes get selectedTransactionType =>
       _selectedTransactionType.value;
 
@@ -34,10 +33,10 @@ class TransactionController extends GetxController {
   set setSelectedTransactionCategory(TransactionCategories newValue) =>
       _selectedTransactionCategory.value = newValue;
 
-  set setSelectedTransactionDateFrom(DateTime newValue) =>
+  set setSelectedTransactionDateFrom(DateTime? newValue) =>
       _selectedTransactionDateFrom.value = newValue;
 
-  set setSelectedTransactionDateTo(DateTime newValue) =>
+  set setSelectedTransactionDateTo(DateTime? newValue) =>
       _selectedTransactionDateTo.value = newValue;
 
   set setTransactionSubmitEnabled(bool newValue) =>

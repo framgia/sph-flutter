@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 import 'package:frontend/src/features/transaction_history/components/transaction_card.dart';
 import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
@@ -22,7 +21,8 @@ class TransactionHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TransactionController controller = Get.put(TransactionController());
+    TransactionController controller = Get.find();
+
     final arguments =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     return FutureBuilder(
