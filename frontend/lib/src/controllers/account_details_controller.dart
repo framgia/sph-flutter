@@ -15,6 +15,7 @@ class AccountDetailsController extends GetxController {
   ).obs;
 
   Account get account => _account.value;
+  set setAccount(Account newValue) => _account.value = newValue;
 
   Future<Account?> getUserAccount({String accountId = ''}) async {
     final result = await AccountService.getUserAccount(
