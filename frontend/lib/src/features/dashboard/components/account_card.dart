@@ -45,20 +45,52 @@ class AccountCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  account.accountName,
-                  style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
-                  child: Text(
-                    "Balance: ${currencyFormat.format(account.balance)} Php",
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                          fontWeight: FontWeight.normal,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          account.accountName,
+                          style:
+                              Theme.of(context).textTheme.labelMedium!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
-                  ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: Text(
+                            "Account Number: ${account.accountNumber?.substring(7)}",
+                            style: Theme.of(context).textTheme.labelSmall,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          "Balance",
+                          style:
+                              Theme.of(context).textTheme.labelMedium!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: Text(
+                            "${currencyFormat.format(account.balance)} Php",
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall!
+                                .copyWith(
+                                  fontWeight: FontWeight.normal,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 15.0),
