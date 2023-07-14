@@ -1,0 +1,254 @@
+{
+    "_id": "e67252d3-899b-41cc-b8f8-6fac4b81d90a",
+    "colName": "Transactions",
+    "created": "2023-07-14T02:55:39.262Z",
+    "sortNum": 20000,
+    "folders": [],
+    "requests": [
+        {
+            "_id": "6b045efe-ea99-481c-9054-765bb30e6f8a",
+            "colId": "e67252d3-899b-41cc-b8f8-6fac4b81d90a",
+            "containerId": "",
+            "name": "Show all Transactions",
+            "url": "{{api}}/transactions",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-07-14T02:55:39.271Z",
+            "modified": "2023-07-14T02:55:39.271Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "params": [
+                {
+                    "name": "type",
+                    "value": "DEPT",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "from",
+                    "value": "2023-06-27",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "to",
+                    "value": "2023-06-27",
+                    "isDisabled": true,
+                    "isPath": false
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            },
+            "tests": []
+        },
+        {
+            "_id": "e67c6d48-fb9d-48c2-b13b-ac545e981d0c",
+            "colId": "e67252d3-899b-41cc-b8f8-6fac4b81d90a",
+            "containerId": "",
+            "name": "Show Transactions via account_id",
+            "url": "{{api}}/accounts/{{account_id}}/transactions",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-07-14T02:55:39.272Z",
+            "modified": "2023-07-14T02:55:39.272Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "params": [
+                {
+                    "name": "type",
+                    "value": "DEPT",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "from",
+                    "value": "2023-06-27",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "to",
+                    "value": "2023-06-27",
+                    "isDisabled": true,
+                    "isPath": false
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "json.data | at(0) | prop(\"id\")",
+                    "action": "setto",
+                    "value": "{{transaction_id}}"
+                }
+            ]
+        },
+        {
+            "_id": "f43f3577-6250-4472-9c08-20e6a646ec2c",
+            "colId": "e67252d3-899b-41cc-b8f8-6fac4b81d90a",
+            "containerId": "",
+            "name": "Show transaction data",
+            "url": "{{api}}/transactions/{{transaction_id}}",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-07-14T02:55:39.273Z",
+            "modified": "2023-07-14T02:55:39.273Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "211f26ae-d74e-4a34-8d77-779ab8fb66ce",
+            "colId": "e67252d3-899b-41cc-b8f8-6fac4b81d90a",
+            "containerId": "",
+            "name": "Insert Transaction (Transfer)",
+            "url": "{{api}}/accounts/{{account_id}}/transactions",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-07-14T02:55:39.274Z",
+            "modified": "2023-07-14T02:55:39.274Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "body": {
+                "form": [
+                    {
+                        "name": "receiver_id",
+                        "value": "1037bc10-f101-3d7e-a0b6-8b07a282fedf"
+                    },
+                    {
+                        "name": "amount",
+                        "value": "2"
+                    },
+                    {
+                        "name": "transaction_type",
+                        "value": "TRANSFER"
+                    },
+                    {
+                        "name": "category",
+                        "value": "SENDER"
+                    },
+                    {
+                        "name": "description",
+                        "value": "\"A new transaction\""
+                    }
+                ],
+                "files": [],
+                "type": "formdata"
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "22dd1303-bf52-4304-8ec1-d280af89ced5",
+            "colId": "e67252d3-899b-41cc-b8f8-6fac4b81d90a",
+            "containerId": "",
+            "name": "Insert Transaction (Withdraw)",
+            "url": "{{api}}/accounts/{{account_id}}/transactions",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2023-07-14T02:55:39.275Z",
+            "modified": "2023-07-14T02:55:39.275Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "body": {
+                "form": [
+                    {
+                        "name": "transaction_type",
+                        "value": "CREDIT"
+                    },
+                    {
+                        "name": "category",
+                        "value": "BILLS"
+                    },
+                    {
+                        "name": "amount",
+                        "value": "100000000"
+                    },
+                    {
+                        "name": "description",
+                        "value": "\"withdraw\""
+                    }
+                ],
+                "files": [],
+                "type": "formdata"
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "a151c662-65be-4c2a-9d84-f65bab5d850e",
+            "colId": "e67252d3-899b-41cc-b8f8-6fac4b81d90a",
+            "containerId": "",
+            "name": "Insert Transaction (Deposit)",
+            "url": "{{api}}/accounts/{{account_id}}/transactions",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2023-07-14T02:55:39.276Z",
+            "modified": "2023-07-14T02:55:39.276Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "body": {
+                "form": [
+                    {
+                        "name": "transaction_type",
+                        "value": "DEPT"
+                    },
+                    {
+                        "name": "category",
+                        "value": "SAVINGS"
+                    },
+                    {
+                        "name": "amount",
+                        "value": "10000"
+                    },
+                    {
+                        "name": "description",
+                        "value": "\"withdraw\""
+                    }
+                ],
+                "files": [],
+                "type": "formdata"
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        }
+    ]
+}

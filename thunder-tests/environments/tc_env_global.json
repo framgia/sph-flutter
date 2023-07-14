@@ -1,0 +1,55 @@
+{
+    "_id": "c7c3e46c-894a-4fbc-91fe-5c5a84293850",
+    "name": "(Global Env)",
+    "default": false,
+    "global": true,
+    "sortNum": -2,
+    "created": "2023-07-14T02:56:00.306Z",
+    "modified": "2023-07-14T02:56:00.306Z",
+    "data": [
+        {
+            "name": "host",
+            "value": "http://192.168.1.4:80"
+        },
+        {
+            "name": "api",
+            "value": "{{host}}/api"
+        },
+        {
+            "name": "users",
+            "value": "{{api}}/users"
+        },
+        {
+            "name": "login",
+            "value": "{{api}}/login"
+        },
+        {
+            "name": "token",
+            "value": ""
+        },
+        {
+            "name": "customRandomDate",
+            "value": ""
+        },
+        {
+            "name": "user_id",
+            "value": ""
+        },
+        {
+            "name": "account_id",
+            "value": ""
+        },
+        {
+            "name": "transaction_id",
+            "value": ""
+        },
+        {
+            "name": "forgot-password",
+            "value": "{{api}}/forgot-password"
+        },
+        {
+            "name": "reset-password",
+            "value": "{{api}}/reset-password"
+        }
+    ]
+}

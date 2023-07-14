@@ -1,0 +1,133 @@
+{
+    "_id": "9f84b639-f681-4f52-a619-05d6378c12dd",
+    "colName": "Users",
+    "created": "2023-07-14T02:55:52.599Z",
+    "sortNum": 7500,
+    "folders": [],
+    "requests": [
+        {
+            "_id": "6d816bd3-f643-4564-acc3-9c8dc8fad40f",
+            "colId": "9f84b639-f681-4f52-a619-05d6378c12dd",
+            "containerId": "",
+            "name": "/users",
+            "url": "{{users}}?keyword=",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-07-14T02:55:52.607Z",
+            "modified": "2023-07-14T02:55:52.607Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "params": [
+                {
+                    "name": "keyword",
+                    "value": "",
+                    "isPath": false
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            },
+            "tests": []
+        },
+        {
+            "_id": "b104eb7b-968b-4aa4-9565-bae2c4274431",
+            "colId": "9f84b639-f681-4f52-a619-05d6378c12dd",
+            "containerId": "",
+            "name": "update_profile_info",
+            "url": "{{api}}/users/{{user_id}}",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-07-14T02:55:52.608Z",
+            "modified": "2023-07-14T02:55:52.608Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "_method",
+                        "value": "put"
+                    },
+                    {
+                        "name": "first_name",
+                        "value": "Jeromy"
+                    },
+                    {
+                        "name": "middle_name",
+                        "value": "Rogahnu"
+                    },
+                    {
+                        "name": "last_name",
+                        "value": "Macejkovic"
+                    },
+                    {
+                        "name": "address",
+                        "value": "48315 Marks Spurs Suite 072 South Eden, OH 23994"
+                    },
+                    {
+                        "name": "birthday",
+                        "value": "{{#date, 'YYYY-MM-DD hh:mm:ss' }}"
+                    }
+                ]
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            },
+            "tests": []
+        },
+        {
+            "_id": "59eaf310-9e64-4903-9004-9d21dbdad46a",
+            "colId": "9f84b639-f681-4f52-a619-05d6378c12dd",
+            "containerId": "",
+            "name": "/users/user_id",
+            "url": "{{users}}/{{user_id}}",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-07-14T02:55:52.609Z",
+            "modified": "2023-07-14T02:55:52.609Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "39a882d0-9e35-46e2-9516-ab258edf8edc",
+            "colId": "9f84b639-f681-4f52-a619-05d6378c12dd",
+            "containerId": "",
+            "name": "/users/delete_user_id",
+            "url": "{{users}}/user_id",
+            "method": "DELETE",
+            "sortNum": 40000,
+            "created": "2023-07-14T02:55:52.610Z",
+            "modified": "2023-07-14T02:55:52.610Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        }
+    ]
+}

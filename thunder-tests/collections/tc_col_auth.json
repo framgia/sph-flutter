@@ -1,0 +1,281 @@
+{
+    "_id": "a5036bd1-cef7-436a-9e09-dd470ffd7f93",
+    "colName": "Auth",
+    "created": "2023-07-14T02:55:20.471Z",
+    "sortNum": 5000,
+    "folders": [],
+    "requests": [
+        {
+            "_id": "0083884d-d27c-48fa-b8bb-6221c059e8f4",
+            "colId": "a5036bd1-cef7-436a-9e09-dd470ffd7f93",
+            "containerId": "",
+            "name": "/sanctum/csrf-cookie",
+            "url": "{{host}}/sanctum/csrf-cookie",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-07-14T02:55:20.477Z",
+            "modified": "2023-07-14T02:55:20.477Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "ce1013c0-cfd0-416b-892f-4d355062056f",
+            "colId": "a5036bd1-cef7-436a-9e09-dd470ffd7f93",
+            "containerId": "",
+            "name": "login",
+            "url": "{{login}}",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-07-14T02:55:20.478Z",
+            "modified": "2023-07-14T02:55:20.478Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "email",
+                        "value": "Bernie73@gmail.com"
+                    },
+                    {
+                        "name": "password",
+                        "value": "password"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "json.data.token",
+                    "action": "setto",
+                    "value": "{{token}}"
+                },
+                {
+                    "type": "set-env-var",
+                    "custom": "json.data.id",
+                    "action": "setto",
+                    "value": "{{user_id}}"
+                }
+            ]
+        },
+        {
+            "_id": "0624f62c-40fe-4cf7-b76e-92bc052bfd33",
+            "colId": "a5036bd1-cef7-436a-9e09-dd470ffd7f93",
+            "containerId": "",
+            "name": "/user",
+            "url": "{{api}}/user",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-07-14T02:55:20.479Z",
+            "modified": "2023-07-14T02:55:20.479Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "1dcdbb92-55da-4a0a-8a9b-f2a0b0e0c720",
+            "colId": "a5036bd1-cef7-436a-9e09-dd470ffd7f93",
+            "containerId": "",
+            "name": "signup",
+            "url": "{{api}}/auth",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-07-14T02:55:20.480Z",
+            "modified": "2023-07-14T02:55:20.480Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "user_name",
+                        "value": "{{#string}}"
+                    },
+                    {
+                        "name": "password",
+                        "value": "password"
+                    },
+                    {
+                        "name": "password_confirmation",
+                        "value": "password"
+                    },
+                    {
+                        "name": "email",
+                        "value": "{{#email}}"
+                    },
+                    {
+                        "name": "first_name",
+                        "value": "{{#name}}"
+                    },
+                    {
+                        "name": "middle_name",
+                        "value": "{{#name}}"
+                    },
+                    {
+                        "name": "last_name",
+                        "value": "{{#name}}"
+                    },
+                    {
+                        "name": "address",
+                        "value": "{{#string}}"
+                    },
+                    {
+                        "name": "birthday",
+                        "value": "{{#date, 'YYYY-MM-DD hh:mm:ss' }}"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "fddbe27c-9633-4238-9b7d-a0234e6656c0",
+            "colId": "a5036bd1-cef7-436a-9e09-dd470ffd7f93",
+            "containerId": "",
+            "name": "logout",
+            "url": "{{api}}/logout",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2023-07-14T02:55:20.481Z",
+            "modified": "2023-07-14T02:55:20.481Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "a70e4013-2cc3-465d-bed1-492ae9e5a194",
+            "colId": "a5036bd1-cef7-436a-9e09-dd470ffd7f93",
+            "containerId": "",
+            "name": "update_password",
+            "url": "{{api}}/auth/{{user_id}}",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2023-07-14T02:55:20.482Z",
+            "modified": "2023-07-14T02:55:20.482Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "body": {
+                "form": [
+                    {
+                        "name": "_method",
+                        "value": "put"
+                    },
+                    {
+                        "name": "old_password",
+                        "value": "password"
+                    },
+                    {
+                        "name": "new_password",
+                        "value": "passwordnew"
+                    },
+                    {
+                        "name": "new_password_confirmation",
+                        "value": "passwordnew"
+                    }
+                ],
+                "files": [],
+                "type": "formdata"
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "67ca5e8e-8f59-4d4f-9177-1bb41dc92be4",
+            "colId": "a5036bd1-cef7-436a-9e09-dd470ffd7f93",
+            "containerId": "",
+            "name": "forgot_password",
+            "url": "{{forgot-password}}",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2023-07-14T02:55:20.483Z",
+            "modified": "2023-07-14T02:55:20.483Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "body": {
+                "form": [
+                    {
+                        "name": "email",
+                        "value": "joash@test.com"
+                    }
+                ],
+                "files": [],
+                "type": "formdata"
+            }
+        },
+        {
+            "_id": "383da8c4-1cde-476b-8b27-681774430c60",
+            "colId": "a5036bd1-cef7-436a-9e09-dd470ffd7f93",
+            "containerId": "",
+            "name": "reset_password",
+            "url": "{{api}}/reset-password",
+            "method": "POST",
+            "sortNum": 80000,
+            "created": "2023-07-14T02:55:20.484Z",
+            "modified": "2023-07-14T02:55:20.484Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "body": {
+                "form": [
+                    {
+                        "name": "email",
+                        "value": "joash@test.com"
+                    },
+                    {
+                        "name": "password",
+                        "value": "password"
+                    },
+                    {
+                        "name": "password_confirmation",
+                        "value": "password"
+                    },
+                    {
+                        "name": "token",
+                        "value": "paste the copied token here"
+                    }
+                ],
+                "files": [],
+                "type": "formdata"
+            }
+        }
+    ]
+}
