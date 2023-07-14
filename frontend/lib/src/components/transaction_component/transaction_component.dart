@@ -103,13 +103,19 @@ class TransactionComponent extends StatelessWidget {
 
         if (type == TransactionTypes.TRANSFER) {
           if (recipientAccountNumber.length != 11) {
-            alertDialog(content: 'Account number must be 11 digits.');
+            alertDialog(
+              content: 'Account number must be 11 digits.',
+            );
+
+            return;
           } else if (recipientAccountNumber ==
               accountDetailsController.account.accountNumber) {
             alertDialog(
-                content: 'Transferring to same account is not acceptable.');
+              content: 'Transferring to same account is not acceptable.',
+            );
+
+            return;
           }
-          return;
         }
 
         final transaction = Transaction(
