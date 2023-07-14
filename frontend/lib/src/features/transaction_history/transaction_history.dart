@@ -55,21 +55,19 @@ class TransactionHistory extends StatelessWidget {
                         items: TransactionTypes.values
                             .map(
                               (type) => type == TransactionTypes.ALL
-                                  ? 'All transactions'
+                                  ? ''
                                   : capitalizeFirstLetter(type.name),
                             )
                             .toList(),
                         selectedValue: controller.selectedTransactionType ==
                                 TransactionTypes.ALL
-                            ? 'All transactions'
+                            ? ''
                             : capitalizeFirstLetter(
                                 controller.selectedTransactionType.name,
                               ),
                         onChanged: (value) {
                           final convertValue =
-                              value.toString() == 'All transactions'
-                                  ? 'All'
-                                  : value;
+                              value.toString().isEmpty ? 'All' : value;
 
                           controller.setSelectedTransactionType =
                               TransactionTypes.values.firstWhere(
