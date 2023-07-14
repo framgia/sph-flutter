@@ -91,3 +91,23 @@ DB_PASSWORD=root
 `php artisan migrate:fresh --seed`  
 or  
 `php artisan migrate:fresh --seeder=UserSeeder`
+
+## Thunder client
+https://github.com/rangav/thunder-client-support#how-to-use
+### Download vscode extension for Thunder Client
+### Thunder client extension settings
+- update on User Settings
+  - for JSON, `"thunder-client.saveToWorkspace": true,`
+  - for UI, search "Thunder Client", tick on "Save to Workspace" option
+  - press `F1`, seach and click `reload window`
+### Setting up collection
+- open thunder client on side bar
+  - goto Collections, click menu ☰
+  - import, import collections by json
+### Setting up environments
+- open thunder client on side bar
+  - goto Env, click menu ☰
+  - import, import env by json
+  - create your own env and mark it as active
+  - for this project, setup your own "host" since every may have different host in your own environments
+- for other environment variables used in the project, set them up in global environment, not local env, not collection env, not custom env

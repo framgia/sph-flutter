@@ -1,0 +1,145 @@
+{
+    "_id": "44f8c8f6-72b2-4be7-bbe2-2cb895a6b286",
+    "colName": "Accounts",
+    "created": "2023-07-14T02:55:17.009Z",
+    "sortNum": 10000,
+    "folders": [],
+    "requests": [
+        {
+            "_id": "3a807ad2-f07c-4428-a0af-2dddabc6786d",
+            "colId": "44f8c8f6-72b2-4be7-bbe2-2cb895a6b286",
+            "containerId": "",
+            "name": "Show all accounts",
+            "url": "{{api}}/accounts",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-07-14T02:55:17.016Z",
+            "modified": "2023-07-14T02:55:17.016Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "6e1acdb3-3bd2-43ae-beb2-02cec0cd3554",
+            "colId": "44f8c8f6-72b2-4be7-bbe2-2cb895a6b286",
+            "containerId": "",
+            "name": "Show accounts via user_id",
+            "url": "{{api}}/users/{{user_id}}/accounts",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-07-14T02:55:17.017Z",
+            "modified": "2023-07-14T02:55:17.017Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "json.data | at(0) | prop(\"id\")",
+                    "action": "setto",
+                    "value": "{{account_id}}"
+                }
+            ]
+        },
+        {
+            "_id": "56743759-4d43-4884-add9-b363db560a2d",
+            "colId": "44f8c8f6-72b2-4be7-bbe2-2cb895a6b286",
+            "containerId": "",
+            "name": "Show account data",
+            "url": "{{api}}/accounts/{{account_id}}",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-07-14T02:55:17.018Z",
+            "modified": "2023-07-14T02:55:17.018Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "2d50469e-7ae8-4910-9e55-7415c7806fb3",
+            "colId": "44f8c8f6-72b2-4be7-bbe2-2cb895a6b286",
+            "containerId": "",
+            "name": "Create Account",
+            "url": "{{api}}/accounts",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-07-14T02:55:17.019Z",
+            "modified": "2023-07-14T02:55:17.019Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "body": {
+                "form": [
+                    {
+                        "name": "account_name",
+                        "value": "My Savings"
+                    },
+                    {
+                        "name": "account_type",
+                        "value": "SAVINGS"
+                    }
+                ],
+                "files": [],
+                "type": "formdata"
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            }
+        },
+        {
+            "_id": "52a53ff4-9eb9-4d93-86d7-67a4530a91cc",
+            "colId": "44f8c8f6-72b2-4be7-bbe2-2cb895a6b286",
+            "containerId": "",
+            "name": "Spending Breakdown",
+            "url": "{{api}}/accounts/{{account_id}}/spending-breakdown?days=30",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2023-07-14T02:55:17.020Z",
+            "modified": "2023-07-14T02:55:17.020Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                }
+            ],
+            "params": [
+                {
+                    "name": "days",
+                    "value": "30",
+                    "isPath": false
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            },
+            "tests": []
+        }
+    ]
+}
