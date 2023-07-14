@@ -7,6 +7,7 @@ import 'package:frontend/src/features/dashboard/components/account_card_button.d
 import 'package:frontend/src/models/account.dart';
 import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
 import 'package:frontend/src/enums/transaction_enum.dart';
+import 'package:frontend/src/controllers/account_details_controller.dart';
 
 /*
   Card widget used in dashboard.dart
@@ -21,6 +22,9 @@ class AccountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AccountDetailsController controller =
+        Get.put(AccountDetailsController());
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: Card(
@@ -100,6 +104,7 @@ class AccountCard extends StatelessWidget {
                         text: 'Transfer',
                         backgroundColor: const Color(0xFFC106C5),
                         onClick: () {
+                          controller.setAccount = account;
                           Get.bottomSheet(
                             TransactionComponent(
                               label: 'Transfer Cash',

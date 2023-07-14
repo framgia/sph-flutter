@@ -60,7 +60,7 @@ class TransactionComponent extends StatelessWidget {
     // TODO: Transfer required fields
     final Map<TransactionTypes, List<String>> requiredFields = {
       TransactionTypes.CREDIT: ['amount', 'description'],
-      TransactionTypes.DEPT: ['amount', 'description'],
+      TransactionTypes.DEPT: ['amount'],
       TransactionTypes.TRANSFER: [
         'amount',
         'recipientAccountNumber',
@@ -101,16 +101,26 @@ class TransactionComponent extends StatelessWidget {
         final descriptionValue =
             formKey.currentState?.fields['description']?.value;
 
-        if (type == TransactionTypes.TRANSFER &&
-            recipientAccountNumber.length != 11) {
-          alertDialog(content: 'Account number must be 11 digits.');
+        if (type == TransactionTypes.TRANSFER) {
+          if (recipientAccountNumber.length != 11) {
+            alertDialog(
+              content: 'Account number must be 11 digits.',
+            );
 
-          return;
+            return;
+          } else if (recipientAccountNumber ==
+              accountDetailsController.account.accountNumber) {
+            alertDialog(
+              content: 'Transferring to same account is not acceptable.',
+            );
+
+            return;
+          }
         }
 
         final transaction = Transaction(
           amount: double.parse(amountValue),
-          description: descriptionValue,
+          description: descriptionValue ?? 'Deposit',
           transactionType: type,
           category: typeTexts[type]!['category'],
           accountName: accountNameValue ?? '',
@@ -204,7 +214,7 @@ class TransactionComponent extends StatelessWidget {
                   ),
                   InputField(
                     name: 'accountName',
-                    label: 'Recipient\'s Name',
+                    label: 'Recipient\'s Complete Name',
                     inputType: TextInputType.text,
                     validator: FormBuilderValidators.required(),
                   ),
@@ -263,15 +273,19 @@ class TransactionComponent extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                InputField(
-                  name: 'description',
-                  label: 'Description',
-                  inputType: TextInputType.text,
-                  validator: FormBuilderValidators.required(),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
+                if (type != TransactionTypes.DEPT) ...[
+                  InputField(
+                    name: 'description',
+                    label: type == TransactionTypes.TRANSFER
+                        ? 'Purpose'
+                        : 'Description',
+                    inputType: TextInputType.text,
+                    validator: FormBuilderValidators.required(),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
