@@ -25,6 +25,7 @@ class TransactionHistory extends StatelessWidget {
 
     final arguments =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
+
     return FutureBuilder(
       future: controller.getTransactions(accountId: arguments.accountId),
       builder: (context, snapshot) {
@@ -67,57 +68,59 @@ class TransactionHistory extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Obx(
-                    () => DatePickerField(
-                      labelText: 'From',
-                      name: 'filter_by_date_from',
-                      initialValue: controller.selectedTransactionDateFrom,
-                      lastDate: controller.selectedTransactionDateTo ??
-                          DateTime.now(),
-                      onChanged: (value) {
-                        controller.setSelectedTransactionDateFrom = value!;
-                        controller.getTransactions(
-                          accountId: arguments.accountId,
-                        );
-                      },
+                    () => Column(
+                      children: [
+                        DatePickerField(
+                          labelText: 'From',
+                          name: 'filter_by_date_from',
+                          initialValue: controller.selectedTransactionDateFrom,
+                          lastDate: controller.selectedTransactionDateTo ??
+                              DateTime.now(),
+                          onChanged: (value) {
+                            controller.setSelectedTransactionDateFrom = value!;
+                            controller.getTransactions(
+                              accountId: arguments.accountId,
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        DatePickerField(
+                          labelText: 'To',
+                          name: 'filter_by_date_to',
+                          initialValue: controller.selectedTransactionDateTo,
+                          firstDate: controller.selectedTransactionDateFrom,
+                          lastDate: DateTime.now(),
+                          onChanged: (value) {
+                            controller.setSelectedTransactionDateTo = value!;
+                            controller.getTransactions(
+                              accountId: arguments.accountId,
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 35),
+                        controller.transactionList.isEmpty
+                            ? Container(
+                                margin: const EdgeInsets.only(top: 20),
+                                child: Text(
+                                  'No Transaction Record',
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: controller.transactionList.length,
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return TransactionCard(
+                                    transaction:
+                                        controller.transactionList[index],
+                                  );
+                                },
+                              ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  Obx(
-                    () => DatePickerField(
-                      labelText: 'To',
-                      name: 'filter_by_date_to',
-                      initialValue: controller.selectedTransactionDateTo,
-                      firstDate: controller.selectedTransactionDateFrom,
-                      lastDate: DateTime.now(),
-                      onChanged: (value) {
-                        controller.setSelectedTransactionDateTo = value!;
-                        controller.getTransactions(
-                          accountId: arguments.accountId,
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 35),
-                  Obx(() {
-                    return controller.transactionList.isEmpty
-                        ? Container(
-                            margin: const EdgeInsets.only(top: 20),
-                            child: Text(
-                              'No Transaction Record',
-                              style: Theme.of(context).textTheme.labelMedium,
-                            ),
-                          )
-                        : ListView.builder(
-                            itemCount: controller.transactionList.length,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return TransactionCard(
-                                transaction: controller.transactionList[index],
-                              );
-                            },
-                          );
-                  })
                 ],
               ),
             ),
