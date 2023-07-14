@@ -98,6 +98,7 @@ or
 - update on User Settings
   - for JSON, `"thunder-client.saveToWorkspace": true,`
   - for UI, search "Thunder Client", tick on "Save to Workspace" option
+  - press `F1`, seach and click `reload window`
 ### Setting up collection
 - open thunder client on side bar
   - goto Collections, click menu ☰
