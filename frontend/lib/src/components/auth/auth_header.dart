@@ -10,6 +10,7 @@ import 'package:frontend/src/helper/dialog/show_alert_dialog.dart';
 import 'package:frontend/src/helper/dio.dart';
 import 'package:frontend/src/helper/snackbar/show_snackbar.dart';
 import 'package:frontend/src/helper/storage.dart';
+import 'package:frontend/src/components/auth/components/logout_dropdown.dart';
 
 /*
   Reusable "Top" component for auth related actions
@@ -91,58 +92,10 @@ class AuthHeader extends StatelessWidget {
                         child: FutureBuilder(
                           future: controller.getFullName(),
                           builder: (context, snapshot) {
-                            return DropdownButton(
-                              value: 'user',
+                            return LogoutDropdown(
+                              name: controller.name,
+                              value: 'logout',
                               onChanged: dropdownCallback,
-                              items: [
-                                DropdownMenuItem(
-                                  value: 'user',
-                                  child: SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.40,
-                                    child: Obx(
-                                      () => Text(
-                                        controller.name,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.end,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'logout',
-                                  child: Container(
-                                    margin: const EdgeInsets.only(right: 12),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8)),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Color.fromRGBO(0, 0, 0, 0.25),
-                                          blurRadius: 1,
-                                          spreadRadius: 1,
-                                          offset: Offset(0, 2),
-                                        ),
-                                      ],
-                                    ),
-
-                                    alignment: Alignment
-                                        .center, // Center the text vertically and horizontally
-                                    child: Text(
-                                      'Log out',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall, // Customize the text color
-                                    ),
-                                  ),
-                                ),
-                              ],
-                              style: Theme.of(context).textTheme.titleSmall,
-                              underline: Container(), // Remove the underline
-                              iconSize: 0, // Add a custom dropdown icon
-                              dropdownColor: Colors.transparent,
-                              elevation: 0,
                             );
                           },
                         ),
