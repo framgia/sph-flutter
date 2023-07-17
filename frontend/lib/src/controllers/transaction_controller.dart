@@ -55,8 +55,8 @@ class TransactionController extends GetxController {
       from: selectedTransactionDateFrom,
       to: selectedTransactionDateTo,
     );
-    transactionList.clear();
     transactionList.assignAll(result);
+
     return result;
   }
 

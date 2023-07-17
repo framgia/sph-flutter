@@ -17,6 +17,8 @@ import 'package:frontend/src/components/label.dart';
 
   @param initialValue, initial value for the date time picker.
 
+  @param firstDate, the earliest choosable date.
+
   @param lastDate, the latest choosable date.
 */
 class DatePickerField extends StatelessWidget {
