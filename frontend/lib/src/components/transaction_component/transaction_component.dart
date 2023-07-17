@@ -163,7 +163,7 @@ class TransactionComponent extends StatelessWidget {
           TransactionCategories.SENDER;
     } else if (type == TransactionTypes.CREDIT) {
       transactionController.setSelectedTransactionCategory =
-          TransactionCategories.BILLS;
+          TransactionCategories.FOOD;
     }
 
     return SingleChildScrollView(
