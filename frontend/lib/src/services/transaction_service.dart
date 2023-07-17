@@ -39,17 +39,14 @@ class TransactionService {
     final url = accountTransactionsUrl.replaceFirst('{id}', accountId);
     final Map<String, dynamic> query = {};
 
-    if (type != null) query['type'] = type.name;
+    if (type != TransactionTypes.ALL) query['type'] = type!.name;
     if (from != null) {
       query['from'] = strDateFrom;
       query['to'] = strDateTo;
     }
 
-    final transactionResponse = await NetworkConfig().client.get(
-          url,
-          queryParameters:
-              from != null ? {'from': strDateFrom, 'to': strDateTo} : {},
-        );
+    final transactionResponse =
+        await NetworkConfig().client.get(url, queryParameters: query);
 
     if (transactionResponse.statusCode == HttpStatus.ok) {
       final Iterable data = transactionResponse.data['data'];
