@@ -131,7 +131,7 @@ class AccountDetailsPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Button(
-                          text: "Deposite",
+                          text: "Deposit",
                           withShadow: false,
                           buttonColor: const Color(0xFFF66868),
                           padding: const EdgeInsets.all(10),
