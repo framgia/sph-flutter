@@ -69,21 +69,10 @@ class TransactionComponent extends StatelessWidget {
       ]
     };
 
-    // Manually set category for now as there is no plan for this feature as of now
-    // TODO: Transfer type texts
-    final Map<TransactionTypes, Map<String, dynamic>> typeTexts = {
-      TransactionTypes.CREDIT: {
-        'category': TransactionCategories.BILLS,
-        'success': 'withdrawn'
-      },
-      TransactionTypes.DEPT: {
-        'category': TransactionCategories.SAVINGS,
-        'success': 'deposited',
-      },
-      TransactionTypes.TRANSFER: {
-        'category': TransactionCategories.SENDER,
-        'success': 'transfered'
-      },
+    final Map<TransactionTypes, String> typeSuccessVerb = {
+      TransactionTypes.CREDIT: 'withdrawn',
+      TransactionTypes.DEPT: 'deposited',
+      TransactionTypes.TRANSFER: 'transferred',
     };
 
     void alertDialog({String? title, String? content}) => showAlertDialog(
@@ -122,7 +111,7 @@ class TransactionComponent extends StatelessWidget {
           amount: double.parse(amountValue),
           description: descriptionValue ?? 'Deposit',
           transactionType: type,
-          category: typeTexts[type]!['category'],
+          category: transactionController.selectedTransactionCategory,
           accountName: accountNameValue ?? '',
         );
 
@@ -133,7 +122,7 @@ class TransactionComponent extends StatelessWidget {
         );
 
         if ((transactionResponse.statusCode == HttpStatus.created)) {
-          final success = typeTexts[type]?['success'];
+          final success = typeSuccessVerb[type];
 
           dashboardController.getUserAccounts();
           accountDetailsController.getUserAccount(accountId: accountId);
@@ -164,6 +153,17 @@ class TransactionComponent extends StatelessWidget {
 
         return;
       }
+    }
+
+    if (type == TransactionTypes.DEPT) {
+      transactionController.setSelectedTransactionCategory =
+          TransactionCategories.SAVINGS;
+    } else if (type == TransactionTypes.TRANSFER) {
+      transactionController.setSelectedTransactionCategory =
+          TransactionCategories.SENDER;
+    } else if (type == TransactionTypes.CREDIT) {
+      transactionController.setSelectedTransactionCategory =
+          TransactionCategories.FOOD;
     }
 
     return SingleChildScrollView(
@@ -200,15 +200,16 @@ class TransactionComponent extends StatelessWidget {
                 ),
                 if (type == TransactionTypes.TRANSFER) ...[
                   InputField(
-                      name: 'recipientAccountNumber',
-                      label: 'Recipient\'s Account Number',
-                      validator: FormBuilderValidators.compose(
-                        [
-                          FormBuilderValidators.numeric(),
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.equalLength(11),
-                        ],
-                      )),
+                    name: 'recipientAccountNumber',
+                    label: 'Recipient\'s Account Number',
+                    validator: FormBuilderValidators.compose(
+                      [
+                        FormBuilderValidators.numeric(),
+                        FormBuilderValidators.required(),
+                        FormBuilderValidators.equalLength(11),
+                      ],
+                    ),
+                  ),
                   const SizedBox(
                     height: 32,
                   ),
