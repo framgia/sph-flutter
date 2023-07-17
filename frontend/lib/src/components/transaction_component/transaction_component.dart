@@ -69,10 +69,10 @@ class TransactionComponent extends StatelessWidget {
       ]
     };
 
-    final Map<TransactionTypes, String> typeTexts = {
+    final Map<TransactionTypes, String> typeSuccessVerb = {
       TransactionTypes.CREDIT: 'withdrawn',
       TransactionTypes.DEPT: 'deposited',
-      TransactionTypes.TRANSFER: 'transfered',
+      TransactionTypes.TRANSFER: 'transferred',
     };
 
     void alertDialog({String? title, String? content}) => showAlertDialog(
@@ -122,7 +122,7 @@ class TransactionComponent extends StatelessWidget {
         );
 
         if ((transactionResponse.statusCode == HttpStatus.created)) {
-          final success = typeTexts[type];
+          final success = typeSuccessVerb[type];
 
           dashboardController.getUserAccounts();
           accountDetailsController.getUserAccount(accountId: accountId);
