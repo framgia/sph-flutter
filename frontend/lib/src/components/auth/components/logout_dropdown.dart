@@ -9,31 +9,29 @@ import 'package:flutter/material.dart';
   @param selectedValue, the selected value.
 
   @param onChanged, called when the user selects an item.
-
-
 */
 
 class LogoutDropdown extends StatelessWidget {
   const LogoutDropdown({
     super.key,
-    required this.defaultValue,
-    required this.selectedValue,
+    required this.name,
+    required this.value,
     this.onChanged,
   });
 
-  final String defaultValue;
-  final String selectedValue;
+  final String name;
+  final String value;
   final void Function(Object?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButton2(
-        hint: Text(defaultValue),
+        hint: Text(name),
         onChanged: onChanged,
         items: [
           DropdownMenuItem(
-            value: selectedValue,
+            value: value,
             alignment: Alignment.center,
             child: const Text(
               'Log out',
