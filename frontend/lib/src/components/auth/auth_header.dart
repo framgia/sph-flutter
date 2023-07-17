@@ -92,10 +92,12 @@ class AuthHeader extends StatelessWidget {
                         child: FutureBuilder(
                           future: controller.getFullName(),
                           builder: (context, snapshot) {
-                            return LogoutDropdown(
-                              name: controller.name,
-                              value: 'logout',
-                              onChanged: dropdownCallback,
+                            return Obx(
+                              () => LogoutDropdown(
+                                name: controller.name.toUpperCase(),
+                                value: 'logout',
+                                onChanged: dropdownCallback,
+                              ),
                             );
                           },
                         ),
