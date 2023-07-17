@@ -10,19 +10,22 @@ class TransactionController extends GetxController {
       TransactionTypes.CREDIT.obs;
   final Rx<TransactionCategories> _selectedTransactionCategory =
       TransactionCategories.FOOD.obs;
-  final Rx<DateTime> _selectedTransactionDate = DateTime.now().obs;
+  final Rxn<DateTime> _selectedTransactionDateFrom = Rxn<DateTime>();
+  final Rxn<DateTime> _selectedTransactionDateTo = Rxn<DateTime>();
   final RxBool _transactionSubmitEnabled = false.obs;
   RxList<Transaction> transactionList = <Transaction>[].obs;
-
   TransactionTypes get selectedTransactionType =>
       _selectedTransactionType.value;
 
   TransactionCategories get selectedTransactionCategory =>
       _selectedTransactionCategory.value;
 
-  bool get transactionSubmitEnabled => _transactionSubmitEnabled.value;
+  DateTime? get selectedTransactionDateFrom =>
+      _selectedTransactionDateFrom.value;
 
-  DateTime get selectedTransactionDate => _selectedTransactionDate.value;
+  DateTime? get selectedTransactionDateTo => _selectedTransactionDateTo.value;
+
+  bool get transactionSubmitEnabled => _transactionSubmitEnabled.value;
 
   set setSelectedTransactionType(TransactionTypes newValue) =>
       _selectedTransactionType.value = newValue;
@@ -30,16 +33,30 @@ class TransactionController extends GetxController {
   set setSelectedTransactionCategory(TransactionCategories newValue) =>
       _selectedTransactionCategory.value = newValue;
 
-  set setSelectedTransactionDate(DateTime newValue) =>
-      _selectedTransactionDate.value = newValue;
+  set setSelectedTransactionDateFrom(DateTime? newValue) =>
+      _selectedTransactionDateFrom.value = newValue;
+
+  set setSelectedTransactionDateTo(DateTime? newValue) =>
+      _selectedTransactionDateTo.value = newValue;
 
   set setTransactionSubmitEnabled(bool newValue) =>
       _transactionSubmitEnabled.value = newValue;
 
   Future<List<Transaction>> getTransactions({String accountId = ''}) async {
-    final result =
-        await TransactionService.getTransactions(accountId: accountId);
+    if ((selectedTransactionDateFrom == null &&
+            selectedTransactionDateTo != null) ||
+        (selectedTransactionDateFrom != null &&
+            selectedTransactionDateTo == null)) {
+      return transactionList;
+    }
+
+    final result = await TransactionService.getTransactions(
+      accountId: accountId,
+      from: selectedTransactionDateFrom,
+      to: selectedTransactionDateTo,
+    );
     transactionList.assignAll(result);
+
     return result;
   }
 

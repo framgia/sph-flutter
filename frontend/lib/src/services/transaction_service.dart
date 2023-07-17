@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 
 import 'package:frontend/src/helper/dio.dart';
 import 'package:frontend/src/models/transaction.dart';
@@ -28,9 +28,18 @@ class TransactionService {
 
   static Future<List<Transaction>> getTransactions({
     String accountId = '',
+    DateTime? from,
+    DateTime? to,
   }) async {
+    String strDateFrom =
+        DateFormat('yyyy-MM-dd').format(from ?? DateTime.now());
+    String strDateTo = DateFormat('yyyy-MM-dd').format(to ?? DateTime.now());
     final url = accountTransactionsUrl.replaceFirst('{id}', accountId);
-    final transactionResponse = await NetworkConfig().client.get(url);
+    final transactionResponse = await NetworkConfig().client.get(
+          url,
+          queryParameters:
+              from != null ? {'from': strDateFrom, 'to': strDateTo} : {},
+        );
 
     if (transactionResponse.statusCode == HttpStatus.ok) {
       final Iterable data = transactionResponse.data['data'];
