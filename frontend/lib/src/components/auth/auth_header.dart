@@ -96,7 +96,7 @@ class AuthHeader extends StatelessWidget {
                             return Obx(
                               () => LogoutDropdown(
                                 name:
-                                    truncate(controller.name.toUpperCase(), 22),
+                                    truncate(controller.name.toUpperCase(), 20),
                                 value: 'logout',
                                 onChanged: dropdownCallback,
                               ),
