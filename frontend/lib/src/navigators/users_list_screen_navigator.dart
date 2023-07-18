@@ -33,7 +33,7 @@ class UserListScreenNavigator extends StatelessWidget {
               withBackIcon: true,
               backIconOnTap: () async {
                 await controller.getUsers();
-                settingsAppNav.currentState?.pop();
+                settingsAppNav.currentState?.maybePop();
               },
               changePassBtnOnPressed: () {
                 settingsAppNav.currentState?.pushNamed(
@@ -48,7 +48,7 @@ class UserListScreenNavigator extends StatelessWidget {
             page = ProfileChangePassword(
               profileUserId: args.userId,
               backIconOnTap: () {
-                settingsAppNav.currentState?.pop();
+                settingsAppNav.currentState?.maybePop();
               },
             );
             break;

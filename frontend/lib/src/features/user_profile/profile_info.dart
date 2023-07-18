@@ -89,7 +89,7 @@ class ProfileInfo extends StatelessWidget {
               ),
               Obx(
                 () {
-                  if (controller.isLoading) {
+                  if (controller.loading) {
                     return const Padding(
                       padding: EdgeInsets.only(top: 50),
                       child: CircularProgressIndicator(),

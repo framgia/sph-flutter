@@ -11,13 +11,13 @@ import 'package:frontend/src/services/user_service.dart';
 
 class UserProfileController extends GetxController {
   final Rx<User> _user = initialProfileInfo.obs;
-  final RxBool loading = true.obs;
+  final RxBool _loading = true.obs;
   final RxBool _buttonEnabled = true.obs;
 
   User get user => _user.value;
 
-  bool get isLoading => loading.value;
-  set setLoading(bool newValue) => loading.value = newValue;
+  bool get loading => _loading.value;
+  set setLoading(bool newValue) => _loading.value = newValue;
 
   bool get buttonEnabled => _buttonEnabled.value;
   set setButtonEnabled(bool newValue) => _buttonEnabled.value = newValue;
@@ -44,7 +44,7 @@ class UserProfileController extends GetxController {
   Future<void> getUser({String userId = ''}) async {
     User user = await UserService.getUser(userId: userId);
     _user.value = user;
-    loading.value = false;
+    _loading.value = false;
   }
 
   Future<dio.Response> updateUserProfile(User user) async {
