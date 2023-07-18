@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:frontend/src/helper/truncate.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -95,8 +94,7 @@ class AuthHeader extends StatelessWidget {
                           builder: (context, snapshot) {
                             return Obx(
                               () => LogoutDropdown(
-                                name:
-                                    truncate(controller.name.toUpperCase(), 20),
+                                name: controller.name.toUpperCase(),
                                 value: 'logout',
                                 onChanged: dropdownCallback,
                               ),

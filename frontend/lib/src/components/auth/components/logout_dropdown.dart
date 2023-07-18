@@ -1,6 +1,8 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
+import 'package:frontend/src/helper/truncate.dart';
+
 /*
   Reusable logout dropdown component.
 
@@ -27,7 +29,12 @@ class LogoutDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButton2(
-        hint: Text(name),
+        hint: Text(
+          truncate(
+            name,
+            MediaQuery.of(context).size.width * 0.35,
+          ),
+        ),
         onChanged: onChanged,
         items: [
           DropdownMenuItem(
