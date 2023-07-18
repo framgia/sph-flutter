@@ -7,7 +7,7 @@ import 'package:frontend/src/components/label.dart';
 /*
   Reusable dropdown component.
 
-  @param labelText, the label which describes the field.
+  @param labelText, optionally add label which describes the field.
 
   @param items, list of items to be displayed in dropdown menu.
 
@@ -17,29 +17,38 @@ import 'package:frontend/src/components/label.dart';
 
   @param style, to change TextStyle of the dropdown.
 
+  @param itemAlignment, use to align the items, default is aligned to center-left
+
+  @param height, height of the dropdown. e.g. dropdown in SpendingBreakdownPage
+
 */
 class Dropdown extends StatelessWidget {
   const Dropdown({
     super.key,
-    required this.labelText,
+    this.labelText,
     required this.items,
     required this.selectedValue,
     this.onChanged,
     this.style,
+    this.itemAlignment = Alignment.centerLeft,
+    this.height,
   });
 
-  final String labelText;
+  final String? labelText;
   final List<dynamic> items;
   final String selectedValue;
   final void Function(Object?)? onChanged;
   final TextStyle? style;
+  final Alignment? itemAlignment;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Label(text: labelText),
+        if (labelText != null) Label(text: labelText!),
         Container(
+          height: height,
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -59,14 +68,17 @@ class Dropdown extends StatelessWidget {
                 .map(
                   (item) => DropdownMenuItem<String>(
                     value: item,
-                    child: Text(
-                      item,
-                      style: style ??
-                          const TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.normal,
-                          ),
+                    child: Container(
+                      alignment: itemAlignment,
+                      child: Text(
+                        item,
+                        style: style ??
+                            const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                            ),
+                      ),
                     ),
                   ),
                 )

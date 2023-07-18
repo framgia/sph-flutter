@@ -20,7 +20,7 @@ class Indicator extends StatelessWidget {
     required this.color,
     required this.text,
     required this.isSquare,
-    this.size = 16,
+    this.size = 10,
     this.textColor,
   });
 
@@ -47,7 +47,7 @@ class Indicator extends StatelessWidget {
         ),
         Text(
           text,
-          style: Theme.of(context).textTheme.labelLarge!.copyWith(
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
                 color: textColor,
                 fontWeight: FontWeight.bold,
               ),
