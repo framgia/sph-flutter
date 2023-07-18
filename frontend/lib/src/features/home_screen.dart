@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
-import 'package:frontend/src/navigators/profile_screen_navigator.dart';
 import 'package:frontend/src/features/dashboard/components/add_account_dialog.dart';
 import 'package:frontend/src/controllers/home_screen_controller.dart';
-import 'package:frontend/src/controllers/user_profile_controller.dart';
+import 'package:frontend/src/navigators/users_list_screen_navigator.dart';
+import 'package:frontend/src/controllers/admin_user_list_controller.dart';
 
 /*
   Home screen that houses the following:
@@ -20,8 +20,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeScreenController controller = Get.put(HomeScreenController());
-    UserProfileController userProfileController =
-        Get.put(UserProfileController());
+    AdminUserListController adminUserListController =
+        Get.put(AdminUserListController());
 
     return FutureBuilder(
       future: controller.getUserIsAdmin(),
@@ -60,11 +60,11 @@ class HomeScreen extends StatelessWidget {
                         color: Colors.white,
                       ),
                       onPressed: () {
-                      Get.dialog(
-                        barrierDismissible: false,
-                        const AddAccountDialog(),
-                      );
-                    },
+                        Get.dialog(
+                          barrierDismissible: false,
+                          const AddAccountDialog(),
+                        );
+                      },
                     ),
                   ),
                   bottomNavigationBar: CurvedNavigationBar(
@@ -80,17 +80,15 @@ class HomeScreen extends StatelessWidget {
                         return route.isFirst;
                       });
 
-                      controller.floatingActionButtonVisible = pages[index] is DashboardScreenNavigator;
+                      controller.floatingActionButtonVisible =
+                          pages[index] is DashboardScreenNavigator;
 
-                      if (pages[index] is ProfileScreenNavigator) {
-                        userProfileController.getUser();
+                      if (pages[index] is UserListScreenNavigator) {
+                        adminUserListController.getUsers();
                       }
                     },
                   ),
-                  body: IndexedStack(
-                    index: controller.currentPage,
-                    children: pages,
-                  ),
+                  body: pages[controller.currentPage],
                 );
               },
             ),

@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:frontend/src/features/admin_user_list/components/user_delete_dialog.dart';
 import 'package:frontend/src/models/user.dart';
+import 'package:frontend/src/navigators/users_list_screen_navigator.dart';
 
 /*
   ListTile that is used for Admin User List Page
@@ -20,6 +21,14 @@ class UserListTile extends StatelessWidget {
     final isAdmin = user.isAdmin == 1;
 
     return ListTile(
+      onTap: isAdmin
+          ? null
+          : () async {
+              await settingsAppNav.currentState?.pushNamed(
+                '/profileInfo',
+                arguments: ProfileScreenArguments(userId: user.id),
+              );
+            },
       title: Container(
         height: 50,
         alignment: Alignment.centerLeft,

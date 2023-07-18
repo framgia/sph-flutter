@@ -71,10 +71,13 @@ class UserService {
     }
   }
 
-  static Future<User> getUser() async {
-    final userId = await storage.read(key: StorageKeys.userId.name);
+  static Future<User> getUser({String userId = ''}) async {
+    final authUserId = await storage.read(key: StorageKeys.userId.name);
 
-    final userResponse = await NetworkConfig().client.get('$usersUrl/$userId');
+    final profileUserId = userId.isEmpty ? authUserId : userId;
+
+    final userResponse =
+        await NetworkConfig().client.get('$usersUrl/$profileUserId');
 
     if (userResponse.statusCode == HttpStatus.ok) {
       final data = userResponse.data['data'];
@@ -87,10 +90,8 @@ class UserService {
   }
 
   static Future<Response> updateUserProfile(User userInfo) async {
-    final userId = await storage.read(key: StorageKeys.userId.name);
-
     final response = await NetworkConfig().client.put(
-          '$usersUrl/$userId',
+          '$usersUrl/${userInfo.id}',
           data: userToJson(userInfo),
         );
 

@@ -1,26 +1,37 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+
 import 'package:frontend/src/controllers/change_password_controller.dart';
 import 'package:frontend/src/helper/dio.dart';
 import 'package:frontend/src/helper/snackbar/show_snackbar.dart';
 import 'package:frontend/src/helper/storage.dart';
-
 import 'package:frontend/src/navigators/profile_screen_navigator.dart';
 import 'package:frontend/src/components/breadcrumb.dart';
 import 'package:frontend/src/components/input/input_field.dart';
 import 'package:frontend/src/components/button.dart';
-import 'package:get/get.dart';
 
 /*
   The page where user can change their password.
+
+  @param profileUserId: the current id of the user in profile info.
+
+  @param backIconOnTap: triggered when back icon was tapped.
 */
 class ProfileChangePassword extends StatelessWidget {
-  const ProfileChangePassword({super.key});
+  const ProfileChangePassword({
+    super.key,
+    this.profileUserId,
+    this.backIconOnTap,
+  });
+
+  final String? profileUserId;
+  final void Function()? backIconOnTap;
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +45,12 @@ class ProfileChangePassword extends StatelessWidget {
       controller.setButtonEnabled = false;
 
       final client = NetworkConfig().client;
-      // get userId from storage
-      final userId = await storage.read(key: StorageKeys.userId.name);
+      // get authUserId from storage
+      final authUserId = await storage.read(key: StorageKeys.userId.name);
 
       try {
         final changePasswordResponse = await client.put(
-          '$authUrl/$userId',
+          '$authUrl/${profileUserId ?? authUserId}',
           data: {
             'old_password': controller.oldPassword,
             'new_password': controller.newPassword,
@@ -48,9 +59,13 @@ class ProfileChangePassword extends StatelessWidget {
         );
 
         if (changePasswordResponse.statusCode == HttpStatus.ok) {
-          profileAppNav.currentState?.popUntil((route) {
-            return route.isFirst;
-          });
+          if (backIconOnTap != null) {
+            backIconOnTap!();
+          } else {
+            profileAppNav.currentState?.popUntil((route) {
+              return route.isFirst;
+            });
+          }
 
           showSnackbar(
             title: "Success",
@@ -92,11 +107,12 @@ class ProfileChangePassword extends StatelessWidget {
           children: [
             Breadcrumb(
               text: 'Change Password',
-              onTap: () {
-                return profileAppNav.currentState?.popUntil((route) {
-                  return route.isFirst;
-                });
-              },
+              onTap: backIconOnTap ??
+                  () {
+                    return profileAppNav.currentState?.popUntil((route) {
+                      return route.isFirst;
+                    });
+                  },
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(25, 21, 25, 150),
