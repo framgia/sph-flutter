@@ -31,8 +31,8 @@ class LogoutDropdown extends StatelessWidget {
       child: DropdownButton2(
         hint: Text(
           truncate(
-            name,
-            MediaQuery.of(context).size.width * 0.35,
+            value: name,
+            maxWidth: MediaQuery.of(context).size.width * 0.35,
           ),
         ),
         onChanged: onChanged,
