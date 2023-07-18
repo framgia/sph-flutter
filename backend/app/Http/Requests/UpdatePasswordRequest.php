@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\MatchOldPassword;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,11 +15,7 @@ class UpdatePasswordRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->route('user')->id === Auth::id()) {
-            return true;
-        }
-
-        return false;
+        return ($this->route('user')->id === Auth::id() || Auth::user()->is_admin);
     }
 
     /**
@@ -29,7 +26,7 @@ class UpdatePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'old_password' => ['required', 'current_password'],
+            'old_password' => ['required', new MatchOldPassword($this->user->password)],
             'new_password' => ['required', 'different:old_password', 'confirmed'],
         ];
     }
