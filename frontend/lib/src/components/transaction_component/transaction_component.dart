@@ -226,12 +226,12 @@ class TransactionComponent extends StatelessWidget {
                 if (type == TransactionTypes.CREDIT) ...[
                   Dropdown(
                     labelText: 'Category',
-                    items: creditCategories,
+                    items: TransactionCategories.creditCategories,
                     selectedValue:
                         transactionController.selectedTransactionCategory.value,
                     onChanged: (value) {
                       final selectedCategory =
-                          transactionCategoriesFromString(value.toString());
+                          TransactionCategories.fromValue(value.toString());
                       transactionController.setSelectedTransactionCategory =
                           selectedCategory;
                       debugPrint(selectedCategory.name);
