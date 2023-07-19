@@ -9,11 +9,13 @@ enum TransactionType {
   final String value;
   const TransactionType(this.value);
 
+  // Parse the custom value and return the matching enum type.
+  // Ex. TransactionType.fromValue('Credit') will return TransactionType.CREDIT
   static TransactionType fromValue(String value) =>
       TransactionType.values.singleWhere((i) => value == i.value);
 
-  // Return TransactionType if string = name
-  // Ex. TransactionType.fromJSON('CREDIT') = TransactionType.CREDIT
+  // Parse the json data from BE and return the matching enum type.
+  // Ex. TransactionType.fromJson('CREDIT') will return TransactionType.CREDIT
   static TransactionType fromJson(String jsonValue) =>
       TransactionType.values.singleWhere((i) => jsonValue == i.name);
 }
@@ -39,13 +41,13 @@ enum TransactionCategory {
     TransactionCategory.MISC.value,
   ];
 
-  // Return TransactionCategory if string = value
-  // Ex. TransactionCategory.fromValue('Savings') = TransactionCategory.SAVINGS
+  // Parse the custom value and return the matching enum type.
+  // Ex. TransactionCategory.fromValue('Savings') will return TransactionCategory.SAVINGS
   static TransactionCategory fromValue(String value) =>
       TransactionCategory.values.singleWhere((i) => value == i.value);
 
-  // Return TransactionCategory if string = name
-  // Ex. TransactionCategory.fromJSON('BILLS') = TransactionCategory.BILLS
+  // Parse the json data from BE and return the matching enum type.
+  // Ex. TransactionCategory.fromJson('SAVINGS') will return TransactionCategory.SAVINGS
   static TransactionCategory fromJson(String jsonValue) =>
       TransactionCategory.values.singleWhere((i) => jsonValue == i.name);
 }

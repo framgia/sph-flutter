@@ -30,8 +30,7 @@ class Account {
   factory Account.fromJson(Map<String, dynamic> json) => Account(
         id: json["id"],
         userId: json["user_id"],
-        accountType: AccountType.values
-            .firstWhere((e) => e.name == json['account_type']),
+        accountType: AccountType.fromJson(json['account_type']),
         accountName: json["account_name"],
         balance: json["balance"].toDouble(),
         accountNumber: json["account_number"],
