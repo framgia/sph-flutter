@@ -7,7 +7,7 @@ import 'package:frontend/src/components/label.dart';
 /*
   Reusable dropdown component.
 
-  @param labelText, the label which describes the field.
+  @param labelText, optionally add label which describes the field.
 
   @param items, list of items to be displayed in dropdown menu.
 
@@ -17,28 +17,36 @@ import 'package:frontend/src/components/label.dart';
 
   @param style, to change TextStyle of the dropdown.
 
+  @param height, height of the dropdown. e.g. dropdown in SpendingBreakdownPage.
+
+  @param iconSize, size of the icon.
+
 */
 class Dropdown extends StatelessWidget {
   const Dropdown({
     super.key,
-    required this.labelText,
     required this.items,
     required this.selectedValue,
+    this.labelText,
     this.onChanged,
     this.style,
+    this.height,
+    this.iconSize,
   });
 
-  final String labelText;
   final List<dynamic> items;
   final String selectedValue;
+  final String? labelText;
   final void Function(Object?)? onChanged;
   final TextStyle? style;
+  final double? height;
+  final double? iconSize;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Label(text: labelText),
+        if (labelText != null) Label(text: labelText!),
         Container(
           decoration: const BoxDecoration(
             color: Colors.white,
@@ -85,14 +93,14 @@ class Dropdown extends StatelessWidget {
                 color: Colors.white,
               ),
               padding: const EdgeInsets.only(right: 15),
-              height: 50,
+              height: height ?? 50,
             ),
-            iconStyleData: const IconStyleData(
-              icon: Icon(
+            iconStyleData: IconStyleData(
+              icon: const Icon(
                 FontAwesomeIcons.caretDown,
                 color: Colors.black,
               ),
-              iconSize: 25,
+              iconSize: iconSize ?? 25,
             ),
             dropdownStyleData: DropdownStyleData(
               decoration: BoxDecoration(
@@ -101,6 +109,9 @@ class Dropdown extends StatelessWidget {
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
               ),
               padding: const EdgeInsets.symmetric(vertical: 8),
+            ),
+            menuItemStyleData: MenuItemStyleData(
+              height: height ?? 50,
             ),
           ),
         ),

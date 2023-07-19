@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:get/get.dart';
 
 import 'package:frontend/src/components/indicator.dart';
+import 'package:frontend/src/controllers/graph_controller.dart';
+import 'package:frontend/src/const/spending_breakdown_test_data.dart';
+import 'package:frontend/src/controllers/spending_breakdown_controller.dart';
+import 'package:frontend/src/helper/transaction_category_color.dart';
+import 'package:frontend/src/enums/transaction_enum.dart';
 
 /*
   A Graph widget where transaction data can be displayed graphically
 
-  variable focusIndex idendicates which portion of the graph is highlighted by expanding it.
+  @param onTap: optional function and this is called when user tapped the widget
 */
 
-//TODO: change to Stateless and manage states using getxcontroller
-class Graph extends StatefulWidget {
-  const Graph({super.key});
+class Graph extends StatelessWidget {
+  Graph({
+    super.key,
+    this.onTap,
+  });
 
-  @override
-  State<StatefulWidget> createState() => GraphState();
-}
+  final GraphController graphController = Get.put(GraphController());
+  final SpendingBreakdownController spendingBreakdownController =
+      Get.put(SpendingBreakdownController());
 
-class GraphState extends State {
-  int focusIndex = -1;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -39,79 +46,96 @@ class GraphState extends State {
           ],
         ),
         padding: const EdgeInsets.all(20),
-        child: SizedBox(
-          width: double.maxFinite,
-          height: 236,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SizedBox(
-                width: 180,
-                height: 180,
-                child: PieChart(
-                  PieChartData(
-                    pieTouchData: PieTouchData(
-                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                        setState(() {
-                          if (!event.isInterestedForInteractions ||
-                              pieTouchResponse == null ||
-                              pieTouchResponse.touchedSection == null) {
-                            focusIndex = -1;
-                            return;
-                          }
-                          focusIndex = pieTouchResponse
-                              .touchedSection!.touchedSectionIndex;
-                        });
-                      },
-                    ),
-                    borderData: FlBorderData(
-                      show: false,
-                    ),
-                    sectionsSpace: 0,
-                    centerSpaceRadius: 40,
-                    sections: showingSections(),
+        child: InkWell(
+          onTap: onTap,
+          child: SizedBox(
+            width: double.maxFinite,
+            height: 236,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(
+                  width: 150,
+                  height: 150,
+                  child: StatefulBuilder(
+                    builder: (context, stateful) {
+                      return PieChart(
+                        PieChartData(
+                          pieTouchData: PieTouchData(
+                            touchCallback:
+                                (FlTouchEvent event, pieTouchResponse) {
+                              stateful(() {
+                                if (!event.isInterestedForInteractions ||
+                                    pieTouchResponse == null ||
+                                    pieTouchResponse.touchedSection == null) {
+                                  graphController.setFocusIndex = -1;
+
+                                  return;
+                                }
+                                graphController.setFocusIndex = pieTouchResponse
+                                    .touchedSection!.touchedSectionIndex;
+                              });
+                            },
+                          ),
+                          borderData: FlBorderData(
+                            show: false,
+                          ),
+                          sectionsSpace: 0,
+                          centerSpaceRadius: 30,
+                          sections: showingSections(),
+                        ),
+                      );
+                    },
                   ),
                 ),
-              ),
-              const Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Indicator(
-                    color: Colors.blue,
-                    text: 'First',
-                    isSquare: true,
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Indicator(
-                    color: Colors.orange,
-                    text: 'Second',
-                    isSquare: true,
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Indicator(
-                    color: Colors.red,
-                    text: 'Third',
-                    isSquare: true,
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Indicator(
-                    color: Colors.purple,
-                    text: 'Fourth',
-                    isSquare: true,
-                  ),
-                  SizedBox(
-                    height: 18,
-                  ),
-                ],
-              ),
-            ],
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Indicator(
+                      color: const Color(0xFF0384EA),
+                      text: TransactionCategories.FOOD.value,
+                      isSquare: true,
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Indicator(
+                      color: const Color(0xFFFEA42C),
+                      text: TransactionCategories.TRANSPORTATION.value,
+                      isSquare: true,
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Indicator(
+                      color: const Color(0xFF8047F6),
+                      text: TransactionCategories.BILLS.value,
+                      isSquare: true,
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Indicator(
+                      color: const Color(0xFF00D27C),
+                      text: TransactionCategories.SAVINGS.value,
+                      isSquare: true,
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Indicator(
+                      color: const Color(0xFFDC4949),
+                      text: TransactionCategories.MISC.value,
+                      isSquare: true,
+                    ),
+                    const SizedBox(
+                      height: 18,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -119,67 +143,35 @@ class GraphState extends State {
   }
 
   List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
-      final isTouched = i == focusIndex;
+    List<PieChartSectionData> list = [];
+
+    spendingBreakdownData.asMap().forEach((index, breakdown) {
+      final isTouched = index == graphController.focusIndex;
       final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 60.0 : 50.0;
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: Colors.blue,
-            value: 40,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              shadows: shadows,
-            ),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: Colors.orange,
-            value: 30,
-            title: '30%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              shadows: shadows,
-            ),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: Colors.red,
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              shadows: shadows,
-            ),
-          );
-        case 3:
-          return PieChartSectionData(
-            color: Colors.purple,
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              shadows: shadows,
-            ),
-          );
-        default:
-          throw Error();
-      }
+
+      var totalSpentPercentage = ((breakdown.totalTransactionAmount /
+                  spendingBreakdownController.totalSpent) *
+              100)
+          .toStringAsFixed(1);
+
+      list.add(
+        PieChartSectionData(
+          color: transactionCategoryColor(breakdown.category),
+          value: double.parse(totalSpentPercentage),
+          title: '$totalSpentPercentage%',
+          radius: radius,
+          titleStyle: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            shadows: shadows,
+          ),
+        ),
+      );
     });
+
+    return list;
   }
 }

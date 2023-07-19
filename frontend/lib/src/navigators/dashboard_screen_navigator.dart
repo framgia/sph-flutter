@@ -8,6 +8,7 @@ import 'package:frontend/src/features/account_details/account_details_page.dart'
 import 'package:frontend/src/features/dashboard/dashboard.dart';
 import 'package:frontend/src/features/transaction_history/transaction_history.dart';
 import 'package:frontend/src/navigators/custom_page_route.dart';
+import 'package:frontend/src/features/spending_breakdown/spending_breakdown_page.dart';
 
 GlobalKey<NavigatorState> dashboardAppNav = GlobalKey();
 
@@ -37,6 +38,10 @@ class DashboardScreenNavigator extends StatelessWidget {
             page = const TransactionHistory();
             transactionController.setSelectedTransactionDateFrom = null;
             transactionController.setSelectedTransactionDateTo = null;
+            homeScreenController.floatingActionButtonVisible = false;
+            break;
+          case '/spendingBreakdown':
+            page = const SpendingBreakdownPage();
             homeScreenController.floatingActionButtonVisible = false;
             break;
           default:
