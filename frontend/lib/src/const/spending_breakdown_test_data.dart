@@ -5,7 +5,7 @@ import 'package:frontend/src/models/spending_breakdown.dart';
 List<SpendingBreakdown> spendingBreakdownData = [
   SpendingBreakdown(
     accountId: '000000000000',
-    category: TransactionCategories.FOOD,
+    category: TransactionCategory.FOOD,
     totalStartingBalance: 1000,
     totalTransactionAmount: 180,
     latestTransactionDate: DateTime.now(),
@@ -13,7 +13,7 @@ List<SpendingBreakdown> spendingBreakdownData = [
   ),
   SpendingBreakdown(
     accountId: '000000000000',
-    category: TransactionCategories.TRANSPORTATION,
+    category: TransactionCategory.TRANSPORTATION,
     totalStartingBalance: 1000,
     totalTransactionAmount: 1000,
     latestTransactionDate: DateTime.now(),
@@ -21,7 +21,7 @@ List<SpendingBreakdown> spendingBreakdownData = [
   ),
   SpendingBreakdown(
     accountId: '000000000000',
-    category: TransactionCategories.BILLS,
+    category: TransactionCategory.BILLS,
     totalStartingBalance: 1000,
     totalTransactionAmount: 1000,
     latestTransactionDate: DateTime.now(),
@@ -29,7 +29,7 @@ List<SpendingBreakdown> spendingBreakdownData = [
   ),
   SpendingBreakdown(
     accountId: '000000000000',
-    category: TransactionCategories.SAVINGS,
+    category: TransactionCategory.SAVINGS,
     totalStartingBalance: 1000,
     totalTransactionAmount: 1000,
     latestTransactionDate: DateTime.now(),
@@ -37,7 +37,7 @@ List<SpendingBreakdown> spendingBreakdownData = [
   ),
   SpendingBreakdown(
     accountId: '000000000000',
-    category: TransactionCategories.MISC,
+    category: TransactionCategory.MISC,
     totalStartingBalance: 1000,
     totalTransactionAmount: 1000,
     latestTransactionDate: DateTime.now(),
