@@ -1,15 +1,16 @@
 // To parse this JSON data, do
 //
-//     final spendingBreakdown = userFromJson(jsonString);
+//     final spendingBreakdown = spendingBreakdownFromJson(jsonString);
 
 import 'dart:convert';
 
 import 'package:frontend/src/enums/transaction_enum.dart';
 
-SpendingBreakdown userFromJson(String str) =>
+SpendingBreakdown spendingBreakdownFromJson(String str) =>
     SpendingBreakdown.fromJson(json.decode(str));
 
-String userToJson(SpendingBreakdown data) => json.encode(data.toJson());
+String spendingBreakdownToJson(SpendingBreakdown data) =>
+    json.encode(data.toJson());
 
 class SpendingBreakdown {
   String accountId;
