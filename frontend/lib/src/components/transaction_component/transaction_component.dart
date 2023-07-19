@@ -36,12 +36,12 @@ class TransactionComponent extends StatelessWidget {
     Key? key,
     required this.label,
     required this.accountId,
-    this.type = TransactionTypes.DEPT,
+    this.type = TransactionType.DEPT,
     this.balance = 0,
   }) : super(key: key);
 
   final String label;
-  final TransactionTypes type;
+  final TransactionType type;
   final String accountId;
   final double balance;
 
@@ -58,10 +58,10 @@ class TransactionComponent extends StatelessWidget {
 
     // Fields required for each type
     // TODO: Transfer required fields
-    final Map<TransactionTypes, List<String>> requiredFields = {
-      TransactionTypes.CREDIT: ['amount', 'description'],
-      TransactionTypes.DEPT: ['amount'],
-      TransactionTypes.TRANSFER: [
+    final Map<TransactionType, List<String>> requiredFields = {
+      TransactionType.CREDIT: ['amount', 'description'],
+      TransactionType.DEPT: ['amount'],
+      TransactionType.TRANSFER: [
         'amount',
         'recipientAccountNumber',
         'accountName',
@@ -69,10 +69,10 @@ class TransactionComponent extends StatelessWidget {
       ]
     };
 
-    final Map<TransactionTypes, String> typeSuccessVerb = {
-      TransactionTypes.CREDIT: 'withdrawn',
-      TransactionTypes.DEPT: 'deposited',
-      TransactionTypes.TRANSFER: 'transferred',
+    final Map<TransactionType, String> typeSuccessVerb = {
+      TransactionType.CREDIT: 'withdrawn',
+      TransactionType.DEPT: 'deposited',
+      TransactionType.TRANSFER: 'transferred',
     };
 
     void alertDialog({String? title, String? content}) => showAlertDialog(
@@ -90,7 +90,7 @@ class TransactionComponent extends StatelessWidget {
         final descriptionValue =
             formKey.currentState?.fields['description']?.value;
 
-        if (type == TransactionTypes.TRANSFER) {
+        if (type == TransactionType.TRANSFER) {
           if (recipientAccountNumber.length != 11) {
             alertDialog(
               content: 'Account number must be 11 digits.',
@@ -155,21 +155,21 @@ class TransactionComponent extends StatelessWidget {
       }
     }
 
-    if (type == TransactionTypes.DEPT) {
+    if (type == TransactionType.DEPT) {
       transactionController.setSelectedTransactionCategory =
-          TransactionCategories.SAVINGS;
-    } else if (type == TransactionTypes.TRANSFER) {
+          TransactionCategory.SAVINGS;
+    } else if (type == TransactionType.TRANSFER) {
       transactionController.setSelectedTransactionCategory =
-          TransactionCategories.SENDER;
-    } else if (type == TransactionTypes.CREDIT) {
+          TransactionCategory.SENDER;
+    } else if (type == TransactionType.CREDIT) {
       transactionController.setSelectedTransactionCategory =
-          TransactionCategories.FOOD;
+          TransactionCategory.FOOD;
     }
 
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(25, 30, 25, 0),
       child: SizedBox(
-        height: type == TransactionTypes.TRANSFER ? 650 : 450,
+        height: type == TransactionType.TRANSFER ? 650 : 450,
         child: GetX<TransactionController>(
           builder: (_) => FormBuilder(
             key: formKey,
@@ -198,7 +198,7 @@ class TransactionComponent extends StatelessWidget {
                 const SizedBox(
                   height: 13,
                 ),
-                if (type == TransactionTypes.TRANSFER) ...[
+                if (type == TransactionType.TRANSFER) ...[
                   InputField(
                     name: 'recipientAccountNumber',
                     label: 'Recipient\'s Account Number',
@@ -223,15 +223,15 @@ class TransactionComponent extends StatelessWidget {
                     height: 32,
                   ),
                 ],
-                if (type == TransactionTypes.CREDIT) ...[
+                if (type == TransactionType.CREDIT) ...[
                   Dropdown(
                     labelText: 'Category',
-                    items: creditCategories,
+                    items: TransactionCategory.creditCategories,
                     selectedValue:
                         transactionController.selectedTransactionCategory.value,
                     onChanged: (value) {
                       final selectedCategory =
-                          transactionCategoriesFromString(value.toString());
+                          TransactionCategory.fromValue(value.toString());
                       transactionController.setSelectedTransactionCategory =
                           selectedCategory;
                       debugPrint(selectedCategory.name);
@@ -255,7 +255,7 @@ class TransactionComponent extends StatelessWidget {
                     [
                       FormBuilderValidators.numeric(),
                       FormBuilderValidators.required(),
-                      type == TransactionTypes.DEPT
+                      type == TransactionType.DEPT
                           ? FormBuilderValidators.max(
                               500000,
                               errorText:
@@ -274,10 +274,10 @@ class TransactionComponent extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                if (type != TransactionTypes.DEPT) ...[
+                if (type != TransactionType.DEPT) ...[
                   InputField(
                     name: 'description',
-                    label: type == TransactionTypes.TRANSFER
+                    label: type == TransactionType.TRANSFER
                         ? 'Purpose'
                         : 'Description',
                     inputType: TextInputType.text,

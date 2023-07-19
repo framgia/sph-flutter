@@ -6,18 +6,16 @@ import 'package:frontend/src/enums/transaction_enum.dart';
 import 'package:frontend/src/services/transaction_service.dart';
 
 class TransactionController extends GetxController {
-  final Rx<TransactionTypes> _selectedTransactionType =
-      TransactionTypes.ALL.obs;
-  final Rx<TransactionCategories> _selectedTransactionCategory =
-      TransactionCategories.FOOD.obs;
+  final Rx<TransactionType> _selectedTransactionType = TransactionType.ALL.obs;
+  final Rx<TransactionCategory> _selectedTransactionCategory =
+      TransactionCategory.FOOD.obs;
   final Rxn<DateTime> _selectedTransactionDateFrom = Rxn<DateTime>();
   final Rxn<DateTime> _selectedTransactionDateTo = Rxn<DateTime>();
   final RxBool _transactionSubmitEnabled = false.obs;
   RxList<Transaction> transactionList = <Transaction>[].obs;
-  TransactionTypes get selectedTransactionType =>
-      _selectedTransactionType.value;
+  TransactionType get selectedTransactionType => _selectedTransactionType.value;
 
-  TransactionCategories get selectedTransactionCategory =>
+  TransactionCategory get selectedTransactionCategory =>
       _selectedTransactionCategory.value;
 
   DateTime? get selectedTransactionDateFrom =>
@@ -27,10 +25,10 @@ class TransactionController extends GetxController {
 
   bool get transactionSubmitEnabled => _transactionSubmitEnabled.value;
 
-  set setSelectedTransactionType(TransactionTypes newValue) =>
+  set setSelectedTransactionType(TransactionType newValue) =>
       _selectedTransactionType.value = newValue;
 
-  set setSelectedTransactionCategory(TransactionCategories newValue) =>
+  set setSelectedTransactionCategory(TransactionCategory newValue) =>
       _selectedTransactionCategory.value = newValue;
 
   set setSelectedTransactionDateFrom(DateTime? newValue) =>
@@ -43,7 +41,7 @@ class TransactionController extends GetxController {
       _transactionSubmitEnabled.value = newValue;
 
   void resetFilters(accountId) {
-    setSelectedTransactionType = TransactionTypes.ALL;
+    setSelectedTransactionType = TransactionType.ALL;
   }
 
   Future<List<Transaction>> getTransactions({String accountId = ''}) async {

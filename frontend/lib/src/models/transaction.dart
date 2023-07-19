@@ -10,8 +10,8 @@ String transactionToJson(Transaction data) => json.encode(data.toJson());
 class Transaction {
   String? id;
   DateTime? transactionDate;
-  TransactionTypes transactionType;
-  TransactionCategories category;
+  TransactionType transactionType;
+  TransactionCategory category;
   double amount;
   String description;
   String accountName;
@@ -31,18 +31,17 @@ class Transaction {
   });
 
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
-      id: json['id'],
-      transactionDate:
-          DateFormat('yyyy-MM-ddTHH:mm:ssZ').parseUTC(json["created_at"]),
-      transactionType: TransactionTypes.values
-          .firstWhere((e) => e.name == json['transaction_type']),
-      category: TransactionCategories.values
-          .firstWhere((e) => e.name == json['category']),
-      amount: (json["transaction_amount"] as num).toDouble(),
-      description: json["description"],
-      accountName: json["account_name"],
-      receiverName: json['receiver_name'],
-      senderName: json['sender_name']);
+        id: json['id'],
+        transactionDate:
+            DateFormat('yyyy-MM-ddTHH:mm:ssZ').parseUTC(json["created_at"]),
+        transactionType: TransactionType.fromJson(json['transaction_type']),
+        category: TransactionCategory.fromJson(json['category']),
+        amount: (json["transaction_amount"] as num).toDouble(),
+        description: json["description"],
+        accountName: json["account_name"],
+        receiverName: json['receiver_name'],
+        senderName: json['sender_name'],
+      );
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -55,16 +54,16 @@ class Transaction {
       };
 
   String generateDescription() {
-    if (transactionType == TransactionTypes.DEPT) {
+    if (transactionType == TransactionType.DEPT) {
       return 'Deposited money to';
     }
 
-    if (transactionType == TransactionTypes.CREDIT) {
+    if (transactionType == TransactionType.CREDIT) {
       return 'Deducted money from';
     }
 
-    if (transactionType == TransactionTypes.TRANSFER) {
-      if (category == TransactionCategories.SENDER) {
+    if (transactionType == TransactionType.TRANSFER) {
+      if (category == TransactionCategory.SENDER) {
         return 'Transferred money to';
       }
       return 'Received money from';

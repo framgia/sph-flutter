@@ -1,89 +1,51 @@
 // ignore_for_file: constant_identifier_names
 
-enum TransactionTypes {
+enum TransactionType {
   ALL('All transactions'),
   CREDIT('Credit'),
   DEPT('Deposit'),
   TRANSFER('Transfer');
 
   final String value;
-  const TransactionTypes(this.value);
+  const TransactionType(this.value);
 
-  static TransactionTypes fromValue(String value) =>
-      TransactionTypes.values.singleWhere((i) => value == i.value);
+  static TransactionType fromValue(String value) =>
+      TransactionType.values.singleWhere((i) => value == i.value);
+
+  // Return TransactionType if string = name
+  // Ex. TransactionType.fromJSON('CREDIT') = TransactionType.CREDIT
+  static TransactionType fromJson(String jsonValue) =>
+      TransactionType.values.singleWhere((i) => jsonValue == i.name);
 }
 
-enum TransactionCategories {
-  FOOD,
-  TRANSPORTATION,
-  BILLS,
-  SAVINGS,
-  SALARY,
-  SENDER,
-  RECIPIENT,
-  MISC,
-}
+enum TransactionCategory {
+  FOOD('Food/Drinks'),
+  TRANSPORTATION('Transportation'),
+  BILLS('Housing/Billings'),
+  SAVINGS('Savings'),
+  SALARY('Salary'),
+  SENDER('Sender'),
+  RECIPIENT('Recipient'),
+  MISC('Miscellaneous');
 
-extension TransactionCategoriesExtension on TransactionCategories {
-  String get value {
-    switch (this) {
-      case TransactionCategories.FOOD:
-        return 'Food/Drinks';
-      case TransactionCategories.TRANSPORTATION:
-        return 'Transportation';
-      case TransactionCategories.BILLS:
-        return 'Housing/Billings';
-      case TransactionCategories.SAVINGS:
-        return 'Savings';
-      case TransactionCategories.MISC:
-        return 'Miscellaneous';
-      default:
-        return '';
-    }
-  }
-}
+  final String value;
+  const TransactionCategory(this.value);
 
-List<String> creditCategories = TransactionCategories.values
-    .where(
-  (value) =>
-      value == TransactionCategories.FOOD ||
-      value == TransactionCategories.TRANSPORTATION ||
-      value == TransactionCategories.BILLS ||
-      value == TransactionCategories.SAVINGS ||
-      value == TransactionCategories.MISC,
-)
-    .map((value) {
-  switch (value) {
-    case TransactionCategories.FOOD:
-      return 'Food/Drinks';
-    case TransactionCategories.TRANSPORTATION:
-      return 'Transportation';
-    case TransactionCategories.BILLS:
-      return 'Housing/Billings';
-    case TransactionCategories.SAVINGS:
-      return 'Savings';
-    case TransactionCategories.MISC:
-      return 'Miscellaneous';
-    default:
-      return '';
-  }
-}).toList();
+  static List<String> creditCategories = [
+    TransactionCategory.FOOD.value,
+    TransactionCategory.TRANSPORTATION.value,
+    TransactionCategory.BILLS.value,
+    TransactionCategory.SAVINGS.value,
+    TransactionCategory.MISC.value,
+  ];
 
-TransactionCategories transactionCategoriesFromString(
-  String creditTransaction,
-) {
-  switch (creditTransaction) {
-    case 'Food/Drinks':
-      return TransactionCategories.FOOD;
-    case 'Transportation':
-      return TransactionCategories.TRANSPORTATION;
-    case 'Housing/Billings':
-      return TransactionCategories.BILLS;
-    case 'Savings':
-      return TransactionCategories.SAVINGS;
-    case 'Miscellaneous':
-      return TransactionCategories.MISC;
-    default:
-      return TransactionCategories.MISC;
-  }
+  // Return TransactionCategory if string = value
+  // Ex. TransactionCategory.fromValue('Savings') = TransactionCategory.SAVINGS
+  static TransactionCategory fromValue(String value) =>
+      TransactionCategory.values.singleWhere((i) => value == i.value);
+
+  // Return TransactionCategory if string = name
+  // Ex. TransactionCategory.fromJSON('BILLS') = TransactionCategory.BILLS
+  static TransactionCategory fromJson(String jsonValue) =>
+      TransactionCategory.values.singleWhere((i) => jsonValue == i.name);
 }

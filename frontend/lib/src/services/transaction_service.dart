@@ -31,7 +31,7 @@ class TransactionService {
     String accountId = '',
     DateTime? from,
     DateTime? to,
-    TransactionTypes? type,
+    TransactionType? type,
   }) async {
     String strDateFrom =
         DateFormat('yyyy-MM-dd').format(from ?? DateTime.now());
@@ -39,7 +39,7 @@ class TransactionService {
     final url = accountTransactionsUrl.replaceFirst('{id}', accountId);
     final Map<String, dynamic> query = {};
 
-    if (type != TransactionTypes.ALL) query['type'] = type!.name;
+    if (type != TransactionType.ALL) query['type'] = type!.name;
     if (from != null) {
       query['from'] = strDateFrom;
       query['to'] = strDateTo;
