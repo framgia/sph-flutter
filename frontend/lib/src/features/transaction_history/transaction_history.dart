@@ -9,7 +9,6 @@ import 'package:frontend/src/components/breadcrumb.dart';
 import 'package:frontend/src/components/input/dropdown.dart';
 import 'package:frontend/src/features/dashboard/components/account_card.dart';
 import 'package:frontend/src/enums/transaction_enum.dart';
-import 'package:frontend/src/helper/capitalize_first_letter.dart';
 
 /*
   The page where user can see their transaction history per account.
@@ -21,10 +20,12 @@ class TransactionHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TransactionController controller = Get.find();
+    TransactionController controller = Get.put(TransactionController());
 
     final arguments =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
+
+    controller.resetFilters(arguments.accountId);
 
     return FutureBuilder(
       future: controller.getTransactions(accountId: arguments.accountId),
@@ -51,18 +52,14 @@ class TransactionHistory extends StatelessWidget {
                   Dropdown(
                     labelText: 'Filter transaction by type',
                     items: TransactionTypes.values
-                        .map((type) => capitalizeFirstLetter(type.name))
+                        .map((type) => type.value)
                         .toList(),
-                    selectedValue: capitalizeFirstLetter(
-                      controller.selectedTransactionType.name,
-                    ),
+                    selectedValue: controller.selectedTransactionType.value,
                     onChanged: (value) {
                       controller.setSelectedTransactionType =
-                          TransactionTypes.values.firstWhere(
-                        (type) => capitalizeFirstLetter(type.name) == value,
-                      );
-                      debugPrint(
-                        controller.selectedTransactionType.name,
+                          TransactionTypes.fromValue(value.toString());
+                      controller.getTransactions(
+                        accountId: arguments.accountId,
                       );
                     },
                   ),

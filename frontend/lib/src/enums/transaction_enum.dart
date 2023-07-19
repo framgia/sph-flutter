@@ -1,6 +1,17 @@
 // ignore_for_file: constant_identifier_names
 
-enum TransactionTypes { CREDIT, DEPT, TRANSFER }
+enum TransactionTypes {
+  ALL('All transactions'),
+  CREDIT('Credit'),
+  DEPT('Deposit'),
+  TRANSFER('Transfer');
+
+  final String value;
+  const TransactionTypes(this.value);
+
+  static TransactionTypes fromValue(String value) =>
+      TransactionTypes.values.singleWhere((i) => value == i.value);
+}
 
 enum TransactionCategories {
   FOOD,

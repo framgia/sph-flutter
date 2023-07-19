@@ -7,7 +7,7 @@ import 'package:frontend/src/services/transaction_service.dart';
 
 class TransactionController extends GetxController {
   final Rx<TransactionTypes> _selectedTransactionType =
-      TransactionTypes.CREDIT.obs;
+      TransactionTypes.ALL.obs;
   final Rx<TransactionCategories> _selectedTransactionCategory =
       TransactionCategories.FOOD.obs;
   final Rxn<DateTime> _selectedTransactionDateFrom = Rxn<DateTime>();
@@ -42,6 +42,10 @@ class TransactionController extends GetxController {
   set setTransactionSubmitEnabled(bool newValue) =>
       _transactionSubmitEnabled.value = newValue;
 
+  void resetFilters(accountId) {
+    setSelectedTransactionType = TransactionTypes.ALL;
+  }
+
   Future<List<Transaction>> getTransactions({String accountId = ''}) async {
     if ((selectedTransactionDateFrom == null &&
             selectedTransactionDateTo != null) ||
@@ -54,6 +58,7 @@ class TransactionController extends GetxController {
       accountId: accountId,
       from: selectedTransactionDateFrom,
       to: selectedTransactionDateTo,
+      type: selectedTransactionType,
     );
     transactionList.assignAll(result);
 
