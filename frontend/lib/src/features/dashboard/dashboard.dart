@@ -25,8 +25,8 @@ class Dashboard extends StatelessWidget {
           return const CircularProgressIndicator();
         }
 
-        if (controller.accounts.isEmpty) {
-          return Column(
+        return Obx(
+          () => Column(
             children: [
               Center(
                 child: Text(
@@ -34,58 +34,46 @@ class Dashboard extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
-              const SizedBox(
-                height: 75,
-              ),
-              Center(
-                child: Text(
-                  'No Account Found.',
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-              ),
-            ],
-          );
-        }
-
-        return Column(
-          children: [
-            Center(
-              child: Text(
-                "Dashboard",
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 150),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Accounts",
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  const SizedBox(height: 12),
-                  Obx(
-                    () => RefreshIndicator(
-                      onRefresh: () => controller.getUserAccounts(),
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.48,
-                        child: ListView.builder(
-                          itemCount: controller.accounts.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return AccountCard(
-                              account: controller.accounts[index],
-                            );
-                          },
+              controller.accounts.isEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 75),
+                      child: Center(
+                        child: Text(
+                          'No Account Found.',
+                          style: Theme.of(context).textTheme.titleSmall,
                         ),
                       ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 150),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Accounts",
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                          const SizedBox(height: 12),
+                          RefreshIndicator(
+                            onRefresh: () => controller.getUserAccounts(),
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.48,
+                              child: ListView.builder(
+                                itemCount: controller.accounts.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return AccountCard(
+                                    account: controller.accounts[index],
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  )
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
