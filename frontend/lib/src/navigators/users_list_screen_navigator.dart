@@ -59,11 +59,7 @@ class UserListScreenNavigator extends StatelessWidget {
 
         return CustomPageRoute(
           builder: (context) {
-            // TODO: Get the auth token form BE
-            return AuthHeader(
-              hasAuthToken: true,
-              child: page,
-            );
+            return AuthHeader(child: page);
           },
           settings: settings,
         );
