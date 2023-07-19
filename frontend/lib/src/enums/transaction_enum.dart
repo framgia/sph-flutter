@@ -26,9 +26,6 @@ enum TransactionCategories {
   final String value;
   const TransactionCategories(this.value);
 
-  static TransactionCategories fromValue(String jsonValue) =>
-      TransactionCategories.values.singleWhere((i) => jsonValue == i.value);
-
   static List<String> creditCategories = [
     TransactionCategories.FOOD.value,
     TransactionCategories.TRANSPORTATION.value,
@@ -36,4 +33,7 @@ enum TransactionCategories {
     TransactionCategories.SAVINGS.value,
     TransactionCategories.MISC.value,
   ].toList();
+
+  static TransactionCategories fromValue(String jsonValue) =>
+      TransactionCategories.values.singleWhere((i) => jsonValue == i.value);
 }
