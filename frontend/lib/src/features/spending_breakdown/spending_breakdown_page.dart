@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import 'package:frontend/src/navigators/dashboard_screen_navigator.dart';
 import 'package:frontend/src/components/breadcrumb.dart';
@@ -19,12 +20,16 @@ import 'package:frontend/src/components/spending_breakdown_card.dart';
 class SpendingBreakdownPage extends StatelessWidget {
   const SpendingBreakdownPage({super.key});
 
+  static final currencyFormat = NumberFormat(',#00.00');
+
   @override
   Widget build(BuildContext context) {
     final arguments =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
-    SpendingBreakdownController spendingBreakdownController =
+    SpendingBreakdownController controller =
         Get.put(SpendingBreakdownController());
+
+    controller.getSpendingBreakdown();
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -62,7 +67,7 @@ class SpendingBreakdownPage extends StatelessWidget {
                                   ),
                         ),
                         Text(
-                          "- PHP 100, 000",
+                          "- PHP ${currencyFormat.format(controller.totalSpent)}",
                           style:
                               Theme.of(context).textTheme.labelSmall!.copyWith(
                                     color: const Color(0xFFFF0000),
@@ -72,25 +77,23 @@ class SpendingBreakdownPage extends StatelessWidget {
                     ),
                     const Spacer(),
                     SizedBox(
-                      width: 158,
+                      width: 140,
                       child: Dropdown(
                         items: breakdownFilters.map((day) => day.days).toList(),
-                        selectedValue: spendingBreakdownController
-                            .selectedBreakdownFilter.days,
+                        selectedValue: controller.selectedBreakdownFilter.days,
                         onChanged: (value) {
-                          spendingBreakdownController
-                                  .setSelectedBreakdownFilter =
+                          controller.setSelectedBreakdownFilter =
                               breakdownFilters.firstWhere(
                             (filter) => filter.days == value,
                           );
                         },
                         style: const TextStyle(
                           fontSize: 12,
-                          color: Colors.black,
+                          color: Color(0xFF6D7881),
                           fontWeight: FontWeight.normal,
                         ),
-                        itemAlignment: Alignment.center,
-                        height: 20,
+                        height: 22,
+                        iconSize: 15,
                       ),
                     ),
                   ],
@@ -135,23 +138,24 @@ class SpendingBreakdownPage extends StatelessWidget {
                     height: 20,
                   ),
                   ListView.builder(
-                      itemCount: spendingBreakdownData.length,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SpendingBreakdownCard(
-                              spendingbreakdown: spendingBreakdownData[index],
-                            ),
-                            const Divider(
-                              thickness: 0.5,
-                              color: Color(0xFF6D7881),
-                            )
-                          ],
-                        );
-                      }),
+                    itemCount: spendingBreakdownData.length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SpendingBreakdownCard(
+                            spendingbreakdown: spendingBreakdownData[index],
+                          ),
+                          const Divider(
+                            thickness: 0.5,
+                            color: Color(0xFF6D7881),
+                          )
+                        ],
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

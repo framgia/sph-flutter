@@ -12,6 +12,7 @@ import 'package:frontend/src/components/balance_card.dart';
 import 'package:frontend/src/components/graph.dart';
 import 'package:frontend/src/features/dashboard/components/account_card.dart';
 import 'package:frontend/src/enums/transaction_enum.dart';
+import 'package:frontend/src/controllers/spending_breakdown_controller.dart';
 
 /*
   The page where user can see their account details.
@@ -27,6 +28,8 @@ class AccountDetailsPage extends StatelessWidget {
     final arguments =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     AccountDetailsController controller = Get.put(AccountDetailsController());
+    SpendingBreakdownController spendingBreakdownController =
+        Get.put(SpendingBreakdownController());
     HomeScreenController homeScreenController = Get.find();
 
     return FutureBuilder(
@@ -35,6 +38,8 @@ class AccountDetailsPage extends StatelessWidget {
         if (snapshot.connectionState != ConnectionState.done) {
           return const CircularProgressIndicator();
         }
+
+        spendingBreakdownController.getSpendingBreakdown();
 
         return GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -223,12 +228,14 @@ class AccountDetailsPage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(25, 0, 25, 20),
-                child: Graph(onTap: () {
-                  dashboardAppNav.currentState?.pushNamed(
-                    '/spendingBreakdown',
-                    arguments: ScreenArguments(arguments.accountId),
-                  );
-                }),
+                child: Graph(
+                  onTap: () {
+                    dashboardAppNav.currentState?.pushNamed(
+                      '/spendingBreakdown',
+                      arguments: ScreenArguments(arguments.accountId),
+                    );
+                  },
+                ),
               )
             ],
           ),

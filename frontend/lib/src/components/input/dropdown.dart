@@ -17,30 +17,30 @@ import 'package:frontend/src/components/label.dart';
 
   @param style, to change TextStyle of the dropdown.
 
-  @param itemAlignment, use to align the items, default is aligned to center-left
+  @param height, height of the dropdown. e.g. dropdown in SpendingBreakdownPage.
 
-  @param height, height of the dropdown. e.g. dropdown in SpendingBreakdownPage
+  @param iconSize, size of the icon.
 
 */
 class Dropdown extends StatelessWidget {
   const Dropdown({
     super.key,
-    this.labelText,
     required this.items,
     required this.selectedValue,
+    this.labelText,
     this.onChanged,
     this.style,
-    this.itemAlignment = Alignment.centerLeft,
     this.height,
+    this.iconSize,
   });
 
-  final String? labelText;
   final List<dynamic> items;
   final String selectedValue;
+  final String? labelText;
   final void Function(Object?)? onChanged;
   final TextStyle? style;
-  final Alignment? itemAlignment;
   final double? height;
+  final double? iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,6 @@ class Dropdown extends StatelessWidget {
       children: [
         if (labelText != null) Label(text: labelText!),
         Container(
-          height: height,
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -68,17 +67,14 @@ class Dropdown extends StatelessWidget {
                 .map(
                   (item) => DropdownMenuItem<String>(
                     value: item,
-                    child: Container(
-                      alignment: itemAlignment,
-                      child: Text(
-                        item,
-                        style: style ??
-                            const TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal,
-                            ),
-                      ),
+                    child: Text(
+                      item,
+                      style: style ??
+                          const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal,
+                          ),
                     ),
                   ),
                 )
@@ -97,14 +93,14 @@ class Dropdown extends StatelessWidget {
                 color: Colors.white,
               ),
               padding: const EdgeInsets.only(right: 15),
-              height: 50,
+              height: height ?? 50,
             ),
-            iconStyleData: const IconStyleData(
-              icon: Icon(
+            iconStyleData: IconStyleData(
+              icon: const Icon(
                 FontAwesomeIcons.caretDown,
                 color: Colors.black,
               ),
-              iconSize: 25,
+              iconSize: iconSize ?? 25,
             ),
             dropdownStyleData: DropdownStyleData(
               decoration: BoxDecoration(
@@ -113,6 +109,9 @@ class Dropdown extends StatelessWidget {
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
               ),
               padding: const EdgeInsets.symmetric(vertical: 8),
+            ),
+            menuItemStyleData: MenuItemStyleData(
+              height: height ?? 50,
             ),
           ),
         ),

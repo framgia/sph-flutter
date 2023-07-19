@@ -11,6 +11,17 @@ import 'package:frontend/src/enums/transaction_enum.dart';
 
 Widget getSpendingCategoryIcon(TransactionCategories transactionCategories) {
   switch (transactionCategories) {
+    case TransactionCategories.FOOD:
+      return Container(
+        width: 40,
+        height: 40,
+        padding: const EdgeInsets.all(8),
+        decoration: const BoxDecoration(
+          color: Color(0xFF0384EA),
+          shape: BoxShape.circle,
+        ),
+        child: SvgPicture.asset('assets/svg/food.svg'),
+      );
     case TransactionCategories.TRANSPORTATION:
       return Container(
         width: 40,
@@ -44,7 +55,7 @@ Widget getSpendingCategoryIcon(TransactionCategories transactionCategories) {
         ),
         child: SvgPicture.asset('assets/svg/savings.svg'),
       );
-    case TransactionCategories.MISC:
+    default:
       return Container(
         width: 40,
         height: 40,
@@ -54,17 +65,6 @@ Widget getSpendingCategoryIcon(TransactionCategories transactionCategories) {
           shape: BoxShape.circle,
         ),
         child: SvgPicture.asset('assets/svg/miscellaneous.svg'),
-      );
-    default:
-      return Container(
-        width: 40,
-        height: 40,
-        padding: const EdgeInsets.all(8),
-        decoration: const BoxDecoration(
-          color: Color(0xFF0384EA),
-          shape: BoxShape.circle,
-        ),
-        child: SvgPicture.asset('assets/svg/food.svg'),
       );
   }
 }

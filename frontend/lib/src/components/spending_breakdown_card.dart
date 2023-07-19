@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-import 'package:frontend/src/models/spendingBreakdown.dart';
+import 'package:frontend/src/models/spending_breakdown.dart';
 import 'package:frontend/src/enums/transaction_enum.dart';
 import 'package:frontend/src/helper/capitalize_first_letter.dart';
 import 'package:frontend/src/helper/get_spending_category_icon.dart';
@@ -15,6 +16,8 @@ class SpendingBreakdownCard extends StatelessWidget {
   const SpendingBreakdownCard({super.key, required this.spendingbreakdown});
 
   final SpendingBreakdown spendingbreakdown;
+
+  static final currencyFormat = NumberFormat(',#00.00');
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +57,7 @@ class SpendingBreakdownCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              '- PHP ${spendingbreakdown.totalTransactionAmount}',
+              '- PHP ${currencyFormat.format(spendingbreakdown.totalTransactionAmount)}',
               style: Theme.of(context).textTheme.bodySmall!.copyWith(
                     color: const Color(0xFFFF0000),
                     fontWeight: FontWeight.bold,
