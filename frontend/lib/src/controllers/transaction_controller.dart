@@ -44,7 +44,6 @@ class TransactionController extends GetxController {
 
   void resetFilters(accountId) {
     setSelectedTransactionType = TransactionTypes.ALL;
-    getTransactions(accountId: accountId);
   }
 
   Future<List<Transaction>> getTransactions({String accountId = ''}) async {

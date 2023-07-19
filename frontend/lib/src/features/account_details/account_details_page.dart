@@ -12,7 +12,6 @@ import 'package:frontend/src/components/balance_card.dart';
 import 'package:frontend/src/components/graph.dart';
 import 'package:frontend/src/features/dashboard/components/account_card.dart';
 import 'package:frontend/src/enums/transaction_enum.dart';
-import 'package:frontend/src/controllers/transaction_controller.dart';
 
 /*
   The page where user can see their account details.
@@ -29,8 +28,6 @@ class AccountDetailsPage extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     AccountDetailsController controller = Get.put(AccountDetailsController());
     HomeScreenController homeScreenController = Get.find();
-    TransactionController transactionController =
-        Get.put(TransactionController());
 
     return FutureBuilder(
       future: controller.getUserAccount(accountId: arguments.accountId),
@@ -62,66 +59,66 @@ class AccountDetailsPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                         vertical: 21,
                       ),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 21,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Obx(
-                                    () => Text(
-                                      controller.account.accountName,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium!
-                                          .copyWith(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                    ),
-                                  ),
-                                  const VerticalDivider(
-                                    color: Color(0xFF6D7881),
-                                    width: 20,
-                                    thickness: 1,
-                                    indent: 0,
-                                    endIndent: 0,
-                                  ),
-                                  Obx(
-                                    () => Text(
-                                      controller.account.accountNumber ?? '',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelSmall,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 14,),
-                            Row(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 21,
+                            child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  "Balance",
-                                  style: Theme.of(context).textTheme.titleSmall,
+                                Obx(
+                                  () => Text(
+                                    controller.account.accountName,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium!
+                                        .copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
                                 ),
-                                const SizedBox(
-                                  width: 8,
+                                const VerticalDivider(
+                                  color: Color(0xFF6D7881),
+                                  width: 20,
+                                  thickness: 1,
+                                  indent: 0,
+                                  endIndent: 0,
                                 ),
                                 Obx(
                                   () => Text(
-                                    "PHP ${currencyFormat.format(controller.account.balance)}",
+                                    controller.account.accountNumber ?? '',
                                     style:
                                         Theme.of(context).textTheme.labelSmall,
                                   ),
                                 ),
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(
+                            height: 14,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Balance",
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Obx(
+                                () => Text(
+                                  "PHP ${currencyFormat.format(controller.account.balance)}",
+                                  style: Theme.of(context).textTheme.labelSmall,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -213,8 +210,6 @@ class AccountDetailsPage extends StatelessWidget {
                           size: const Size(110, 90),
                           radius: 8,
                           onPressed: () {
-                            transactionController
-                                .resetFilters(arguments.accountId);
                             dashboardAppNav.currentState?.pushNamed(
                               '/transactionHistory',
                               arguments: ScreenArguments(arguments.accountId),

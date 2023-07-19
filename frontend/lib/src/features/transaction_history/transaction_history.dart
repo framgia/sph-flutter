@@ -9,7 +9,6 @@ import 'package:frontend/src/components/breadcrumb.dart';
 import 'package:frontend/src/components/input/dropdown.dart';
 import 'package:frontend/src/features/dashboard/components/account_card.dart';
 import 'package:frontend/src/enums/transaction_enum.dart';
-import 'package:frontend/src/helper/capitalize_first_letter.dart';
 
 /*
   The page where user can see their transaction history per account.
@@ -21,125 +20,110 @@ class TransactionHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TransactionController controller = Get.find();
+    TransactionController controller = Get.put(TransactionController());
 
     final arguments =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
 
-    return Obx(
-      () => FutureBuilder(
-        future: controller.getTransactions(accountId: arguments.accountId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const CircularProgressIndicator();
-          }
+    controller.resetFilters(arguments.accountId);
 
-          return Column(
-            children: [
-              Breadcrumb(
-                text: 'Transaction History',
-                onTap: () {
-                  dashboardAppNav.currentState?.pushNamed(
-                    '/accountDetails',
-                    arguments: ScreenArguments(arguments.accountId),
-                  );
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(25, 35, 25, 110),
-                child: Column(
-                  children: [
-                    Dropdown(
-                      labelText: 'Filter transaction by type',
-                      items: TransactionTypes.values
-                          .map(
-                            (type) => type == TransactionTypes.ALL
-                                ? 'All transactions'
-                                : capitalizeFirstLetter(type.name),
-                          )
-                          .toList(),
-                      selectedValue: controller.selectedTransactionType ==
-                              TransactionTypes.ALL
-                          ? 'All transactions'
-                          : capitalizeFirstLetter(
-                              controller.selectedTransactionType.name,
-                            ),
-                      onChanged: (value) {
-                        final convertValue =
-                            value.toString() == 'All transactions'
-                                ? 'All'
-                                : value;
+    return FutureBuilder(
+      future: controller.getTransactions(accountId: arguments.accountId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const CircularProgressIndicator();
+        }
 
-                        controller.setSelectedTransactionType =
-                            TransactionTypes.values.firstWhere(
-                          (type) =>
-                              capitalizeFirstLetter(type.name) == convertValue,
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    Obx(
-                      () => Column(
-                        children: [
-                          DatePickerField(
-                            labelText: 'From',
-                            name: 'filter_by_date_from',
-                            initialValue:
-                                controller.selectedTransactionDateFrom,
-                            lastDate: controller.selectedTransactionDateTo ??
-                                DateTime.now(),
-                            onChanged: (value) {
-                              controller.setSelectedTransactionDateFrom = value;
-                              controller.getTransactions(
-                                accountId: arguments.accountId,
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                          DatePickerField(
-                            labelText: 'To',
-                            name: 'filter_by_date_to',
-                            initialValue: controller.selectedTransactionDateTo,
-                            firstDate: controller.selectedTransactionDateFrom,
-                            lastDate: DateTime.now(),
-                            onChanged: (value) {
-                              controller.setSelectedTransactionDateTo = value;
-                              controller.getTransactions(
-                                accountId: arguments.accountId,
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 35),
-                          controller.transactionList.isEmpty
-                              ? Container(
-                                  margin: const EdgeInsets.only(top: 20),
-                                  child: Text(
-                                    'No Transaction Record',
-                                    style:
-                                        Theme.of(context).textTheme.labelMedium,
-                                  ),
-                                )
-                              : ListView.builder(
-                                  itemCount: controller.transactionList.length,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return TransactionCard(
-                                      transaction:
-                                          controller.transactionList[index],
-                                    );
-                                  },
+        return Column(
+          children: [
+            Breadcrumb(
+              text: 'Transaction History',
+              onTap: () {
+                dashboardAppNav.currentState?.pushNamed(
+                  '/accountDetails',
+                  arguments: ScreenArguments(arguments.accountId),
+                );
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(25, 35, 25, 110),
+              child: Column(
+                children: [
+                  Dropdown(
+                    labelText: 'Filter transaction by type',
+                    items: TransactionTypes.values
+                        .map((type) => type.value)
+                        .toList(),
+                    selectedValue: controller.selectedTransactionType.value,
+                    onChanged: (value) {
+                      controller.setSelectedTransactionType =
+                          TransactionTypes.fromValue(value.toString());
+                      controller.getTransactions(
+                        accountId: arguments.accountId,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  Obx(
+                    () => Column(
+                      children: [
+                        DatePickerField(
+                          labelText: 'From',
+                          name: 'filter_by_date_from',
+                          initialValue: controller.selectedTransactionDateFrom,
+                          lastDate: controller.selectedTransactionDateTo ??
+                              DateTime.now(),
+                          onChanged: (value) {
+                            controller.setSelectedTransactionDateFrom = value;
+                            controller.getTransactions(
+                              accountId: arguments.accountId,
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        DatePickerField(
+                          labelText: 'To',
+                          name: 'filter_by_date_to',
+                          initialValue: controller.selectedTransactionDateTo,
+                          firstDate: controller.selectedTransactionDateFrom,
+                          lastDate: DateTime.now(),
+                          onChanged: (value) {
+                            controller.setSelectedTransactionDateTo = value;
+                            controller.getTransactions(
+                              accountId: arguments.accountId,
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 35),
+                        controller.transactionList.isEmpty
+                            ? Container(
+                                margin: const EdgeInsets.only(top: 20),
+                                child: Text(
+                                  'No Transaction Record',
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
                                 ),
-                        ],
-                      ),
+                              )
+                            : ListView.builder(
+                                itemCount: controller.transactionList.length,
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return TransactionCard(
+                                    transaction:
+                                        controller.transactionList[index],
+                                  );
+                                },
+                              ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          );
-        },
-      ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
