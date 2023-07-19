@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:frontend/src/enums/transaction_enum.dart';
 import 'package:get/get.dart';
 
 import 'package:frontend/src/components/indicator.dart';
@@ -8,6 +7,7 @@ import 'package:frontend/src/controllers/graph_controller.dart';
 import 'package:frontend/src/const/spending_breakdown_test_data.dart';
 import 'package:frontend/src/controllers/spending_breakdown_controller.dart';
 import 'package:frontend/src/helper/transaction_category_color.dart';
+import 'package:frontend/src/enums/transaction_enum.dart';
 
 /*
   A Graph widget where transaction data can be displayed graphically
