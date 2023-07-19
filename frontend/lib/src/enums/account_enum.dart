@@ -10,10 +10,15 @@ enum AccountType {
   final String value;
   const AccountType(this.value);
 
-  // Return the enum value of that type.
+  // Parse the custom value and return the matching enum type.
   // Ex. AccountType.fromValue('Savings') will return AccountType.SAVINGS,
-  static AccountType fromValue(String jsonValue) =>
-      AccountType.values.singleWhere((i) => jsonValue == i.value);
+  static AccountType fromValue(String value) =>
+      AccountType.values.singleWhere((i) => value == i.value);
+
+  // Parse the json data from BE and return the matching enum type.
+  // Ex. AccountType.fromJson('SAVINGS') will return AccountType.SAVINGS,
+  static AccountType fromJson(String jsonValue) =>
+      AccountType.values.singleWhere((i) => jsonValue == i.name);
 }
 
 List<String> accountTypes = AccountType.values.map((e) => e.value).toList();
