@@ -9,9 +9,9 @@ import 'package:frontend/src/enums/transaction_enum.dart';
   @param transactionCategories: to get the specific icon
 */
 
-Widget getSpendingCategoryIcon(TransactionCategories transactionCategories) {
-  switch (transactionCategories) {
-    case TransactionCategories.FOOD:
+Widget getSpendingCategoryIcon(TransactionCategory transactionCategory) {
+  switch (transactionCategory) {
+    case TransactionCategory.FOOD:
       return Container(
         width: 40,
         height: 40,
@@ -22,7 +22,7 @@ Widget getSpendingCategoryIcon(TransactionCategories transactionCategories) {
         ),
         child: SvgPicture.asset('assets/svg/food.svg'),
       );
-    case TransactionCategories.TRANSPORTATION:
+    case TransactionCategory.TRANSPORTATION:
       return Container(
         width: 40,
         height: 40,
@@ -33,7 +33,7 @@ Widget getSpendingCategoryIcon(TransactionCategories transactionCategories) {
         ),
         child: SvgPicture.asset('assets/svg/transportation.svg'),
       );
-    case TransactionCategories.BILLS:
+    case TransactionCategory.BILLS:
       return Container(
         width: 40,
         height: 40,
@@ -44,7 +44,7 @@ Widget getSpendingCategoryIcon(TransactionCategories transactionCategories) {
         ),
         child: SvgPicture.asset('assets/svg/bills.svg'),
       );
-    case TransactionCategories.SAVINGS:
+    case TransactionCategory.SAVINGS:
       return Container(
         width: 40,
         height: 40,

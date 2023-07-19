@@ -94,7 +94,7 @@ class Graph extends StatelessWidget {
                   children: <Widget>[
                     Indicator(
                       color: const Color(0xFF0384EA),
-                      text: TransactionCategories.FOOD.value,
+                      text: TransactionCategory.FOOD.value,
                       isSquare: true,
                     ),
                     const SizedBox(
@@ -102,7 +102,7 @@ class Graph extends StatelessWidget {
                     ),
                     Indicator(
                       color: const Color(0xFFFEA42C),
-                      text: TransactionCategories.TRANSPORTATION.value,
+                      text: TransactionCategory.TRANSPORTATION.value,
                       isSquare: true,
                     ),
                     const SizedBox(
@@ -110,7 +110,7 @@ class Graph extends StatelessWidget {
                     ),
                     Indicator(
                       color: const Color(0xFF8047F6),
-                      text: TransactionCategories.BILLS.value,
+                      text: TransactionCategory.BILLS.value,
                       isSquare: true,
                     ),
                     const SizedBox(
@@ -118,7 +118,7 @@ class Graph extends StatelessWidget {
                     ),
                     Indicator(
                       color: const Color(0xFF00D27C),
-                      text: TransactionCategories.SAVINGS.value,
+                      text: TransactionCategory.SAVINGS.value,
                       isSquare: true,
                     ),
                     const SizedBox(
@@ -126,7 +126,7 @@ class Graph extends StatelessWidget {
                     ),
                     Indicator(
                       color: const Color(0xFFDC4949),
-                      text: TransactionCategories.MISC.value,
+                      text: TransactionCategory.MISC.value,
                       isSquare: true,
                     ),
                     const SizedBox(

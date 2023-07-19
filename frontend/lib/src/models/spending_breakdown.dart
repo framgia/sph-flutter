@@ -14,7 +14,7 @@ String spendingBreakdownToJson(SpendingBreakdown data) =>
 
 class SpendingBreakdown {
   String accountId;
-  TransactionCategories category;
+  TransactionCategory category;
   double totalStartingBalance;
   double totalTransactionAmount;
   DateTime latestTransactionDate;
