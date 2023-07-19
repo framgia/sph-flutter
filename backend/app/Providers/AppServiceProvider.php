@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Models\Transaction;
 use App\Observers\TransactionObserver;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
