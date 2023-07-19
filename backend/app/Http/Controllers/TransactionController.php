@@ -22,13 +22,12 @@ class TransactionController extends Controller
 
         // Get transactions by all or through accounts
         // For shallow nesting see https://laravel.com/docs/8.x/controllers#shallow-nesting
-        $transactions = ($account ? Transaction::where('account_id', $account['id']) : Transaction::all())
-            ->with(['account'])
+        $transactions = (Transaction::where($account ? [['account_id', $account->id]] : []))
+            ->with(['account', 'child', 'parent', 'child.account', 'parent.account'])
             ->orderBy('transaction_date')
             ->get();
 
         // Filter transactions by transaction type
-        // TODO: add validation filter by transaction type
         if (in_array($request->type, config('enums.transaction_type'))) {
             $transactions = $transactions->where('transaction_type', $request->type);
         }
@@ -68,7 +67,7 @@ class TransactionController extends Controller
         // - to $account , + to $receiverAccount
         $receiverAccount = Account::getAccountByNumberAndName($payload['account_number'], $payload['account_name']);
 
-        if (! $receiverAccount) {
+        if (!$receiverAccount) {
             throw ValidationException::withMessages([
                 'account' => 'Account doesn\'t exist.',
             ]);
@@ -101,7 +100,7 @@ class TransactionController extends Controller
 
                 $creditRow = Transaction::create($creditData);
 
-                if (! $creditRow->created_at) {
+                if (!$creditRow->created_at) {
                     throw new TransactionException('Transaction Failed. Please try again', $creditRow);
                 }
 
@@ -132,7 +131,7 @@ class TransactionController extends Controller
 
                 $sendRow = Transaction::create($deptData);
 
-                if (! $sendRow->created_at) {
+                if (!$sendRow->created_at) {
                     throw new TransactionException('Transaction Failed. Please try again', $sendRow);
                 }
 
@@ -171,7 +170,7 @@ class TransactionController extends Controller
             try {
                 $sendRow = Transaction::create($senderData);
 
-                if (! $sendRow->created_at) {
+                if (!$sendRow->created_at) {
                     throw new TransactionException('Transaction Failed. Please try again', $sendRow);
                 }
 
@@ -179,7 +178,7 @@ class TransactionController extends Controller
 
                 $receiverRow = Transaction::create($receiverData);
 
-                if (! $receiverRow->created_at) {
+                if (!$receiverRow->created_at) {
                     throw new TransactionException('Transaction Failed. Please try again', $sendRow);
                 }
 
