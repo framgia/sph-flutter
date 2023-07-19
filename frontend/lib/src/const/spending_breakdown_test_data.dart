@@ -1,6 +1,7 @@
 import 'package:frontend/src/enums/transaction_enum.dart';
 import 'package:frontend/src/models/spendingBreakdown.dart';
 
+// TODO: will be remove in spending breakdown integration
 List<SpendingBreakdown> spendingBreakdownData = [
   SpendingBreakdown(
     accountId: '000000000000',
