@@ -141,7 +141,7 @@ class AccountDetailsPage extends StatelessWidget {
                             Get.bottomSheet(
                               TransactionComponent(
                                 label: 'Deposit Cash',
-                                type: TransactionTypes.DEPT,
+                                type: TransactionType.DEPT,
                                 accountId: arguments.accountId,
                                 balance: controller.account.balance!,
                               ),
@@ -163,7 +163,7 @@ class AccountDetailsPage extends StatelessWidget {
                             Get.bottomSheet(
                               TransactionComponent(
                                 label: 'Withdraw Cash',
-                                type: TransactionTypes.CREDIT,
+                                type: TransactionType.CREDIT,
                                 accountId: arguments.accountId,
                                 balance: controller.account.balance!,
                               ),
@@ -190,7 +190,7 @@ class AccountDetailsPage extends StatelessWidget {
                             Get.bottomSheet(
                               TransactionComponent(
                                 label: 'Transfer Cash',
-                                type: TransactionTypes.TRANSFER,
+                                type: TransactionType.TRANSFER,
                                 accountId: arguments.accountId,
                                 balance: controller.account.balance!,
                               ),

@@ -51,13 +51,13 @@ class TransactionHistory extends StatelessWidget {
                 children: [
                   Dropdown(
                     labelText: 'Filter transaction by type',
-                    items: TransactionTypes.values
+                    items: TransactionType.values
                         .map((type) => type.value)
                         .toList(),
                     selectedValue: controller.selectedTransactionType.value,
                     onChanged: (value) {
                       controller.setSelectedTransactionType =
-                          TransactionTypes.fromValue(value.toString());
+                          TransactionType.fromValue(value.toString());
                       controller.getTransactions(
                         accountId: arguments.accountId,
                       );
