@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:frontend/src/features/admin_user_list/components/user_delete_dialog.dart';
+import 'package:frontend/src/helper/user_full_name.dart';
 import 'package:frontend/src/models/user.dart';
 import 'package:frontend/src/navigators/users_list_screen_navigator.dart';
 
@@ -33,7 +34,7 @@ class UserListTile extends StatelessWidget {
         height: 50,
         alignment: Alignment.centerLeft,
         child: Text(
-          '${user.firstName} ${user.lastName}',
+          userFullName(user),
           style: Theme.of(context)
               .textTheme
               .labelLarge!
