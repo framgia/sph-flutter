@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 
 import 'package:frontend/src/components/indicator.dart';
 import 'package:frontend/src/controllers/graph_controller.dart';
-import 'package:frontend/src/const/spending_breakdown_test_data.dart';
 import 'package:frontend/src/controllers/spending_breakdown_controller.dart';
 import 'package:frontend/src/helper/transaction_category_color.dart';
 import 'package:frontend/src/enums/transaction_enum.dart';
@@ -59,30 +58,33 @@ class Graph extends StatelessWidget {
                   height: 150,
                   child: StatefulBuilder(
                     builder: (context, stateful) {
-                      return PieChart(
-                        PieChartData(
-                          pieTouchData: PieTouchData(
-                            touchCallback:
-                                (FlTouchEvent event, pieTouchResponse) {
-                              stateful(() {
-                                if (!event.isInterestedForInteractions ||
-                                    pieTouchResponse == null ||
-                                    pieTouchResponse.touchedSection == null) {
-                                  graphController.setFocusIndex = -1;
+                      return Obx(
+                        () => PieChart(
+                          PieChartData(
+                            pieTouchData: PieTouchData(
+                              touchCallback:
+                                  (FlTouchEvent event, pieTouchResponse) {
+                                stateful(() {
+                                  if (!event.isInterestedForInteractions ||
+                                      pieTouchResponse == null ||
+                                      pieTouchResponse.touchedSection == null) {
+                                    graphController.setFocusIndex = -1;
 
-                                  return;
-                                }
-                                graphController.setFocusIndex = pieTouchResponse
-                                    .touchedSection!.touchedSectionIndex;
-                              });
-                            },
+                                    return;
+                                  }
+                                  graphController.setFocusIndex =
+                                      pieTouchResponse
+                                          .touchedSection!.touchedSectionIndex;
+                                });
+                              },
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            sectionsSpace: 0,
+                            centerSpaceRadius: 30,
+                            sections: showingSections(),
                           ),
-                          borderData: FlBorderData(
-                            show: false,
-                          ),
-                          sectionsSpace: 0,
-                          centerSpaceRadius: 30,
-                          sections: showingSections(),
                         ),
                       );
                     },
@@ -145,12 +147,13 @@ class Graph extends StatelessWidget {
   List<PieChartSectionData> showingSections() {
     List<PieChartSectionData> list = [];
 
-    spendingBreakdownData.asMap().forEach((index, breakdown) {
+    spendingBreakdownController.spendingList
+        .asMap()
+        .forEach((index, breakdown) {
       final isTouched = index == graphController.focusIndex;
       final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 60.0 : 50.0;
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-
       var totalSpentPercentage = ((breakdown.totalTransactionAmount /
                   spendingBreakdownController.totalSpent) *
               100)

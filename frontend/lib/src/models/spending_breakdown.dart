@@ -32,10 +32,12 @@ class SpendingBreakdown {
   factory SpendingBreakdown.fromJson(Map<String, dynamic> json) =>
       SpendingBreakdown(
         accountId: json["account_id"],
-        category: json["category"],
-        totalStartingBalance: json["total_starting_balance"],
-        totalTransactionAmount: json["total_transaction_amount"],
-        latestTransactionDate: json["latest_transaction_date"],
+        category: TransactionCategory.fromJson(json["category"]),
+        totalStartingBalance:
+            (json["total_starting_balance"] as num).toDouble(),
+        totalTransactionAmount:
+            (json["total_transaction_amount"] as num).toDouble().abs(),
+        latestTransactionDate: DateTime.parse(json["latest_transaction_date"]),
         diffForHumans: json["diff_for_humans"],
       );
 

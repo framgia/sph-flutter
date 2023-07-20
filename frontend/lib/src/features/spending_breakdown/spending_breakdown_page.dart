@@ -10,7 +10,6 @@ import 'package:frontend/src/features/dashboard/components/account_card.dart';
 import 'package:frontend/src/components/input/dropdown.dart';
 import 'package:frontend/src/const/spending_breakdown_filter.dart';
 import 'package:frontend/src/controllers/spending_breakdown_controller.dart';
-import 'package:frontend/src/const/spending_breakdown_test_data.dart';
 import 'package:frontend/src/components/spending_breakdown_card.dart';
 
 /*
@@ -29,7 +28,11 @@ class SpendingBreakdownPage extends StatelessWidget {
     SpendingBreakdownController controller =
         Get.put(SpendingBreakdownController());
 
-    controller.getSpendingBreakdown();
+    controller.resetState();
+    controller.getSpendingBreakdown(
+      accountId: arguments.accountId,
+      days: controller.selectedBreakdownFilter.value,
+    );
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -66,12 +69,16 @@ class SpendingBreakdownPage extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                         ),
-                        Text(
-                          "- PHP ${currencyFormat.format(controller.totalSpent)}",
-                          style:
-                              Theme.of(context).textTheme.labelSmall!.copyWith(
-                                    color: const Color(0xFFFF0000),
-                                  ),
+                        Obx(
+                          () => Text(
+                            "- PHP ${currencyFormat.format(controller.totalSpent)}",
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall!
+                                .copyWith(
+                                  color: const Color(0xFFFF0000),
+                                ),
+                          ),
                         )
                       ],
                     ),
@@ -85,6 +92,10 @@ class SpendingBreakdownPage extends StatelessWidget {
                           controller.setSelectedBreakdownFilter =
                               breakdownFilters.firstWhere(
                             (filter) => filter.days == value,
+                          );
+                          controller.getSpendingBreakdown(
+                            accountId: arguments.accountId,
+                            days: controller.selectedBreakdownFilter.value,
                           );
                         },
                         style: const TextStyle(
@@ -137,24 +148,26 @@ class SpendingBreakdownPage extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  ListView.builder(
-                    itemCount: spendingBreakdownData.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SpendingBreakdownCard(
-                            spendingbreakdown: spendingBreakdownData[index],
-                          ),
-                          const Divider(
-                            thickness: 0.5,
-                            color: Color(0xFF6D7881),
-                          )
-                        ],
-                      );
-                    },
+                  Obx(
+                    () => ListView.builder(
+                      itemCount: controller.spendingList.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SpendingBreakdownCard(
+                              spendingbreakdown: controller.spendingList[index],
+                            ),
+                            const Divider(
+                              thickness: 0.5,
+                              color: Color(0xFF6D7881),
+                            )
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),

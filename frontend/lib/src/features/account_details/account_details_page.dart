@@ -39,7 +39,9 @@ class AccountDetailsPage extends StatelessWidget {
           return const CircularProgressIndicator();
         }
 
-        spendingBreakdownController.getSpendingBreakdown();
+        spendingBreakdownController.getSpendingBreakdown(
+          accountId: arguments.accountId,
+        );
 
         return GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
