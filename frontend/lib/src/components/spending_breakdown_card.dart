@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:frontend/src/models/spending_breakdown.dart';
-import 'package:frontend/src/enums/transaction_enum.dart';
 import 'package:frontend/src/helper/capitalize_first_letter.dart';
 import 'package:frontend/src/helper/get_spending_category_icon.dart';
 
