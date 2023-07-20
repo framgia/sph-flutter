@@ -64,7 +64,7 @@ class AuthHeader extends StatelessWidget {
       child: Column(
         children: [
           FutureBuilder(
-            future: controller.getLoginToken(),
+            future: controller.hasLoginToken(),
             builder: (context, snapshot) {
               return Obx(
                 () => Stack(
