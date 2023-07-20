@@ -23,7 +23,7 @@ class TransactionHistory extends StatelessWidget {
     TransactionController controller = Get.put(TransactionController());
 
     final arguments =
-        ModalRoute.of(context)!.settings.arguments as ScreenArguments;
+        ModalRoute.of(context)!.settings.arguments as AccountScreenArguments;
 
     controller.resetFilters(arguments.accountId);
 
@@ -41,7 +41,7 @@ class TransactionHistory extends StatelessWidget {
               onTap: () {
                 dashboardAppNav.currentState?.pushNamed(
                   '/accountDetails',
-                  arguments: ScreenArguments(arguments.accountId),
+                  arguments: AccountScreenArguments(arguments.accountId),
                 );
               },
             ),
