@@ -55,6 +55,7 @@ class AccountService {
       final List<SpendingBreakdown> breakdown = List<SpendingBreakdown>.from(
         data.map((category) => SpendingBreakdown.fromJson(category)),
       );
+
       return breakdown;
     }
 

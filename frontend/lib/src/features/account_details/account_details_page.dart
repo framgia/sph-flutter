@@ -39,10 +39,6 @@ class AccountDetailsPage extends StatelessWidget {
           return const CircularProgressIndicator();
         }
 
-        spendingBreakdownController.getSpendingBreakdown(
-          accountId: arguments.accountId,
-        );
-
         return GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Column(
@@ -231,11 +227,24 @@ class AccountDetailsPage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(25, 0, 25, 20),
-                child: Graph(
-                  onTap: () {
-                    dashboardAppNav.currentState?.pushNamed(
-                      '/spendingBreakdown',
-                      arguments: AccountScreenArguments(arguments.accountId),
+                child: FutureBuilder(
+                  future: spendingBreakdownController.getSpendingBreakdown(
+                    accountId: arguments.accountId,
+                  ),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    return Graph(
+                      accountId: arguments.accountId,
+                      onTap: () {
+                        dashboardAppNav.currentState?.pushNamed(
+                          '/spendingBreakdown',
+                          arguments:
+                              AccountScreenArguments(arguments.accountId),
+                        );
+                      },
                     );
                   },
                 ),

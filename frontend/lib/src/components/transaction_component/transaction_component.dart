@@ -234,7 +234,6 @@ class TransactionComponent extends StatelessWidget {
                           TransactionCategory.fromValue(value.toString());
                       transactionController.setSelectedTransactionCategory =
                           selectedCategory;
-                      debugPrint(selectedCategory.name);
                     },
                     style: Theme.of(context).textTheme.labelMedium,
                   ),

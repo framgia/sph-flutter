@@ -27,6 +27,7 @@ const userAccountUrl = '$apiUrl/accounts/{account_id}';
 const accountTransactionsUrl = '$apiUrl/accounts/{id}/transactions';
 const accountBreakdownUrl =
     '$apiUrl/accounts/{id}/spending-breakdown?days={days}';
+
 const storage = FlutterSecureStorage();
 
 class NetworkConfig {
