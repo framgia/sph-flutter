@@ -25,7 +25,7 @@ class SpendingBreakdownPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final arguments =
-        ModalRoute.of(context)!.settings.arguments as ScreenArguments;
+        ModalRoute.of(context)!.settings.arguments as AccountScreenArguments;
     SpendingBreakdownController controller =
         Get.put(SpendingBreakdownController());
 
@@ -41,7 +41,7 @@ class SpendingBreakdownPage extends StatelessWidget {
               // show the floating button again
               dashboardAppNav.currentState?.pushNamed(
                 '/accountDetails',
-                arguments: ScreenArguments(arguments.accountId),
+                arguments: AccountScreenArguments(arguments.accountId),
               );
             },
           ),

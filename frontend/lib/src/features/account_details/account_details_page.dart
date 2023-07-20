@@ -26,7 +26,7 @@ class AccountDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final arguments =
-        ModalRoute.of(context)!.settings.arguments as ScreenArguments;
+        ModalRoute.of(context)!.settings.arguments as AccountScreenArguments;
     AccountDetailsController controller = Get.put(AccountDetailsController());
     SpendingBreakdownController spendingBreakdownController =
         Get.put(SpendingBreakdownController());
@@ -217,7 +217,8 @@ class AccountDetailsPage extends StatelessWidget {
                           onPressed: () {
                             dashboardAppNav.currentState?.pushNamed(
                               '/transactionHistory',
-                              arguments: ScreenArguments(arguments.accountId),
+                              arguments:
+                                  AccountScreenArguments(arguments.accountId),
                             );
                           },
                         ),
@@ -232,7 +233,7 @@ class AccountDetailsPage extends StatelessWidget {
                   onTap: () {
                     dashboardAppNav.currentState?.pushNamed(
                       '/spendingBreakdown',
-                      arguments: ScreenArguments(arguments.accountId),
+                      arguments: AccountScreenArguments(arguments.accountId),
                     );
                   },
                 ),
