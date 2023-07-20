@@ -9,7 +9,7 @@ class AuthHeaderController extends GetxController {
   final RxBool _hasLoginToken = false.obs;
 
   String get name => _name.value;
-  bool get loginToken => _hasLoginToken.value;
+  bool get hasLoginToken => _hasLoginToken.value;
 
   Future<String> getFullName() async {
     const storage = FlutterSecureStorage();
@@ -19,9 +19,9 @@ class AuthHeaderController extends GetxController {
     return name;
   }
 
-  Future<bool> hasLoginToken() async {
-    final bool loginToken = await UserService.hasLoginToken();
+  Future<bool> hasAuthToken() async {
+    final bool hasLoginToken = await UserService.hasLoginToken();
 
-    return _hasLoginToken.value = loginToken;
+    return _hasLoginToken.value = hasLoginToken;
   }
 }

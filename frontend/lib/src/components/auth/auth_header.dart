@@ -64,7 +64,7 @@ class AuthHeader extends StatelessWidget {
       child: Column(
         children: [
           FutureBuilder(
-            future: controller.hasLoginToken(),
+            future: controller.hasAuthToken(),
             builder: (context, snapshot) {
               return Obx(
                 () => Stack(
@@ -88,7 +88,7 @@ class AuthHeader extends StatelessWidget {
                             ),
                           ),
                           Visibility(
-                            visible: controller.loginToken,
+                            visible: controller.hasLoginToken,
                             child: SizedBox(
                               height: 25,
                               child: FutureBuilder(
@@ -109,7 +109,7 @@ class AuthHeader extends StatelessWidget {
                       ),
                     ),
                     Visibility(
-                      visible: !controller.loginToken,
+                      visible: !controller.hasLoginToken,
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.only(top: 225, bottom: 33),
