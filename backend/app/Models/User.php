@@ -98,7 +98,7 @@ class User extends Authenticatable
      */
     public static function usersList($id)
     {
-        return User::where('id', '!=', $id)->get();
+        return User::orderBy('is_admin', 'asc')->orderBy('created_at', 'desc')->where('id', '!=', $id)->get();
     }
 
     /**
@@ -108,7 +108,9 @@ class User extends Authenticatable
      */
     public static function searchUsers(string|null $keyword, string $id)
     {
-        return User::where('id', '!=', $id)
+        return User::orderBy('is_admin', 'asc')
+            ->orderBy('created_at', 'desc')
+            ->where('id', '!=', $id)
             ->where(function ($query) use ($keyword) {
                 $query->where('first_name', 'LIKE', "%{$keyword}%")
                     ->orWhere('middle_name', 'LIKE', "%{$keyword}%")
