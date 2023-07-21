@@ -23,11 +23,11 @@ class AccountController extends Controller
                 ->with(['userAccounts', 'userAccounts.accountTransactions'])
                 ->first();
 
-            return AccountResource::collection($user->userAccounts);
+            return AccountResource::collection($user->userAccounts()->orderBy('created_at', 'desc')->get());
         }
 
         //For /accounts
-        return AccountResource::collection(Account::with(['accountTransactions'])->get());
+        return AccountResource::collection(Account::orderBy('created_at', 'desc')->with(['accountTransactions'])->get());
     }
 
     public function show(Account $account)

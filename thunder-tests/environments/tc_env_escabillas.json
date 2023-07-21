@@ -1,0 +1,30 @@
+{
+    "_id": "fd6c2282-2a9f-46e7-b506-0fed48a95a08",
+    "name": "escabillas",
+    "default": true,
+    "sortNum": 14998,
+    "created": "2023-07-21T05:58:13.045Z",
+    "modified": "2023-07-21T05:58:13.045Z",
+    "data": [
+        {
+            "name": "host",
+            "value": "http://192.168.1.13:8000"
+        },
+        {
+            "name": "token",
+            "value": "11|06Pto2RaCItBT5Z0p5ZztsiUevUA68LlmVQZIXVC"
+        },
+        {
+            "name": "user_id",
+            "value": "aa25a122-bfc4-3c03-8016-1219529e3557"
+        },
+        {
+            "name": "account_id",
+            "value": "e58c81a2-1c97-45d7-a88c-6f69860d7ab8"
+        },
+        {
+            "name": "transaction_id",
+            "value": ""
+        }
+    ]
+}
