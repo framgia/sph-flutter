@@ -122,9 +122,7 @@ class SpendingBreakdownPage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(25, 0, 25, 20),
-                child: Graph(
-                  accountId: arguments.accountId,
-                ),
+                child: Graph(),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(25, 0, 25, 20),

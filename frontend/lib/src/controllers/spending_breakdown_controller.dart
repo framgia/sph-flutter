@@ -7,10 +7,9 @@ import 'package:frontend/src/services/account_service.dart';
 class SpendingBreakdownController extends GetxController {
   final Rx<BreakdownFilter> _selectedBreakdownFilter = breakdownFilters[0].obs;
   final RxDouble _totalSpent = 0.00.obs;
-  final RxList<SpendingBreakdown> _spendingList = <SpendingBreakdown>[].obs;
+  final RxList<SpendingBreakdown> spendingList = <SpendingBreakdown>[].obs;
 
   BreakdownFilter get selectedBreakdownFilter => _selectedBreakdownFilter.value;
-  List<SpendingBreakdown> get spendingList => _spendingList;
 
   double get totalSpent => _totalSpent.value;
 
@@ -25,9 +24,11 @@ class SpendingBreakdownController extends GetxController {
   }) async {
     accountId = accountId;
     var totalExpenses = 0.0;
-    _spendingList.value = await AccountService.getBreakdown(
-      accountId: accountId,
-      days: days,
+    spendingList.assignAll(
+      await AccountService.getBreakdown(
+        accountId: accountId,
+        days: days,
+      ),
     );
 
     for (var breakdown in spendingList) {

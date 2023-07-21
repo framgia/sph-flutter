@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 
-import 'package:frontend/src/components/indicator.dart';
+import 'package:frontend/src/components/empty_graph.dart';
+import 'package:frontend/src/components/legend_section.dart';
 import 'package:frontend/src/controllers/graph_controller.dart';
 import 'package:frontend/src/controllers/spending_breakdown_controller.dart';
+import 'package:frontend/src/features/dashboard/components/account_card.dart';
 import 'package:frontend/src/helper/transaction_category_color.dart';
-import 'package:frontend/src/enums/transaction_enum.dart';
+import 'package:frontend/src/models/spending_breakdown.dart';
 
 /*
   A Graph widget where transaction data can be displayed graphically
@@ -18,7 +20,6 @@ class Graph extends StatelessWidget {
   Graph({
     super.key,
     this.onTap,
-    required this.accountId,
   });
 
   final GraphController graphController = Get.put(GraphController());
@@ -26,12 +27,14 @@ class Graph extends StatelessWidget {
       Get.put(SpendingBreakdownController());
 
   final void Function()? onTap;
-  final String accountId;
+
   @override
   Widget build(BuildContext context) {
+    final arguments =
+        ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     return FutureBuilder(
       future: spendingBreakdownController.getSpendingBreakdown(
-        accountId: accountId,
+        accountId: arguments.accountId,
       ),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
@@ -39,43 +42,11 @@ class Graph extends StatelessWidget {
         }
 
         if (spendingBreakdownController.spendingList.isEmpty) {
-          return Center(
-            child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(8.0),
-                ),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Color.fromRGBO(0, 0, 0, 0.25),
-                    blurRadius: 2,
-                    spreadRadius: 1,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              padding: const EdgeInsets.all(20),
-              width: double.maxFinite,
-              height: 236,
-              child: InkWell(
-                onTap: onTap,
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'No Data Found',
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                ),
-              ),
-            ),
-          );
+          return const EmptyGraph();
         }
 
-        List<TransactionCategory> legendList = spendingBreakdownController
-            .spendingList
-            .map((e) => e.category)
-            .toList();
+        List<SpendingBreakdown> legendList =
+            spendingBreakdownController.spendingList;
 
         return Center(
           child: Container(
@@ -140,11 +111,7 @@ class Graph extends StatelessWidget {
                         },
                       ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: legendSection(legendList),
-                    ),
+                    LegendSection(spendingList: legendList),
                   ],
                 ),
               ),
@@ -153,66 +120,6 @@ class Graph extends StatelessWidget {
         );
       },
     );
-  }
-
-  List<Widget> legendSection(List<TransactionCategory> legendList) {
-    List<Widget> legends = [];
-    if (legendList.contains(TransactionCategory.FOOD)) {
-      legends.add(
-        Indicator(
-          color: const Color(0xFF0384EA),
-          text: TransactionCategory.FOOD.value,
-          isSquare: true,
-        ),
-      );
-    }
-    if (legendList.contains(TransactionCategory.TRANSPORTATION)) {
-      legends.add(
-        Indicator(
-          color: const Color(0xFFFEA42C),
-          text: TransactionCategory.TRANSPORTATION.value,
-          isSquare: true,
-        ),
-      );
-    }
-    if (legendList.contains(TransactionCategory.BILLS)) {
-      legends.add(
-        Indicator(
-          color: const Color(0xFF8047F6),
-          text: TransactionCategory.BILLS.value,
-          isSquare: true,
-        ),
-      );
-    }
-    if (legendList.contains(TransactionCategory.SAVINGS)) {
-      legends.add(
-        Indicator(
-          color: const Color(0xFF00D27C),
-          text: TransactionCategory.SAVINGS.value,
-          isSquare: true,
-        ),
-      );
-    }
-    if (legendList.contains(TransactionCategory.MISC)) {
-      legends.add(
-        Indicator(
-          color: const Color(0xFFDC4949),
-          text: TransactionCategory.MISC.value,
-          isSquare: true,
-        ),
-      );
-    }
-
-    return legends
-        .expand(
-          (item) => [
-            item,
-            const SizedBox(
-              height: 4,
-            )
-          ],
-        )
-        .toList();
   }
 
   List<PieChartSectionData> showingSections() {
