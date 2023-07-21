@@ -81,6 +81,8 @@ class TransactionComponent extends StatelessWidget {
         );
 
     void onSubmit() async {
+      transactionController.setTransactionSubmitEnabled = false;
+
       if (formKey.currentState?.isValid ?? false) {
         final recipientAccountNumber =
             formKey.currentState?.fields['recipientAccountNumber']?.value;
@@ -126,7 +128,6 @@ class TransactionComponent extends StatelessWidget {
 
           dashboardController.getUserAccounts();
           accountDetailsController.getUserAccount(accountId: accountId);
-          transactionController.setTransactionSubmitEnabled = false;
 
           Get.back();
 
@@ -164,6 +165,10 @@ class TransactionComponent extends StatelessWidget {
     } else if (type == TransactionType.CREDIT) {
       transactionController.setSelectedTransactionCategory =
           TransactionCategory.FOOD;
+    }
+
+    if (Get.isBottomSheetOpen ?? false) {
+      transactionController.setTransactionSubmitEnabled = false;
     }
 
     return SingleChildScrollView(
@@ -302,6 +307,8 @@ class TransactionComponent extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         Get.back();
+                        transactionController.setTransactionSubmitEnabled =
+                            false;
                       },
                       child: Text(
                         'Cancel',
