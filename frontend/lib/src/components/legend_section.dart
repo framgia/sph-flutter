@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:frontend/src/models/spending_breakdown.dart';
 
 import 'package:frontend/src/components/indicator.dart';
-import 'package:frontend/src/controllers/spending_breakdown_controller.dart';
 import 'package:frontend/src/enums/transaction_enum.dart';
 
 /*
@@ -12,11 +11,17 @@ import 'package:frontend/src/enums/transaction_enum.dart';
 */
 
 class LegendSection extends StatelessWidget {
-  const LegendSection({super.key});
+  const LegendSection({
+    super.key,
+    required this.spendingList,
+    required this.totalSpent,
+  });
+
+  final List<SpendingBreakdown> spendingList;
+  final double totalSpent;
 
   @override
   Widget build(BuildContext context) {
-    final SpendingBreakdownController spendingBreakdownController = Get.find();
     List<Widget> legends = [];
 
     const transactionTypeToColor = {
@@ -27,10 +32,9 @@ class LegendSection extends StatelessWidget {
       TransactionCategory.MISC: Color(0xFFDC4949),
     };
 
-    for (var breakdown in spendingBreakdownController.spendingList) {
-      final totalSpentPercentage = ((breakdown.totalTransactionAmount /
-              spendingBreakdownController.totalSpent) *
-          100);
+    for (var breakdown in spendingList) {
+      final totalSpentPercentage =
+          ((breakdown.totalTransactionAmount / totalSpent) * 100);
       final percentageString = totalSpentPercentage.toStringAsFixed(1);
 
       final color =

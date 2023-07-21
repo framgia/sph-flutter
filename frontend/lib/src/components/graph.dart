@@ -111,7 +111,12 @@ class Graph extends StatelessWidget {
                                   },
                                 ),
                               ),
-                              const LegendSection(),
+                              LegendSection(
+                                spendingList:
+                                    spendingBreakdownController.spendingList,
+                                totalSpent:
+                                    spendingBreakdownController.totalSpent,
+                              ),
                             ],
                           ),
                         ),
