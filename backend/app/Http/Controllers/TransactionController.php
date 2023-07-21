@@ -24,7 +24,7 @@ class TransactionController extends Controller
         // For shallow nesting see https://laravel.com/docs/8.x/controllers#shallow-nesting
         $transactions = (Transaction::where($account ? [['account_id', $account->id]] : []))
             ->with(['account', 'child', 'parent', 'child.account', 'parent.account'])
-            ->orderBy('transaction_date')
+            ->orderByDesc('transaction_date')
             ->get();
 
         // Filter transactions by transaction type
