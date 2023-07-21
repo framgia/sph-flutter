@@ -8,7 +8,6 @@ import 'package:frontend/src/controllers/graph_controller.dart';
 import 'package:frontend/src/controllers/spending_breakdown_controller.dart';
 import 'package:frontend/src/features/dashboard/components/account_card.dart';
 import 'package:frontend/src/helper/transaction_category_color.dart';
-import 'package:frontend/src/models/spending_breakdown.dart';
 
 /*
   A Graph widget where transaction data can be displayed graphically
@@ -31,7 +30,7 @@ class Graph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final arguments =
-        ModalRoute.of(context)!.settings.arguments as ScreenArguments;
+        ModalRoute.of(context)!.settings.arguments as AccountScreenArguments;
     return FutureBuilder(
       future: spendingBreakdownController.getSpendingBreakdown(
         accountId: arguments.accountId,
@@ -44,9 +43,6 @@ class Graph extends StatelessWidget {
         if (spendingBreakdownController.spendingList.isEmpty) {
           return const EmptyGraph();
         }
-
-        List<SpendingBreakdown> legendList =
-            spendingBreakdownController.spendingList;
 
         return Center(
           child: Container(
@@ -111,7 +107,9 @@ class Graph extends StatelessWidget {
                         },
                       ),
                     ),
-                    LegendSection(spendingList: legendList),
+                    LegendSection(
+                      spendingList: spendingBreakdownController.spendingList,
+                    ),
                   ],
                 ),
               ),
