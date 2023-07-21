@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/models/spending_breakdown.dart';
 
+import 'package:frontend/src/models/spending_breakdown.dart';
 import 'package:frontend/src/components/indicator.dart';
 import 'package:frontend/src/enums/transaction_enum.dart';
 
