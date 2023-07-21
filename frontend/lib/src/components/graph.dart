@@ -31,6 +31,7 @@ class Graph extends StatelessWidget {
   Widget build(BuildContext context) {
     final arguments =
         ModalRoute.of(context)!.settings.arguments as AccountScreenArguments;
+
     return FutureBuilder(
       future: spendingBreakdownController.getSpendingBreakdown(
         accountId: arguments.accountId,
@@ -130,6 +131,7 @@ class Graph extends StatelessWidget {
       final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 60.0 : 50.0;
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+
       var totalSpentPercentage = ((breakdown.totalTransactionAmount /
                   spendingBreakdownController.totalSpent) *
               100)
@@ -138,6 +140,7 @@ class Graph extends StatelessWidget {
       list.add(
         PieChartSectionData(
           color: transactionCategoryColor(breakdown.category),
+          showTitle: double.parse(totalSpentPercentage) > 7,
           value: double.parse(totalSpentPercentage),
           title: '$totalSpentPercentage%',
           radius: radius,
