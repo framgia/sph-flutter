@@ -8,15 +8,16 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import 'package:frontend/src/helper/dialog/show_alert_dialog.dart';
-import 'package:frontend/src/models/transaction.dart';
 import 'package:frontend/src/components/input/dropdown.dart';
 import 'package:frontend/src/components/button.dart';
 import 'package:frontend/src/components/input/input_field.dart';
-import 'package:frontend/src/controllers/dashboard_controller.dart';
-import 'package:frontend/src/controllers/transaction_controller.dart';
 import 'package:frontend/src/controllers/account_details_controller.dart';
+import 'package:frontend/src/controllers/dashboard_controller.dart';
+import 'package:frontend/src/controllers/spending_breakdown_controller.dart';
+import 'package:frontend/src/controllers/transaction_controller.dart';
 import 'package:frontend/src/enums/transaction_enum.dart';
+import 'package:frontend/src/helper/dialog/show_alert_dialog.dart';
+import 'package:frontend/src/models/transaction.dart';
 
 /*
   Reusable transaction component for deposit, withdraw, and transfer cash
@@ -55,6 +56,7 @@ class TransactionComponent extends StatelessWidget {
         Get.put(AccountDetailsController());
     final TransactionController transactionController =
         Get.put(TransactionController());
+    final SpendingBreakdownController breakdownController = Get.find();
 
     // Fields required for each type
     // TODO: Transfer required fields
@@ -128,6 +130,9 @@ class TransactionComponent extends StatelessWidget {
           accountDetailsController.getUserAccount(accountId: accountId);
           transactionController.setTransactionSubmitEnabled = false;
 
+          breakdownController.getSpendingBreakdown(
+            accountId: accountDetailsController.account.id ?? '',
+          );
           Get.back();
 
           alertDialog(

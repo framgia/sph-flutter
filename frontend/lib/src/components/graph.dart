@@ -22,8 +22,7 @@ class Graph extends StatelessWidget {
   });
 
   final GraphController graphController = Get.put(GraphController());
-  final SpendingBreakdownController spendingBreakdownController =
-      Get.put(SpendingBreakdownController());
+  final SpendingBreakdownController spendingBreakdownController = Get.find();
 
   final void Function()? onTap;
 
@@ -41,80 +40,82 @@ class Graph extends StatelessWidget {
           return const CircularProgressIndicator();
         }
 
-        if (spendingBreakdownController.spendingList.isEmpty) {
-          return const EmptyGraph();
-        }
+        return Obx(
+          () => SizedBox(
+            child: spendingBreakdownController.spendingList.isEmpty
+                ? const EmptyGraph()
+                : Center(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(8.0),
+                        ),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.25),
+                            blurRadius: 2,
+                            spreadRadius: 1,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(20),
+                      child: InkWell(
+                        onTap: onTap,
+                        child: SizedBox(
+                          width: double.maxFinite,
+                          height: 236,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SizedBox(
+                                width: 150,
+                                height: 150,
+                                child: StatefulBuilder(
+                                  builder: (context, stateful) {
+                                    return PieChart(
+                                      PieChartData(
+                                        pieTouchData: PieTouchData(
+                                          touchCallback: (FlTouchEvent event,
+                                              pieTouchResponse) {
+                                            stateful(() {
+                                              if (!event
+                                                      .isInterestedForInteractions ||
+                                                  pieTouchResponse == null ||
+                                                  pieTouchResponse
+                                                          .touchedSection ==
+                                                      null) {
+                                                graphController.setFocusIndex =
+                                                    -1;
 
-        return Center(
-          child: Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(8.0),
-              ),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.25),
-                  blurRadius: 2,
-                  spreadRadius: 1,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-            padding: const EdgeInsets.all(20),
-            child: InkWell(
-              onTap: onTap,
-              child: SizedBox(
-                width: double.maxFinite,
-                height: 236,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: 150,
-                      height: 150,
-                      child: StatefulBuilder(
-                        builder: (context, stateful) {
-                          return Obx(
-                            () => PieChart(
-                              PieChartData(
-                                pieTouchData: PieTouchData(
-                                  touchCallback:
-                                      (FlTouchEvent event, pieTouchResponse) {
-                                    stateful(() {
-                                      if (!event.isInterestedForInteractions ||
-                                          pieTouchResponse == null ||
-                                          pieTouchResponse.touchedSection ==
-                                              null) {
-                                        graphController.setFocusIndex = -1;
-
-                                        return;
-                                      }
-                                      graphController.setFocusIndex =
-                                          pieTouchResponse.touchedSection!
-                                              .touchedSectionIndex;
-                                    });
+                                                return;
+                                              }
+                                              graphController.setFocusIndex =
+                                                  pieTouchResponse
+                                                      .touchedSection!
+                                                      .touchedSectionIndex;
+                                            });
+                                          },
+                                        ),
+                                        borderData: FlBorderData(
+                                          show: false,
+                                        ),
+                                        sectionsSpace: 0,
+                                        centerSpaceRadius: 30,
+                                        sections: showingSections(),
+                                      ),
+                                    );
                                   },
                                 ),
-                                borderData: FlBorderData(
-                                  show: false,
-                                ),
-                                sectionsSpace: 0,
-                                centerSpaceRadius: 30,
-                                sections: showingSections(),
                               ),
-                            ),
-                          );
-                        },
+                              LegendSection(),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                    LegendSection(
-                      spendingList: spendingBreakdownController.spendingList,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                  ),
           ),
         );
       },

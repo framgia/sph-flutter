@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:frontend/src/components/indicator.dart';
 import 'package:frontend/src/controllers/spending_breakdown_controller.dart';
 import 'package:frontend/src/enums/transaction_enum.dart';
-import 'package:frontend/src/models/spending_breakdown.dart';
 
 /*
   A Column widget where transaction data displayed in graph is explained
@@ -13,9 +12,7 @@ import 'package:frontend/src/models/spending_breakdown.dart';
 */
 
 class LegendSection extends StatelessWidget {
-  const LegendSection({super.key, required this.spendingList});
-
-  final List<SpendingBreakdown> spendingList;
+  const LegendSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +27,7 @@ class LegendSection extends StatelessWidget {
       TransactionCategory.MISC: Color(0xFFDC4949),
     };
 
-    for (var breakdown in spendingList) {
+    for (var breakdown in spendingBreakdownController.spendingList) {
       final totalSpentPercentage = ((breakdown.totalTransactionAmount /
               spendingBreakdownController.totalSpent) *
           100);
@@ -38,7 +35,7 @@ class LegendSection extends StatelessWidget {
 
       final color =
           transactionTypeToColor[breakdown.category] ?? const Color(0xFFDC4949);
-      final text = (totalSpentPercentage < 5)
+      final text = (totalSpentPercentage < 7)
           ? '${breakdown.category.value} ($percentageString%)'
           : breakdown.category.value;
 
