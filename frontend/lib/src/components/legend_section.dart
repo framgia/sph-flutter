@@ -8,6 +8,8 @@ import 'package:frontend/src/enums/transaction_enum.dart';
   A Column widget where transaction data displayed in graph is explained
 
   @param spendingList: List of SpendingBreakdown to figure out which legends to display
+
+  @param totalSpent: Total of items in spendingList
 */
 
 class LegendSection extends StatelessWidget {
