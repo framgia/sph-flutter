@@ -10,11 +10,11 @@
             "colId": "9f84b639-f681-4f52-a619-05d6378c12dd",
             "containerId": "",
             "name": "/users",
-            "url": "{{users}}?keyword=",
+            "url": "{{users}}?keyword=O",
             "method": "GET",
             "sortNum": 10000,
             "created": "2023-07-14T02:55:52.607Z",
-            "modified": "2023-07-14T02:55:52.607Z",
+            "modified": "2023-07-21T08:08:29.721Z",
             "headers": [
                 {
                     "name": "Accept",
@@ -24,7 +24,7 @@
             "params": [
                 {
                     "name": "keyword",
-                    "value": "",
+                    "value": "O",
                     "isPath": false
                 }
             ],
