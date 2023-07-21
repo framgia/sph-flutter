@@ -77,8 +77,10 @@ class Graph extends StatelessWidget {
                                     return PieChart(
                                       PieChartData(
                                         pieTouchData: PieTouchData(
-                                          touchCallback: (FlTouchEvent event,
-                                              pieTouchResponse) {
+                                          touchCallback: (
+                                            FlTouchEvent event,
+                                            pieTouchResponse,
+                                          ) {
                                             stateful(() {
                                               if (!event
                                                       .isInterestedForInteractions ||
@@ -109,7 +111,7 @@ class Graph extends StatelessWidget {
                                   },
                                 ),
                               ),
-                              LegendSection(),
+                              const LegendSection(),
                             ],
                           ),
                         ),
