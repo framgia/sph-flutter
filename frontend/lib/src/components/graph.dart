@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 
-import 'package:frontend/src/components/indicator.dart';
+import 'package:frontend/src/components/empty_graph.dart';
+import 'package:frontend/src/components/legend_section.dart';
 import 'package:frontend/src/controllers/graph_controller.dart';
-import 'package:frontend/src/const/spending_breakdown_test_data.dart';
 import 'package:frontend/src/controllers/spending_breakdown_controller.dart';
+import 'package:frontend/src/features/dashboard/components/account_card.dart';
 import 'package:frontend/src/helper/transaction_category_color.dart';
-import 'package:frontend/src/enums/transaction_enum.dart';
 
 /*
   A Graph widget where transaction data can be displayed graphically
@@ -22,130 +22,119 @@ class Graph extends StatelessWidget {
   });
 
   final GraphController graphController = Get.put(GraphController());
-  final SpendingBreakdownController spendingBreakdownController =
-      Get.put(SpendingBreakdownController());
+  final SpendingBreakdownController spendingBreakdownController = Get.find();
 
   final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(8.0),
-          ),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.25),
-              blurRadius: 2,
-              spreadRadius: 1,
-              offset: Offset(0, 2),
-            ),
-          ],
-        ),
-        padding: const EdgeInsets.all(20),
-        child: InkWell(
-          onTap: onTap,
-          child: SizedBox(
-            width: double.maxFinite,
-            height: 236,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                SizedBox(
-                  width: 150,
-                  height: 150,
-                  child: StatefulBuilder(
-                    builder: (context, stateful) {
-                      return PieChart(
-                        PieChartData(
-                          pieTouchData: PieTouchData(
-                            touchCallback:
-                                (FlTouchEvent event, pieTouchResponse) {
-                              stateful(() {
-                                if (!event.isInterestedForInteractions ||
-                                    pieTouchResponse == null ||
-                                    pieTouchResponse.touchedSection == null) {
-                                  graphController.setFocusIndex = -1;
+    final arguments =
+        ModalRoute.of(context)!.settings.arguments as AccountScreenArguments;
 
-                                  return;
-                                }
-                                graphController.setFocusIndex = pieTouchResponse
-                                    .touchedSection!.touchedSectionIndex;
-                              });
-                            },
-                          ),
-                          borderData: FlBorderData(
-                            show: false,
-                          ),
-                          sectionsSpace: 0,
-                          centerSpaceRadius: 30,
-                          sections: showingSections(),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Indicator(
-                      color: const Color(0xFF0384EA),
-                      text: TransactionCategory.FOOD.value,
-                      isSquare: true,
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Indicator(
-                      color: const Color(0xFFFEA42C),
-                      text: TransactionCategory.TRANSPORTATION.value,
-                      isSquare: true,
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Indicator(
-                      color: const Color(0xFF8047F6),
-                      text: TransactionCategory.BILLS.value,
-                      isSquare: true,
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Indicator(
-                      color: const Color(0xFF00D27C),
-                      text: TransactionCategory.SAVINGS.value,
-                      isSquare: true,
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Indicator(
-                      color: const Color(0xFFDC4949),
-                      text: TransactionCategory.MISC.value,
-                      isSquare: true,
-                    ),
-                    const SizedBox(
-                      height: 18,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
+    return FutureBuilder(
+      future: spendingBreakdownController.getSpendingBreakdown(
+        accountId: arguments.accountId,
       ),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const CircularProgressIndicator();
+        }
+
+        return Obx(
+          () => SizedBox(
+            child: spendingBreakdownController.spendingList.isEmpty
+                ? const EmptyGraph()
+                : Center(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(8.0),
+                        ),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.25),
+                            blurRadius: 2,
+                            spreadRadius: 1,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(20),
+                      child: InkWell(
+                        onTap: onTap,
+                        child: SizedBox(
+                          width: double.maxFinite,
+                          height: 236,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SizedBox(
+                                width: 150,
+                                height: 150,
+                                child: StatefulBuilder(
+                                  builder: (context, stateful) {
+                                    return PieChart(
+                                      PieChartData(
+                                        pieTouchData: PieTouchData(
+                                          touchCallback: (
+                                            FlTouchEvent event,
+                                            pieTouchResponse,
+                                          ) {
+                                            stateful(() {
+                                              if (!event
+                                                      .isInterestedForInteractions ||
+                                                  pieTouchResponse == null ||
+                                                  pieTouchResponse
+                                                          .touchedSection ==
+                                                      null) {
+                                                graphController.setFocusIndex =
+                                                    -1;
+
+                                                return;
+                                              }
+                                              graphController.setFocusIndex =
+                                                  pieTouchResponse
+                                                      .touchedSection!
+                                                      .touchedSectionIndex;
+                                            });
+                                          },
+                                        ),
+                                        borderData: FlBorderData(
+                                          show: false,
+                                        ),
+                                        sectionsSpace: 0,
+                                        centerSpaceRadius: 30,
+                                        sections: showingSections(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              LegendSection(
+                                spendingList:
+                                    spendingBreakdownController.spendingList,
+                                totalSpent:
+                                    spendingBreakdownController.totalSpent,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+          ),
+        );
+      },
     );
   }
 
   List<PieChartSectionData> showingSections() {
     List<PieChartSectionData> list = [];
 
-    spendingBreakdownData.asMap().forEach((index, breakdown) {
+    spendingBreakdownController.spendingList
+        .asMap()
+        .forEach((index, breakdown) {
       final isTouched = index == graphController.focusIndex;
       final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 60.0 : 50.0;
@@ -159,6 +148,7 @@ class Graph extends StatelessWidget {
       list.add(
         PieChartSectionData(
           color: transactionCategoryColor(breakdown.category),
+          showTitle: double.parse(totalSpentPercentage) > 7,
           value: double.parse(totalSpentPercentage),
           title: '$totalSpentPercentage%',
           radius: radius,

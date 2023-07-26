@@ -1,11 +1,13 @@
-import 'package:frontend/src/const/spending_breakdown_test_data.dart';
 import 'package:get/get.dart';
 
 import 'package:frontend/src/const/spending_breakdown_filter.dart';
+import 'package:frontend/src/models/spending_breakdown.dart';
+import 'package:frontend/src/services/account_service.dart';
 
 class SpendingBreakdownController extends GetxController {
   final Rx<BreakdownFilter> _selectedBreakdownFilter = breakdownFilters[0].obs;
   final RxDouble _totalSpent = 0.00.obs;
+  final RxList<SpendingBreakdown> spendingList = <SpendingBreakdown>[].obs;
 
   BreakdownFilter get selectedBreakdownFilter => _selectedBreakdownFilter.value;
 
@@ -16,14 +18,29 @@ class SpendingBreakdownController extends GetxController {
 
   set setTotalSpent(double newValue) => _totalSpent.value = newValue;
 
-  // TODO: replace during integration of Spending Breakdown
-  getSpendingBreakdown() {
+  Future<List<SpendingBreakdown>> getSpendingBreakdown({
+    String accountId = '',
+    int days = 0,
+  }) async {
+    accountId = accountId;
     var totalExpenses = 0.0;
+    spendingList.assignAll(
+      await AccountService.getBreakdown(
+        accountId: accountId,
+        days: days,
+      ),
+    );
 
-    for (var breakdown in spendingBreakdownData) {
+    for (var breakdown in spendingList) {
       totalExpenses += breakdown.totalTransactionAmount;
     }
 
     _totalSpent.value = totalExpenses;
+
+    return spendingList;
+  }
+
+  void resetFilters() {
+    _selectedBreakdownFilter.value = breakdownFilters[0];
   }
 }

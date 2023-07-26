@@ -28,8 +28,7 @@ class AccountDetailsPage extends StatelessWidget {
     final arguments =
         ModalRoute.of(context)!.settings.arguments as AccountScreenArguments;
     AccountDetailsController controller = Get.put(AccountDetailsController());
-    SpendingBreakdownController spendingBreakdownController =
-        Get.put(SpendingBreakdownController());
+    Get.put(SpendingBreakdownController());
     HomeScreenController homeScreenController = Get.find();
 
     return FutureBuilder(
@@ -38,8 +37,6 @@ class AccountDetailsPage extends StatelessWidget {
         if (snapshot.connectionState != ConnectionState.done) {
           return const CircularProgressIndicator();
         }
-
-        spendingBreakdownController.getSpendingBreakdown();
 
         return GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
