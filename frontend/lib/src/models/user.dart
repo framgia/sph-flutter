@@ -47,7 +47,7 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         userName: json["user_name"],
-        isAdmin: json["is_admin"],
+        isAdmin: json["is_admin"] ? 1 : 0,
         firstName: json["first_name"],
         lastName: json["last_name"],
         middleName: json["middle_name"],
