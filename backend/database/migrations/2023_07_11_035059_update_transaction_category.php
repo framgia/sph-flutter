@@ -15,10 +15,14 @@ class UpdateTransactionCategory extends Migration
      */
     public function up()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            DB::statement("ALTER TABLE `transactions` CHANGE `category` `category` ENUM('SAVINGS', 'SALARY', 'SENDER', 'RECIPIENT', 'FOOD', 'TRANSPORTATION', 'BILLS', 'MISC') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'MISC';");
-        });
-
+        DB::statement("DROP TYPE IF EXISTS category_type_enum");
+        DB::statement("CREATE TYPE category_type_enum AS ENUM ('SAVINGS', 'SALARY', 'SENDER', 'RECIPIENT', 'FOOD', 'TRANSPORTATION', 'BILLS', 'MISC')");
+        // DB::statement("ALTER TABLE transactions ALTER COLUMN category TYPE account_type_enum USING category::category_type_enum");
+        DB::statement("ALTER TABLE transactions ADD COLUMN category_enum category_type_enum");
+        DB::statement("ALTER TABLE transactions ALTER COLUMN category_enum SET DEFAULT 'MISC'");
+        DB::statement("Update transactions set category_enum = CAST (category as category_type_enum)");
+        DB::statement("ALTER TABLE transactions DROP COLUMN category");
+        DB::statement("ALTER TABLE transactions RENAME COLUMN category_enum to category");
     }
 
     /**
@@ -31,6 +35,7 @@ class UpdateTransactionCategory extends Migration
 
         Schema::table('transactions', function (Blueprint $table) {
 
+            // TODO: FIX DOWN
             Transaction::where('transaction_type', 'CREDIT')->update(['category' => 'BILLS']);
             DB::statement("ALTER TABLE `transactions` MODIFY COLUMN `category` ENUM('SAVINGS', 'SALARY', 'SENDER', 'RECIPIENT', 'BILLS')  DEFAULT 'BILLS';");
         });

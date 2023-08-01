@@ -16,8 +16,6 @@ class UpdateAccountTypesInAccountsTable extends Migration
     {
         Schema::table('accounts', function () {
             Account::whereIn('account_type', ['BILLS', 'SENDER', 'RECIPIENT'])->update(['account_type' => 'SAVINGS']);
-
-            DB::statement("ALTER TABLE `accounts` CHANGE `account_type` `account_type` ENUM('SAVINGS', 'SALARY') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'SAVINGS';");
         });
     }
 
