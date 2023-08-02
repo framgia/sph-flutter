@@ -1,6 +1,8 @@
 # Use the official PHP-FPM image as the base image
 FROM php:8.2.8-fpm
 
+ENV PORT 8000
+
 # Set the working directory inside the container
 WORKDIR /var/www/html
 
@@ -27,7 +29,7 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 RUN composer install
 
 # Expose the port on which PHP-FPM listens
-EXPOSE 9000
+EXPOSE 8000
 
 # Start PHP-FPM
 CMD ["php-fpm"]
