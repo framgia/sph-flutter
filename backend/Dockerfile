@@ -60,7 +60,9 @@ RUN chmod -R ug+w /var/www/storage
 
 # Deployment steps
 RUN composer install --optimize-autoloader --no-dev
-# RUN chmod +x /var/www/docker/run.sh
 
 EXPOSE 8000
-# ENTRYPOINT ["/var/www/docker/run.sh"]
+
+CMD php artisan serve --port=8000 --host=0.0.0.0
+
+USER $user
