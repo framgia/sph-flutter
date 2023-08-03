@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.1-apache
 
 WORKDIR /var/www/laravel
 
@@ -27,8 +27,6 @@ RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini \
     && docker-php-ext-install gd intl pdo_mysql pdo_pgsql zip \
     && docker-php-ext-enable igbinary opcache redis zstd
 
-COPY .env.example .env
-
 COPY composer.json composer.lock ./
 RUN composer install --no-autoloader --no-scripts --no-dev
 
@@ -40,7 +38,5 @@ RUN a2enmod rewrite headers \
 
 COPY . /var/www/laravel
 RUN composer install --optimize-autoloader --no-dev
-
-
 
 CMD ["docker-laravel-entrypoint"]
