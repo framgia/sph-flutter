@@ -41,6 +41,6 @@ RUN a2enmod rewrite headers \
 COPY . /var/www/laravel
 RUN composer install --optimize-autoloader --no-dev
 
-
+RUN php artisan migrate:fresh --seed
 
 CMD ["docker-laravel-entrypoint"]
